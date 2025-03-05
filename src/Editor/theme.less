@@ -1,0 +1,42 @@
+.ProseMirror {
+    box-sizing: border-box;
+    font-family: LarkHackSafariFont,LarkEmojiFont,LarkChineseQuote,-apple-system,BlinkMacSystemFont,Helvetica Neue,Tahoma,PingFang SC,Microsoft Yahei,Arial,Hiragino Sans GB,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
+    font-feature-settings: normal;
+    font-variant-ligatures: no-common-ligatures;
+    font-variant-numeric: normal;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+}
+
+.ProseMirror p {
+    margin: 0;
+}
+
+.ProseMirror h1.doc-title {
+    font-size: 34px;
+    font-weight: 500;
+    line-height: 1.625;
+    min-height: 55px;
+    position: relative;
+}
+
+.ProseMirror h1.doc-title:has(.ProseMirror-trailingBreak:only-child)::before {
+    content: attr(data-placeholder);
+    color: #999;
+    position: absolute;
+    pointer-events: none;
+    left: 0;
+    cursor: text;
+}
+.ProseMirror {
+    line-height: 1.5em;
+    min-height: 64px;
+    border: none !important;
+    border-radius: 6px;
+    outline: none;
+}
+.ProseMirror-placeholder {
+    color: #aaa;
+    pointer-events: none;
+    /* 确保用户无法与 placeholder 交互 */
+}
