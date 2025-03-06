@@ -5,6 +5,8 @@ import { EditorView } from 'prosemirror-view';
 import { plugins } from './Editor/plugins';
 import { schema } from './Editor/plugins/schema';
 
+import ActionDrag from './Editor/components/ActionDrag/index.vue';
+
 import './Editor/theme.less';
 import headerImage from './header.png';
 
@@ -28,7 +30,8 @@ export default defineComponent({
         plugins: plugins(schema),
         doc: schema.node('doc', null, [
           schema.node('title', null, [schema.text('你好，我是标题')]),
-          schema.node('block', null, [schema.text('开始编辑内容...')]),
+          schema.node('paragraph', null, [schema.text('开始编辑内容...')]),
+          schema.node('paragraph', null, [schema.text('开始编辑内容...')]),
         ])
       });
 
@@ -50,12 +53,16 @@ export default defineComponent({
 
     return () => (
       <div>
+        <div class="sticky top-0 h-[64px] border-b-[1px] border-[#dee0e3] border-solid bg-white z-10"></div>
+
         <div class="h-[150px] overflow-hidden bg-[auto_591px] bg-center" style={{ backgroundImage: `url(${headerImage})`}}>
         </div>
 
         <div class="w-[820px] mx-auto">
             <div ref={editorRef} class="min-h-[580px] prose max-w-none" />
         </div>
+
+        <ActionDrag />
       </div>
     );
   }

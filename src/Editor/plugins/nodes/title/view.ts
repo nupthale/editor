@@ -1,7 +1,7 @@
 import { createApp} from 'vue';
 
 import { Node } from 'prosemirror-model';
-import { EditorView, NodeView } from 'prosemirror-view';
+import { EditorView, NodeView, ViewMutationRecord } from 'prosemirror-view';
 
 import DocMeta from '../../../components/DocMeta/index.vue';
 
@@ -18,12 +18,17 @@ export class TitleView implements NodeView {
 
     // 创建容器元素
     this.dom = document.createElement('div');
-    this.dom.className = 'title-container';
+    this.dom.className = 'doc-title-container';
 
     // 创建标题元素
     const titleElement = document.createElement('h1');
     titleElement.className = 'doc-title';
     titleElement.setAttribute('data-placeholder', node?.attrs?.placeholder || '请输入标题');
+
+    // 标题头部操作区
+    const titleHeader = document.createElement('div');
+    titleHeader.className = 'doc-title-header';
+    titleHeader.contentEditable = 'false';
 
     // 创建用户信息容器元素
     const metaContainer = document.createElement('div');
@@ -34,6 +39,7 @@ export class TitleView implements NodeView {
     this.contentDOM = titleElement;
 
     // 组装DOM结构
+    this.dom.appendChild(titleHeader);
     this.dom.appendChild(titleElement);
     this.dom.appendChild(metaContainer);
 
@@ -45,10 +51,15 @@ export class TitleView implements NodeView {
        // 添加样式
       const style = document.createElement('style');
       style.textContent = `
-        .title-container {
+        .doc-title-container {
           padding: 20px 0 22px;
         }
+        .doc-title-header {
+          height: 28px;
+        }  
         .doc-metas {
+          display: flex;
+          align-items: center;
           padding: 12px 0 8px;
         }
       `;
@@ -62,12 +73,18 @@ export class TitleView implements NodeView {
     return true;
   }
 
-  ignoreMutation(record: MutationRecord): boolean {
+  ignoreMutation(record: ViewMutationRecord): boolean {
     // 忽略metaContainer及其子元素的修改
-    const metaContainer = this.dom.querySelector('.doc-metas');
-    if (metaContainer && metaContainer.contains(record.target)) {
-      return true;
+    const metaContainer = this.dom.querySelectorAll('[contentEditable=false]');
+
+    if (metaContainer?.length) {
+      for (let i = 0; i < metaContainer.length; i++) {
+        if (metaContainer[i].contains(record.target) || record.target === metaContainer[i]) {
+          return true;
+        }
+      }
     }
+    
     return false;
   }
 

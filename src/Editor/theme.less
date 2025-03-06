@@ -8,10 +8,6 @@
     -webkit-font-smoothing: antialiased;
 }
 
-.ProseMirror p {
-    margin: 0;
-}
-
 .ProseMirror h1.doc-title {
     font-size: 34px;
     font-weight: 500;
@@ -39,4 +35,10 @@
     color: #aaa;
     pointer-events: none;
     /* 确保用户无法与 placeholder 交互 */
+}
+
+.overlay-transition {
+    // transition: left .04s,top .2s,right .04s,bottom .2s,max-height .2s,width .2s,height .2s;
+    transition: transform .2s, max-height .2s,width .2s,height .2s;
+    transition-timing-function: cubic-bezier(.34,.69,.1,1);
 }
