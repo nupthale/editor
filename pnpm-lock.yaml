@@ -11,9 +11,15 @@ dependencies:
   '@zsfe/zsui':
     specifier: 1.0.1-alpha.26
     version: 1.0.1-alpha.26(ant-design-vue@4.2.6)(lottie-web-vue@2.0.7)(vue@3.5.13)
+  ant-design-vue:
+    specifier: ^4.2.6
+    version: 4.2.6(vue@3.5.13)
   dom-align:
     specifier: ^1.12.4
     version: 1.12.4
+  lucide:
+    specifier: ^0.477.0
+    version: 0.477.0
   prosemirror-commands:
     specifier: ^1.5.2
     version: 1.7.0
@@ -2113,6 +2119,10 @@ packages:
     dependencies:
       yallist: 3.1.1
     dev: true
+
+  /lucide@0.477.0:
+    resolution: {integrity: sha512-lEgt1ni9sKohbLsYWSnM3mKVRkvUrJ3Ijj01RAdM5F0iyvxkCcy3gPrb1G2ux6zE4y20ptcitfMa0OOFXI57gw==}
+    dev: false
 
   /magic-string@0.30.17:
     resolution: {integrity: sha512-sNPKHvyjVf7gyjwS4xGTaW/mCnF8wnjtifKBEhxfZ7E/S8tQ0rssrwGNn6q8JH/ohItJfSQp9mBtQYuTlH5QnA==}

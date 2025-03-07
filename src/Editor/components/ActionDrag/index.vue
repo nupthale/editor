@@ -3,8 +3,14 @@ import { defineComponent, Teleport, ref, watchEffect, nextTick } from 'vue';
 import { switchMap, tap } from 'rxjs';
 import { useSubscription } from '@vueuse/rxjs';
 import domAlign from 'dom-align';
+import { Type, GripVertical, Heading1, Heading2, Heading3, List, ListOrdered } from 'lucide';
+import { Popover, Menu } from 'ant-design-vue';
+
+import LucideIcon from '../LucideIcon/index.vue';
 
 import { blockMouseEnter$, blockMouseLeave$ } from '../../event';
+
+const MenuItem = Menu.Item;
 
 export default defineComponent({
     setup() {
@@ -13,6 +19,19 @@ export default defineComponent({
 
         const cancelTimerId = ref<number | null>(null);
         const sourceRef = ref<HTMLElement | null>(null);
+
+        const hide = () => {
+            cancelTimerId.value = setTimeout(() => {
+                visibleRef.value = false;
+            }, 1000);
+        }
+
+        const cancelHide = () => {
+            if (!cancelTimerId.value) return;
+
+            clearTimeout(cancelTimerId.value);
+            cancelTimerId.value = null;
+        }
 
         const layout = (isInit = true) => {
             const $source = sourceRef.value;
@@ -39,10 +58,7 @@ export default defineComponent({
         useSubscription(
             blockMouseEnter$.pipe(
                 tap(() => {
-                    if (!cancelTimerId.value) return;
-
-                    clearTimeout(cancelTimerId.value);
-                    cancelTimerId.value = null;
+                    cancelHide();
                 }),
                 switchMap(async ({ view }) => {
                     targetRef.value = view.dom as HTMLElement;
@@ -64,13 +80,7 @@ export default defineComponent({
         useSubscription(
             blockMouseLeave$.pipe(
                 switchMap(async () => {
-                    const $source = sourceRef.value;
-
-                    if (!$source) return;
-
-                    cancelTimerId.value = setTimeout(() => {
-                        visibleRef.value = false;
-                    }, 100);
+                    hide();
                 }),
             ).subscribe(),
         );
@@ -84,20 +94,98 @@ export default defineComponent({
             }
         });
 
+        const handleMounseenter = () => {
+            cancelHide();
+        }
+
+        const handleMouseleave = () => {
+            hide();
+        }
+
         const handleTransitionEnd = () => {
             sourceRef.value?.classList.remove('overlay-transition');
         };
 
         return () => visibleRef.value ? (
             <Teleport to={document.body}>
-                <div class="actionDrag" ref={sourceRef} onTransitionend={handleTransitionEnd}>
-                    123
-                </div>
+                <Popover title="" placement="left" overlayClassName="actionDrag-popover" onOpenChange={() => cancelHide()}>
+                    {{
+                        default: () => (
+                            <div class="actionDrag flex items-center justify-between" ref={sourceRef} onMouseenter={handleMounseenter} onTransitionend={handleTransitionEnd}>
+                                <span class="inline-flex items-center justify-center w-[24px] h-[24px]">
+                                    <LucideIcon icon={Type} width={14} color="#336df4"></LucideIcon>
+                                </span>
+                                <LucideIcon icon={GripVertical} width={14} color="#8f959e"></LucideIcon>
+                            </div>
+                        ),
+                        content: () => (
+                            <div class="w-[230px] p-2">
+                                <Menu class="text-[#2b2f36] !border-none">
+                                    <MenuItem key="1" class="!w-full !p-1 !m-0 !h-auto !min-h-auto !leading-none !rounded-[4px]">
+                                        <div class="flex items-center">
+                                            <span class="mr-4 inline-flex items-center justify-center w-[24px] h-[24px]">
+                                                <LucideIcon icon={Type} width={18}></LucideIcon>
+                                            </span>
+                                            正文
+                                        </div>
+                                    </MenuItem>
+                                    <MenuItem key="2" class="!w-full !p-1 !m-0 !h-auto !min-h-auto !leading-none !rounded-[4px]">
+                                        <div class="flex items-center">
+                                            <span class="mr-4 inline-flex items-center justify-center w-[24px] h-[24px]">
+                                                <LucideIcon icon={Heading1} width={20}></LucideIcon>
+                                            </span>
+                                            一级标题
+                                        </div>
+                                    </MenuItem>
+                                    <MenuItem key="3" class="!w-full !p-1 !m-0 !h-auto !min-h-auto !leading-none !rounded-[4px]">
+                                        <div class="flex items-center">
+                                            <span class="mr-4 inline-flex items-center justify-center w-[24px] h-[24px]">
+                                                <LucideIcon icon={Heading2} width={20}></LucideIcon>
+                                            </span>
+                                            二级标题
+                                        </div>
+                                    </MenuItem>
+                                    <MenuItem key="4" class="!w-full !p-1 !m-0 !h-auto !min-h-auto !leading-none !rounded-[4px]">
+                                        <div class="flex items-center">
+                                            <span class="mr-4 inline-flex items-center justify-center w-[24px] h-[24px]">
+                                                <LucideIcon icon={Heading3} width={20}></LucideIcon>
+                                            </span>
+                                            三级标题
+                                        </div>
+                                    </MenuItem>
+                                    <MenuItem key="5" class="!w-full !p-1 !m-0 !h-auto !min-h-auto !leading-none !rounded-[4px]">
+                                        <div class="flex items-center">
+                                            <span class="mr-4 inline-flex items-center justify-center w-[24px] h-[24px]">
+                                                <LucideIcon icon={ListOrdered} width={20}></LucideIcon>
+                                            </span>
+                                            有序列表
+                                        </div>
+                                    </MenuItem>
+                                    <MenuItem key="6" class="!w-full !p-1 !m-0 !h-auto !min-h-auto !leading-none !rounded-[4px]">
+                                        <div class="flex items-center">
+                                            <span class="mr-4 inline-flex items-center justify-center w-[24px] h-[24px]">
+                                                <LucideIcon icon={List} width={20}></LucideIcon>
+                                            </span>
+                                            无序列表
+                                        </div>
+                                    </MenuItem>
+                                </Menu>
+                            </div>
+                        ),
+                    }}
+                </Popover>
+                
             </Teleport>
         ) : '';
     }
 });
 </script>
+
+<style>
+.actionDrag-popover .ant-popover-arrow {
+    display: none !important;;
+}
+</style>
 
 <style scoped>
 .actionDrag {
@@ -105,9 +193,15 @@ export default defineComponent({
 
     width: 42px;
     height: 26px;
+    padding: 1px;
     cursor: grabbing;
     border-radius: 6px;
     background: #fff;
     border: 1px solid #dee0e3;
+    user-select: none;
+}
+
+.actionDrag:hover {
+    background: #eff0f1;
 }
 </style>

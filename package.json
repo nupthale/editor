@@ -12,7 +12,9 @@
   "dependencies": {
     "@vueuse/rxjs": "^12.8.2",
     "@zsfe/zsui": "1.0.1-alpha.26",
+    "ant-design-vue": "^4.2.6",
     "dom-align": "^1.12.4",
+    "lucide": "^0.477.0",
     "prosemirror-commands": "^1.5.2",
     "prosemirror-example-setup": "^1.2.2",
     "prosemirror-history": "^1.3.2",

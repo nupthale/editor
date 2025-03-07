@@ -7,7 +7,7 @@ import { schema } from './Editor/plugins/schema';
 
 import ActionDrag from './Editor/components/ActionDrag/index.vue';
 
-import './Editor/theme.less';
+import './Editor/theme/index.less';
 import headerImage from './header.png';
 
 export default defineComponent({
