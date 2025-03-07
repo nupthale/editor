@@ -5,6 +5,8 @@ import { EditorView, NodeView, ViewMutationRecord } from 'prosemirror-view';
 
 import DocMeta from '../../../components/DocMeta/index.vue';
 
+import './index.less';
+
 export class TitleView implements NodeView {
   dom: HTMLElement;
   contentDOM: HTMLElement;

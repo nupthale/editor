@@ -6,6 +6,7 @@ import { bold } from './formatting/bold';
 import { italic } from './formatting/italic';
 import { title } from './nodes/title/plugin';
 import { paragraph } from './nodes/paragraph/plugin';
+import { heading } from './nodes/heading/plugin';
 
 // 导入更多插件...
 
@@ -18,6 +19,7 @@ export function plugins(schema: Schema): Plugin[] {
     ...italic(schema),
     ...title(schema),
     ...paragraph(schema),
+    ...heading(schema),
     // 添加更多插件...
   ];
 }

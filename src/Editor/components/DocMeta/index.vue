@@ -11,7 +11,7 @@ export default defineComponent({
                         user: () => (
                             <div class="inline-flex items-center">
                                 <User size="small" username="哈乐" showText={false} />
-                                <span class="ml-1 text-sm">哈乐</span>
+                                <span class="ml-1 text-sm text-[#646a73]">哈乐</span>
                             </div>
                         ),
                         profile: () => (

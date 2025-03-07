@@ -8,22 +8,6 @@
     -webkit-font-smoothing: antialiased;
 }
 
-.ProseMirror h1.doc-title {
-    font-size: 34px;
-    font-weight: 500;
-    line-height: 1.625;
-    min-height: 55px;
-    position: relative;
-}
-
-.ProseMirror h1.doc-title:has(.ProseMirror-trailingBreak:only-child)::before {
-    content: attr(data-placeholder);
-    color: #999;
-    position: absolute;
-    pointer-events: none;
-    left: 0;
-    cursor: text;
-}
 .ProseMirror {
     line-height: 1.5em;
     min-height: 64px;
@@ -31,6 +15,7 @@
     border-radius: 6px;
     outline: none;
 }
+
 .ProseMirror-placeholder {
     color: #aaa;
     pointer-events: none;

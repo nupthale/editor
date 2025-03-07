@@ -30,8 +30,16 @@ export default defineComponent({
         plugins: plugins(schema),
         doc: schema.node('doc', null, [
           schema.node('title', null, [schema.text('你好，我是标题')]),
-          schema.node('paragraph', null, [schema.text('开始编辑内容...')]),
-          schema.node('paragraph', null, [schema.text('开始编辑内容...')]),
+          schema.node('body', null, [
+            schema.node('heading', { level: 1 }, [schema.text('标题1')]),
+            schema.node('heading', { level: 2 }, [schema.text('标题2')]),
+            schema.node('heading', { level: 3 }, [schema.text('标题3')]),
+            schema.node('heading', { level: 4 }, [schema.text('标题4')]),
+            schema.node('heading', { level: 5 }, [schema.text('标题5')]),
+            schema.node('heading', { level: 6 }, [schema.text('标题6')]),
+            schema.node('paragraph', null, [schema.text('开始编辑内容...')]),
+            schema.node('paragraph', null, [schema.text('开始编辑内容...')]),
+          ]),
         ])
       });
 

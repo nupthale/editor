@@ -16,14 +16,15 @@ export default defineComponent({
     setup() {
         const visibleRef = ref(false);
         const targetRef = ref<HTMLElement | null>(null);
+        const offsetYRef = ref(0);
 
         const cancelTimerId = ref<number | null>(null);
         const sourceRef = ref<HTMLElement | null>(null);
 
         const hide = () => {
-            cancelTimerId.value = setTimeout(() => {
-                visibleRef.value = false;
-            }, 1000);
+            // cancelTimerId.value = setTimeout(() => {
+            //     visibleRef.value = false;
+            // }, 1000);
         }
 
         const cancelHide = () => {
@@ -48,7 +49,7 @@ export default defineComponent({
                 targetRef.value,
                 {
                     points: ['tr', 'tl'], 
-                    offset: [-10, 0], 
+                    offset: [-10, offsetYRef.value], 
                     overflow: { adjustX: false, adjustY: false }, 
                     useCssTransform: true,
                 }
@@ -60,8 +61,9 @@ export default defineComponent({
                 tap(() => {
                     cancelHide();
                 }),
-                switchMap(async ({ view }) => {
-                    targetRef.value = view.dom as HTMLElement;
+                switchMap(async ({ view, offsetY }) => {
+                    targetRef.value = view.contentDOM as HTMLElement;
+                    offsetYRef.value = offsetY || 0;
                     const isVisible = visibleRef.value;
                     
                     // 没展示到展示的话， 通过handleShow处理
@@ -98,9 +100,9 @@ export default defineComponent({
             cancelHide();
         }
 
-        const handleMouseleave = () => {
-            hide();
-        }
+        // const handleMouseleave = () => {
+        //     hide();
+        // }
 
         const handleTransitionEnd = () => {
             sourceRef.value?.classList.remove('overlay-transition');
