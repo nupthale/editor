@@ -1,10 +1,11 @@
 <script lang="tsx">
-import { defineComponent, Teleport, ref, watchEffect, nextTick } from 'vue';
+import { defineComponent, Teleport, ref, watchEffect, nextTick, computed } from 'vue';
 import { switchMap, tap } from 'rxjs';
 import { useSubscription } from '@vueuse/rxjs';
 import domAlign from 'dom-align';
 import { Type, GripVertical, Heading1, Heading2, Heading3, List, ListOrdered } from 'lucide';
 import { Popover, Menu } from 'ant-design-vue';
+import { BaseBlockView } from '../../plugins/nodes/_common/baseBlockView';
 
 import LucideIcon from '../LucideIcon/index.vue';
 
@@ -17,14 +18,20 @@ export default defineComponent({
         const visibleRef = ref(false);
         const targetRef = ref<HTMLElement | null>(null);
         const offsetYRef = ref(0);
+        const crtNodeViewRef = ref<BaseBlockView | null>(null);
 
         const cancelTimerId = ref<number | null>(null);
         const sourceRef = ref<HTMLElement | null>(null);
 
+        const nodeIconRef = computed(() => {
+            debugger;
+            return crtNodeViewRef.value?.icon;
+        });
+
         const hide = () => {
-            // cancelTimerId.value = setTimeout(() => {
-            //     visibleRef.value = false;
-            // }, 1000);
+            cancelTimerId.value = setTimeout(() => {
+                visibleRef.value = false;
+            }, 1000);
         }
 
         const cancelHide = () => {
@@ -62,6 +69,7 @@ export default defineComponent({
                     cancelHide();
                 }),
                 switchMap(async ({ view, offsetY }) => {
+                    crtNodeViewRef.value = view;
                     targetRef.value = view.contentDOM as HTMLElement;
                     offsetYRef.value = offsetY || 0;
                     const isVisible = visibleRef.value;
@@ -115,7 +123,7 @@ export default defineComponent({
                         default: () => (
                             <div class="actionDrag flex items-center justify-between" ref={sourceRef} onMouseenter={handleMounseenter} onTransitionend={handleTransitionEnd}>
                                 <span class="inline-flex items-center justify-center w-[24px] h-[24px]">
-                                    <LucideIcon icon={Type} width={14} color="#336df4"></LucideIcon>
+                                    <LucideIcon icon={nodeIconRef.value} width={14} color="#336df4"></LucideIcon>
                                 </span>
                                 <LucideIcon icon={GripVertical} width={14} color="#8f959e"></LucideIcon>
                             </div>

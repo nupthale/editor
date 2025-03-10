@@ -1,5 +1,6 @@
 import { Node } from 'prosemirror-model';
 import { EditorView, NodeView } from 'prosemirror-view';
+import { Type } from 'lucide';
 
 import { BaseBlockView } from '../_common/baseBlockView';
 
@@ -7,6 +8,10 @@ import './index.less';
 
 export class ParagraphView extends BaseBlockView implements NodeView {
   contentDOM: HTMLElement;
+
+  get icon() {
+    return Type;
+  }
 
   constructor(node: Node, view: EditorView) {
     super(node, view);

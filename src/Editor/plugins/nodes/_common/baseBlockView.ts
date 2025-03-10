@@ -1,5 +1,6 @@
 import { Node } from 'prosemirror-model';
 import { EditorView, NodeView, ViewMutationRecord } from 'prosemirror-view';
+import { Type } from 'lucide';
 
 import { blockMouseEnter$, blockMouseLeave$ } from '../../../event';
 
@@ -10,7 +11,10 @@ export class BaseBlockView implements NodeView {
   contentDOM: HTMLElement | null = null;
   node: Node;
   view: EditorView;
-  app: any;
+
+  get icon() {
+    return Type;
+  }
 
   constructor(node: Node, view: EditorView) {
     this.dom = document.createElement('div');

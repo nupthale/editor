@@ -1,15 +1,34 @@
 import { Node } from 'prosemirror-model';
 import { EditorView, NodeView } from 'prosemirror-view';
+import { Heading1, Heading2, Heading3, Heading4, Heading5, Heading6 } from 'lucide';
 
 import { BaseBlockView } from '../_common/baseBlockView';
 import { blockMouseEnter$ } from '../../../event';
-
 import './index.less';
 
 export class HeadingView extends BaseBlockView implements NodeView {
   contentDOM: HTMLElement;
 
   level: number = 1;
+
+  get icon() {
+    switch (this.level) {
+      case 1:
+        return Heading1;
+      case 2:
+        return Heading2;  
+      case 3:
+        return Heading3;
+      case 4:
+        return Heading4;
+      case 5:
+        return Heading5;
+      case 6:
+        return Heading6;
+      default:
+        return Heading1;  
+    }
+  }
 
   constructor(node: Node, view: EditorView) {
     super(node, view);

@@ -1,5 +1,5 @@
 <script lang="tsx">
-import { ref, onMounted, PropType, defineComponent } from 'vue';
+import { ref, onMounted, PropType, defineComponent, watchEffect } from 'vue';
 import { createElement, IconNode, SVGProps } from 'lucide';
 
 export default defineComponent({
@@ -17,20 +17,29 @@ export default defineComponent({
     setup(props) {
         const iconRef = ref<HTMLElement | null>(null);
 
-        const attrs: SVGProps = {
-            width: props.width,
-        };
+        const updateIcon = () => {
+            const attrs: SVGProps = {
+                width: props.width,
+            };
 
-        if (props.color) {
-            attrs.color = props.color;
-        }
- 
-        const iconElement = createElement(props.icon, attrs);
+            if (props.color) {
+                attrs.color = props.color;
+            }
+    
+            const iconElement = createElement(props.icon, attrs);
 
-        onMounted(() => {
             if (iconRef.value) {
+                iconRef.value.innerHTML = '';
                 iconRef.value.appendChild(iconElement);
             }
+        }
+
+        onMounted(() => {
+            updateIcon();
+        });
+
+        watchEffect(() => {
+            updateIcon();
         });
 
         return () => <div ref={iconRef}></div>;
