@@ -63,9 +63,11 @@ export class HeadingView extends BaseBlockView implements NodeView {
     if (node.type !== this.node.type) return false;
 
     this.node = node; // 更新节点
+    if (node.attrs.level !== this.level) {
+      this.render();
+    }
     this.level = node.attrs.level;
 
-    this.render();
     return true;
   }
 

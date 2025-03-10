@@ -38,6 +38,12 @@ interface Node {
     children?: Node[];
 }
 
+export const getText = (content) => {
+    return content.reduce((acc, crt) => {
+        return acc + crt.text;
+    }, '');
+}
+
 export const toTree = (items) => {
     const tree: Node[] = [];
     const levelMap: { [key: number]: Node } = {};
@@ -45,7 +51,7 @@ export const toTree = (items) => {
     items.forEach(item => {
         if (item.type !=='heading') return;
 
-        const title = item.content?.[0]?.text;
+        const title = getText(item.content);
         const newNode = { 
             title, 
             key: item.attrs.level,
