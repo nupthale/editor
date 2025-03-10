@@ -46,7 +46,8 @@ export class BaseBlockView implements NodeView {
 
   update(node: Node) {
     if (node.type !== this.node.type) return false;
-    this.node = node;
+
+    this.node = node; // 更新节点
     return true;
   }
 

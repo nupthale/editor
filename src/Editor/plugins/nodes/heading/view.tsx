@@ -37,18 +37,36 @@ export class HeadingView extends BaseBlockView implements NodeView {
 
     // 创建容器元素
     this.dom.classList.add('doc-heading');
-    this.dom.classList.add(`level${this.level}`);
-
-    // 创建标题元素
-    const headingElement = document.createElement(`h${this.level}`);
-
-    // 设置contentDOM为标题元素
-    this.contentDOM = headingElement;
-
-    // 组装DOM结构
-    this.dom.appendChild(headingElement);
+    
+    this.render();
 
     this.initEvt();
+  }
+
+  render() {
+    this.dom.className = this.dom.className.replace(/level\d/gm, '').trim();
+
+    this.dom.classList.add(`level${this.level}`);
+
+    const orginalContent = this.contentDOM?.innerHTML || '';
+    if (this.contentDOM) {
+       // 删除this.contentDOM
+       this.contentDOM.remove();
+    }
+
+    this.contentDOM = document.createElement(`h${this.level}`);
+    this.contentDOM.innerHTML = orginalContent;
+    this.dom.appendChild(this.contentDOM);
+  }
+
+  update(node: Node) {
+    if (node.type !== this.node.type) return false;
+
+    this.node = node; // 更新节点
+    this.level = node.attrs.level;
+
+    this.render();
+    return true;
   }
 
   mouseEnter = () => {
