@@ -5,7 +5,6 @@ import { useSubscription } from '@vueuse/rxjs';
 import domAlign from 'dom-align';
 import { Type, GripVertical, Heading1, Heading2, Heading3, List, ListOrdered } from 'lucide';
 import { Popover, Menu } from 'ant-design-vue';
-import { EditorView } from 'prosemirror-view';
 
 import { useUpdateBlockNodeType } from './useUpdateBlockNodeType';
 import { BaseBlockView } from '../../plugins/nodes/_common/baseBlockView';
@@ -20,7 +19,6 @@ export default defineComponent({
         const visibleRef = ref(false);
         const targetRef = ref<HTMLElement | null>(null);
         const offsetYRef = ref(0);
-        const editorViewRef = ref<EditorView | null>(null);
         const crtNodeViewRef = ref<BaseBlockView | null>(null);
 
         const cancelTimerId = ref<number | null>(null);
@@ -31,7 +29,6 @@ export default defineComponent({
         });
 
         const { handleSelectType } = useUpdateBlockNodeType(
-            editorViewRef as Ref<EditorView | null>, 
             crtNodeViewRef as Ref<BaseBlockView | null>,
         );
 
@@ -72,15 +69,15 @@ export default defineComponent({
 
         useSubscription(
             blockMouseEnter$.pipe(
-                tap(() => {
-                    cancelHide();
-                }),
-                switchMap(async ({ view, nodeView, offsetY }) => {
-                    editorViewRef.value = view;
+                tap(({ nodeView, offsetY }) => {
                     crtNodeViewRef.value = nodeView;
 
                     targetRef.value = nodeView.contentDOM as HTMLElement;
                     offsetYRef.value = offsetY || 0;
+
+                    cancelHide();
+                }),
+                switchMap(async () => {
                     const isVisible = visibleRef.value;
                     
                     // 没展示到展示的话， 通过handleShow处理

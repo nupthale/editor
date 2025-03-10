@@ -6,6 +6,7 @@ import { plugins } from './Editor/plugins';
 import { schema } from './Editor/plugins/schema';
 
 import ActionDrag from './Editor/components/ActionDrag/index.vue';
+import { contextStore } from './Editor/context';
 
 import './Editor/theme/index.less';
 import headerImage from './header.png';
@@ -47,6 +48,8 @@ export default defineComponent({
       view = new EditorView(editorRef.value, {
         state,
       });
+
+      contextStore.getState().setEditorView(view);
     });
 
     onUnmounted(() => {

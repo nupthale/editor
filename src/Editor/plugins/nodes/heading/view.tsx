@@ -60,7 +60,6 @@ export class HeadingView extends BaseBlockView implements NodeView {
 
    
     blockMouseEnter$.next({
-      view: this.view,
       nodeView: this,
       offsetY: map[this.level] || -1,
     });

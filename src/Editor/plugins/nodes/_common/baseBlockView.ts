@@ -30,7 +30,6 @@ export class BaseBlockView implements NodeView {
 
   mouseEnter = () => {
     blockMouseEnter$.next({
-      view: this.view,
       nodeView: this,
     });
   }
