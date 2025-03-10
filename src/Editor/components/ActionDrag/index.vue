@@ -32,10 +32,10 @@ export default defineComponent({
             crtNodeViewRef as Ref<BaseBlockView | null>,
         );
 
-        const hide = () => {
+        const hide = (delay: number = 1000) => {
             cancelTimerId.value = setTimeout(() => {
                 visibleRef.value = false;
-            }, 1000);
+            }, delay);
         }
 
         const cancelHide = () => {
@@ -95,8 +95,8 @@ export default defineComponent({
 
         useSubscription(
             blockMouseLeave$.pipe(
-                switchMap(async () => {
-                    hide();
+                switchMap(async ({ delay }) => {
+                    hide(delay);
                 }),
             ).subscribe(),
         );
@@ -113,10 +113,6 @@ export default defineComponent({
         const handleMounseenter = () => {
             cancelHide();
         }
-
-        // const handleMouseleave = () => {
-        //     hide();
-        // }
 
         const handleTransitionEnd = () => {
             sourceRef.value?.classList.remove('overlay-transition');

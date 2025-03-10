@@ -6,4 +6,6 @@ export const blockMouseEnter$ = new Subject<{
   offsetY?: number,
 }>();
 
-export const blockMouseLeave$ = new Subject();
+export const blockMouseLeave$ = new Subject<{
+  delay?: number,
+}>();

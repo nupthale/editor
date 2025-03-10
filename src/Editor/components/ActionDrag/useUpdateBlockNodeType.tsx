@@ -2,6 +2,8 @@ import { Ref } from 'vue';
 import { BaseBlockView } from '../../plugins/nodes/_common/baseBlockView';
 
 import { contextStore } from '../../context';
+import { blockMouseLeave$ } from '../../event';
+
 
 export const useUpdateBlockNodeType = (
     crtNodeViewRef: Ref<BaseBlockView | null>,
@@ -20,14 +22,17 @@ export const useUpdateBlockNodeType = (
         const tr = state.tr;
         const { from, to } = srcNodeView.range;
 
-        // 找到该位置的 DOM 元素
-        const dom = view.domAtPos(from)?.node;
+        const targetNode = targetTypeSchema.create(attrs, srcNodeView.node.content, srcNodeView.node.marks);
 
         view.dispatch(
-            tr.replaceRangeWith(from, to, targetTypeSchema.create({
-                ...attrs,
-            }, srcNodeView.node.content, srcNodeView.node.marks)),
+            tr.replaceRangeWith(
+                from, 
+                to, 
+                targetNode,
+            ),
         );
+
+        blockMouseLeave$.next({ delay: 0 });
     }
 
     return {
