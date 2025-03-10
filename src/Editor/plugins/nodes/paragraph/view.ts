@@ -13,8 +13,8 @@ export class ParagraphView extends BaseBlockView implements NodeView {
     return Type;
   }
 
-  constructor(node: Node, view: EditorView) {
-    super(node, view);
+  constructor(public node: Node, public view: EditorView, public getPos: () => number | undefined) {
+    super(node, view, getPos);
 
     // 创建容器元素
     this.dom.classList.add('doc-paragraph');

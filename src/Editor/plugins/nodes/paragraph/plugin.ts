@@ -8,8 +8,8 @@ export function paragraph(schema: Schema): Plugin[] {
       key: new PluginKey('paragraph'),
       props: {
         nodeViews: {
-          paragraph: (node, view) => {
-            return new ParagraphView(node, view);
+          paragraph: (node, view, getPos) => {
+            return new ParagraphView(node, view, getPos);
           }
         }
       }

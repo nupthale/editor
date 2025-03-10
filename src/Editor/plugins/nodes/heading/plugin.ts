@@ -8,8 +8,8 @@ export function heading(schema: Schema): Plugin[] {
       key: new PluginKey('heading'),
       props: {
         nodeViews: {
-          heading: (node, view) => {
-            return new HeadingView(node, view);
+          heading: (node, view, getPos) => {
+            return new HeadingView(node, view, getPos);
           }
         }
       }

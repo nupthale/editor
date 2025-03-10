@@ -30,8 +30,8 @@ export class HeadingView extends BaseBlockView implements NodeView {
     }
   }
 
-  constructor(node: Node, view: EditorView) {
-    super(node, view);
+  constructor(public node: Node, public view: EditorView, public getPos: () => number | undefined) {
+    super(node, view, getPos);
 
     this.level = node.attrs.level;
 
@@ -60,7 +60,8 @@ export class HeadingView extends BaseBlockView implements NodeView {
 
    
     blockMouseEnter$.next({
-      view: this,
+      view: this.view,
+      nodeView: this,
       offsetY: map[this.level] || -1,
     });
   }

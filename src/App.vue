@@ -29,7 +29,7 @@ export default defineComponent({
         schema,
         plugins: plugins(schema),
         doc: schema.node('doc', null, [
-          schema.node('title', null, [schema.text('你好，我是标题')]),
+          schema.node('title', null, [schema.text('123')]),
           schema.node('body', null, [
             schema.node('heading', { level: 1 }, [schema.text('标题1')]),
             schema.node('heading', { level: 2 }, [schema.text('标题2')]),
@@ -46,10 +46,6 @@ export default defineComponent({
       // 创建 EditorView
       view = new EditorView(editorRef.value, {
         state,
-        dispatchTransaction(transaction) {
-          const newState = view!.state.apply(transaction);
-          view!.updateState(newState);
-        }
       });
     });
 

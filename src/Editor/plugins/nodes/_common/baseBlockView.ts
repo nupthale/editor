@@ -9,23 +9,29 @@ import './index.less';
 export class BaseBlockView implements NodeView {
   dom: HTMLElement;
   contentDOM: HTMLElement | null = null;
-  node: Node;
-  view: EditorView;
 
   get icon() {
     return Type;
   }
 
-  constructor(node: Node, view: EditorView) {
+  get range() {
+    const from = this.getPos() || 0;
+
+    return {
+      from,
+      to: from + this.node.nodeSize,
+    };
+  }
+
+  constructor(public node: Node, public view: EditorView, public getPos: () => number | undefined) {
     this.dom = document.createElement('div');
     this.dom.classList.add('doc-block');
-    this.node = node;
-    this.view = view;
   }
 
   mouseEnter = () => {
     blockMouseEnter$.next({
-      view: this,
+      view: this.view,
+      nodeView: this,
     });
   }
 
