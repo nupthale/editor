@@ -1,3 +1,16 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities; 
+
+html, body {
+    color: #1f2329;
+    overscroll-behavior: none;
+
+    box-sizing: border-box;
+    font-family: LarkHackSafariFont,LarkEmojiFont,LarkChineseQuote,-apple-system,BlinkMacSystemFont,Helvetica Neue,Tahoma,PingFang SC,Microsoft Yahei,Arial,Hiragino Sans GB,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
+    font-feature-settings: normal;
+    font-variant-ligatures: no-common-ligatures;
+    font-variant-numeric: normal;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+}

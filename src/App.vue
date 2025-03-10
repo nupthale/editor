@@ -6,7 +6,9 @@ import { plugins } from './Editor/plugins';
 import { schema } from './Editor/plugins/schema';
 
 import ActionDrag from './Editor/components/ActionDrag/index.vue';
+import Catalog from './Editor/components/Catalog/index.vue';
 import { contextStore } from './Editor/context';
+import { docChanged$ } from './Editor/event';
 
 import './Editor/theme/index.less';
 import headerImage from './header.png';
@@ -47,9 +49,22 @@ export default defineComponent({
       // 创建 EditorView
       view = new EditorView(editorRef.value, {
         state,
+        dispatchTransaction(transaction) {
+          // 监听文档变化
+          const newState = view!.state.apply(transaction);
+          view!.updateState(newState);
+
+          if (transaction.docChanged) {
+            // 在这里处理文档变化
+            docChanged$.next();
+          }
+        },
       });
 
       contextStore.getState().setEditorView(view);
+
+      // 初始化
+      docChanged$.next();
     });
 
     onUnmounted(() => {
@@ -64,6 +79,9 @@ export default defineComponent({
 
         <div class="h-[150px] overflow-hidden bg-[auto_591px] bg-center" style={{ backgroundImage: `url(${headerImage})`}}>
         </div>
+
+        {/* 左侧目录 */}
+        <Catalog />
 
         <div class="w-[820px] mx-auto">
             <div ref={editorRef} class="min-h-[580px] prose max-w-none" />

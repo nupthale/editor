@@ -9,3 +9,6 @@ export const blockMouseEnter$ = new Subject<{
 export const blockMouseLeave$ = new Subject<{
   delay?: number,
 }>();
+
+// 文档内容变化
+export const docChanged$ = new Subject<void>();
