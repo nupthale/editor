@@ -38,20 +38,18 @@ export default defineComponent({
         );
 
         return () => catalogTreeRef.value?.length ? (
-            <Teleport to={document.body}>
-                <div class="doc-catalog-container">
-                    <div class="font-medium text-[15px] mb-2">{docTitle.value}</div>
-                    <Tree class="catalogTree" treeData={catalogTreeRef.value} defaultExpandAll>
-                        {{
-                            title: ({ title, key, level }) => {
-                                return (
-                                    <span key={key} style={{fontWeight: level === 1 ? '500' : ''}}>{title}</span>
-                                );
-                            }
-                        }}
-                    </Tree>
-                </div>
-            </Teleport>
+            <div class="doc-catalog-container w-fit h-fit">
+                <div class="font-medium text-[15px] mb-2">{docTitle.value}</div>
+                <Tree class="catalogTree" treeData={catalogTreeRef.value} defaultExpandAll>
+                    {{
+                        title: ({ title, key, level }) => {
+                            return (
+                                <span key={key} style={{fontWeight: level === 1 ? '500' : ''}}>{title}</span>
+                            );
+                        }
+                    }}
+                </Tree>
+            </div>
         ) : '';
     }
 });
@@ -73,8 +71,8 @@ export default defineComponent({
 
 <style scoped>
 .doc-catalog-container {
-    position: fixed;
-    top: 280px;
+    position: sticky;
+    top: 80px;
     left: 20px;
     z-index: 10;
 }

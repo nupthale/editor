@@ -77,14 +77,16 @@ export default defineComponent({
       <div>
         <div class="sticky top-0 h-[64px] border-b-[1px] border-[#dee0e3] border-solid bg-white z-10"></div>
 
-        <div class="h-[150px] overflow-hidden bg-[auto_591px] bg-center" style={{ backgroundImage: `url(${headerImage})`}}>
+        <div class="h-[278px] overflow-hidden bg-[auto_591px] bg-center" style={{ backgroundImage: `url(${headerImage})`}}>
         </div>
 
-        {/* 左侧目录 */}
-        <Catalog />
+        <div class="flex">
+          {/* 左侧目录 */}
+          <Catalog />
 
-        <div class="w-[820px] mx-auto">
-            <div ref={editorRef} class="min-h-[580px] prose max-w-none" />
+          <div class="w-[820px] mx-auto">
+              <div ref={editorRef} class="min-h-[580px] prose max-w-none" />
+          </div>
         </div>
 
         <ActionDrag />
