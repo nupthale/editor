@@ -1,4 +1,5 @@
 <script lang="tsx">
+import { v4 as uuidv4 } from 'uuid';
 import { defineComponent, onMounted, onUnmounted, ref, provide } from 'vue';
 import { EditorState } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
@@ -32,16 +33,16 @@ export default defineComponent({
         schema,
         plugins: plugins(schema),
         doc: schema.node('doc', null, [
-          schema.node('title', null, [schema.text('123')]),
+          schema.node('title', null, [schema.text('123👨👩👧👦')]),
           schema.node('body', null, [
-            schema.node('heading', { level: 1 }, [schema.text('标题1')]),
-            schema.node('heading', { level: 2 }, [schema.text('标题2')]),
-            schema.node('heading', { level: 3 }, [schema.text('标题3')]),
-            schema.node('heading', { level: 4 }, [schema.text('标题4')]),
-            schema.node('heading', { level: 5 }, [schema.text('标题5')]),
-            schema.node('heading', { level: 6 }, [schema.text('标题6')]),
-            schema.node('paragraph', null, [schema.text('开始编辑内容...')]),
-            schema.node('paragraph', null, [schema.text('开始编辑内容...')]),
+            schema.node('heading', { level: 1, id: uuidv4() }, [schema.text('标题1')]),
+            schema.node('heading', { level: 3, id: uuidv4() }, [schema.text('标题2')]),
+            schema.node('heading', { level: 4, id: uuidv4() }, [schema.text('标题3')]),
+            schema.node('heading', { level: 3, id: uuidv4() }, [schema.text('标题4')]),
+            schema.node('heading', { level: 1, id: uuidv4() }, [schema.text('标题5')]),
+            schema.node('heading', { level: 6, id: uuidv4() }, [schema.text('标题6')]),
+            schema.node('paragraph', { id: uuidv4() }, [schema.text('开始编辑内容...')]),
+            schema.node('paragraph', { id: uuidv4() }, [schema.text('开始编辑内容...')]),
           ]),
         ])
       });

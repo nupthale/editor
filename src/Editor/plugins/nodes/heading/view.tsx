@@ -7,8 +7,6 @@ import { blockMouseEnter$ } from '../../../event';
 import './index.less';
 
 export class HeadingView extends BaseBlockView implements NodeView {
-  contentDOM: HTMLElement;
-
   level: number = 1;
 
   get icon() {

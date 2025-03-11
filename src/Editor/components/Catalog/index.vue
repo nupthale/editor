@@ -1,13 +1,13 @@
 <script lang="tsx">
-import { defineComponent, Teleport, ref, watchEffect, nextTick, computed } from 'vue';
+import { defineComponent, ref, computed } from 'vue';
 import { switchMap, debounceTime } from 'rxjs';
 import { useSubscription } from '@vueuse/rxjs';
-import { Tree } from 'ant-design-vue';
 
 import { contextStore } from '../../context';
 import { docChanged$ } from '../../event';
 
-import { toTree } from './util';
+import { getText } from './util';
+import Tree from './Tree.vue';
 
 export default defineComponent({
     setup() {
@@ -19,12 +19,18 @@ export default defineComponent({
             return docJsonRef.value?.doc?.content?.[0]?.content?.[0]?.text;
         })
 
-        const catalogTreeRef = computed(() => {
+        const headingsRef = computed(() => {
             if (!docJsonRef.value) return [];
 
             const body = docJsonRef.value?.doc?.content?.[1];
             
-            return toTree(body.content);
+            const headings = body.content.filter(item => item.type === 'heading');
+
+            return headings.map(item => ({
+                id: item.attrs.id,
+                level: item.attrs.level,
+                text: getText(item.content),
+            }));
         });
 
         useSubscription(
@@ -37,43 +43,22 @@ export default defineComponent({
             ).subscribe()
         );
 
-        return () => catalogTreeRef.value?.length ? (
+        return () => headingsRef.value?.length ? (
             <div class="doc-catalog-container w-fit h-fit">
-                <div class="font-medium text-[15px] mb-2">{docTitle.value}</div>
-                <Tree class="catalogTree" treeData={catalogTreeRef.value} defaultExpandAll>
-                    {{
-                        title: ({ title, key, level }) => {
-                            return (
-                                <span key={key} style={{fontWeight: level === 1 ? '500' : ''}}>{title}</span>
-                            );
-                        }
-                    }}
-                </Tree>
+                <div class="font-medium text-[15px] mb-2 text-[#1456f0]">{docTitle.value}</div>
+                <Tree headings={headingsRef.value} />
             </div>
         ) : '';
     }
 });
 </script>
 
-<style>
-.catalogTree.ant-tree .ant-tree-indent-unit {
-    width: 14px!important;
-}
-
-.catalogTree.ant-tree {
-    color: #646a73!important;
-}
-
-.catalogTree .ant-tree-switcher {
-    width: 10px!important;
-}
-</style>
-
 <style scoped>
 .doc-catalog-container {
     position: sticky;
-    top: 80px;
+    top: 20px;
     left: 20px;
     z-index: 10;
+    padding-top: 60px;
 }
 </style>

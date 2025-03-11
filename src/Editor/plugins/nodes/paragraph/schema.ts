@@ -5,16 +5,14 @@ export const paragraphSchema: Record<string, NodeSpec> = {
       content: "inline*",
       defining: true,
       group: 'block',
+      attrs: {
+        id: { default: '' },
+      },
       parseDOM: [{ 
         tag: "p", 
-        attrs: { 
+        attrs: {
           class: "doc-paragraph",
         } 
       }],
-      toDOM(node): DOMOutputSpec { 
-        return ["p", { 
-          class: "doc-paragraph",
-        }, 0] 
-      }
     },
   };

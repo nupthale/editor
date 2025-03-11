@@ -10,6 +10,8 @@ export class BaseBlockView implements NodeView {
   dom: HTMLElement;
   contentDOM: HTMLElement | null = null;
 
+  id: string = '';
+
   get icon() {
     return Type;
   }
@@ -24,6 +26,8 @@ export class BaseBlockView implements NodeView {
   }
 
   constructor(public node: Node, public view: EditorView, public getPos: () => number | undefined) {
+    this.id = node.attrs.id || '';
+
     this.dom = document.createElement('div');
     this.dom.classList.add('doc-block');
   }

@@ -22,7 +22,10 @@ export const useUpdateBlockNodeType = (
         const tr = state.tr;
         const { from, to } = srcNodeView.range;
 
-        const targetNode = targetTypeSchema.create({ ...attrs }, srcNodeView.node.content, srcNodeView.node.marks);
+        const targetNode = targetTypeSchema.create({ 
+            ...srcNodeView.node.attrs, 
+            ...attrs, 
+        }, srcNodeView.node.content, srcNodeView.node.marks);
        
         // 确保目标节点有效
         if (!targetNode) {
