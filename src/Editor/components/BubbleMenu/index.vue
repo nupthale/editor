@@ -117,7 +117,7 @@ export default defineComponent({
                     </li>
 
                     <li class={['menuItem']} onClick={() => handleAction(schema.marks.underline)}>
-                        <Popover open>
+                        <Popover trigger="hover">
                             {{
                                 default: () => (
                                     <div>
