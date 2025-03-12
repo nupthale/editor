@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@easylogic/colorpicker": "^1.10.11",
+    "@vueuse/core": "^13.0.0",
     "@vueuse/rxjs": "^12.8.2",
     "@zsfe/zsui": "1.0.1-alpha.26",
     "ant-design-vue": "^4.2.6",

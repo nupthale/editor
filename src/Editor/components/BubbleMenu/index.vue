@@ -85,8 +85,6 @@ export default defineComponent({
 
             toggleMark(markType)(state, dispatch);
 
-            hide();
-
             editorView.focus();
         }
 
