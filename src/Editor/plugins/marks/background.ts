@@ -11,6 +11,6 @@ export const background: MarkSpec = {
       }
     }],
     toDOM: (mark) => {
-      return ['span', { style: `background: ${mark.attrs.color}` }, 0]
+      return ['span', { style: `background: ${mark.attrs.color}; padding: 2px 0;` }, 0]
     }
 };
