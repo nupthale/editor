@@ -2,6 +2,9 @@
 import { MarkSpec } from 'prosemirror-model';
 import { marks as basicMarks } from 'prosemirror-schema-basic';
 
+import { color } from '../marks/color';
+import { background } from '../marks/background';
+
 export const marks: Record<string, MarkSpec> = {
   // 使用基础标记
   ...basicMarks,
@@ -29,7 +32,9 @@ export const marks: Record<string, MarkSpec> = {
       { style: "font-style=italic" }
     ],
     toDOM() { return ["em", 0] }
-  }
+  },
 
   // 添加更多自定义标记...
+  color,
+  background,
 }; 

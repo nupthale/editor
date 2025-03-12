@@ -2,20 +2,22 @@
 import { defineComponent, ref, nextTick } from 'vue';
 import { Selection } from 'prosemirror-state';
 import { toggleMark } from 'prosemirror-commands';
+import { MarkType } from 'prosemirror-model';
 import { tap } from 'rxjs';
 import { useSubscription } from '@vueuse/rxjs';
 import domAlign from 'dom-align';
-import { Bold, Italic, Strikethrough, Underline } from 'lucide';
-import { Tooltip } from 'ant-design-vue';
+import { Bold, Italic, Strikethrough, Underline, Palette } from 'lucide';
+import { Tooltip, Popover } from 'ant-design-vue';
 
 import { schema } from '../../plugins/schema';
 import LucideIcon from '../LucideIcon/index.vue';
 
 import { contextStore } from '../../context';
 import { showBubbleMenu$, hideBubbleMenu$ } from '../../event';
-import { MarkType } from 'prosemirror-model';
 
+import ColorPalette from '../ColorPalette/index.vue';
 import { useMarks } from './useMarks';
+import { useColor } from './useColor';
 
 export default defineComponent({
     setup() {
@@ -27,6 +29,8 @@ export default defineComponent({
         const selectionRef = ref<Selection | null>(null);
 
         const { updateMarks, marksRef } = useMarks();
+
+        const { updateTextColor, updateBackgroundColor } = useColor(selectionRef);
 
         const hide = () => {
             visibleRef.value = false;
@@ -111,6 +115,24 @@ export default defineComponent({
                             <LucideIcon icon={Underline} width={18}></LucideIcon>
                         </Tooltip>
                     </li>
+
+                    <li class={['menuItem']} onClick={() => handleAction(schema.marks.underline)}>
+                        <Popover open>
+                            {{
+                                default: () => (
+                                    <div>
+                                        <LucideIcon icon={Palette} width={18}></LucideIcon>
+                                    </div>
+                                ),
+                                content: () => (
+                                    <ColorPalette
+                                        onColor={(color) => updateTextColor(color)}
+                                        onBackground={(color) => updateBackgroundColor(color)}
+                                     />
+                                )
+                            }}
+                        </Popover>
+                    </li>
                 </ul>
             );
         }
@@ -126,6 +148,17 @@ export default defineComponent({
     }
 });
 </script>
+
+<style>
+.ant-popover .ant-popover-inner {
+    box-shadow: none !important;
+    border: none!important;
+}
+
+.ant-popover .ant-popover-arrow {
+    display: none;
+}
+</style>
 
 <style scoped>
 .bubbleMenu {
