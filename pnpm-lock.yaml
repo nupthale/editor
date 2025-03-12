@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@easylogic/colorpicker':
+    specifier: ^1.10.11
+    version: 1.10.11
   '@vueuse/rxjs':
     specifier: ^12.8.2
     version: 12.8.2(rxjs@7.8.2)(typescript@5.7.3)
@@ -56,6 +59,9 @@ dependencies:
   rxjs:
     specifier: ^7.8.2
     version: 7.8.2
+  uuid:
+    specifier: ^11.1.0
+    version: 11.1.0
   vue:
     specifier: ^3.3.4
     version: 3.5.13(typescript@5.7.3)
@@ -392,6 +398,10 @@ packages:
   /@ctrl/tinycolor@3.6.1:
     resolution: {integrity: sha512-SITSV6aIXsuVNV3f3O0f2n/cgyEDWoSqtZMYiAmcsYHydcKrOz3gUxB/iXd/Qf08+IZX4KpgNbvUdMBmWz+kcA==}
     engines: {node: '>=10'}
+    dev: false
+
+  /@easylogic/colorpicker@1.10.11:
+    resolution: {integrity: sha512-CHN/WTk0d1LH7Jzep7fjPkUe73XjZ6zQCFH/rhpHf1e06TDJQ0D9lRfJgtBjLsEZqKfAIP6C8q9MEt9cxh3Y/A==}
     dev: false
 
   /@emotion/hash@0.9.2:
@@ -2924,6 +2934,11 @@ packages:
     resolution: {integrity: sha512-0Pm9hTQ3se5ll1XihRic3FDIku70C+iHUdT/W926rSgHV5QgXsYbKZN8MSC3tJtSkhuROzvsQjAaFENRXr+19A==}
     dependencies:
       inherits: 2.0.3
+    dev: false
+
+  /uuid@11.1.0:
+    resolution: {integrity: sha512-0/A9rDy9P7cJ+8w1c9WD9V//9Wj15Ce2MPz8Ri6032usz+NfePxx5AcN3bN+r6ZL6jEo066/yNYB3tn4pQEx+A==}
+    hasBin: true
     dev: false
 
   /vite@4.5.9(less@4.2.2):

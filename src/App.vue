@@ -6,7 +6,8 @@ import { EditorView } from 'prosemirror-view';
 import { plugins } from './Editor/plugins';
 import { schema } from './Editor/plugins/schema';
 
-import ActionDrag from './Editor/components/ActionDrag/index.vue';
+import FloatingMenu from './Editor/components/FloatingMenu/index.vue';
+import BubbleMenu from './Editor/components/BubbleMenu/index.vue';
 import Catalog from './Editor/components/Catalog/index.vue';
 import { contextStore } from './Editor/context';
 import { docChanged$ } from './Editor/event';
@@ -41,8 +42,8 @@ export default defineComponent({
             schema.node('heading', { level: 3, id: uuidv4() }, [schema.text('标题4')]),
             schema.node('heading', { level: 1, id: uuidv4() }, [schema.text('标题5')]),
             schema.node('heading', { level: 6, id: uuidv4() }, [schema.text('标题6')]),
-            schema.node('paragraph', { id: uuidv4() }, [schema.text('开始编辑内容...')]),
-            schema.node('paragraph', { id: uuidv4() }, [schema.text('开始编辑内容...')]),
+            schema.node('paragraph', { id: uuidv4() }, [schema.text('1. 任务处理信息展示优化，用户可以点击列表中的任务或者操作列的处理按钮，触发任务详情的展示。')]),
+            schema.node('paragraph', { id: uuidv4() }, [schema.text('2. 客户信息展示优化，将原有信息进行分类，按模块在左侧边栏展示。')]),
           ]),
         ])
       });
@@ -90,9 +91,11 @@ export default defineComponent({
           </div>
         </div>
 
-        <ActionDrag />
+        <FloatingMenu />
+
+        <BubbleMenu />
       </div>
     );
   }
 });
-</script>
+</script>./Editor/components/FloatingMenu/index.vue
