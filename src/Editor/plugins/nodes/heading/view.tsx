@@ -44,7 +44,8 @@ export class HeadingView extends BaseBlockView implements NodeView {
   render() {
     this.dom.className = this.dom.className.replace(/level\d/gm, '').trim();
 
-    this.dom.classList.add(`level${this.level}`);
+    const level = this.node.attrs.level;
+    this.dom.classList.add(`level${level}`);
 
     const orginalContent = this.contentDOM?.innerHTML || '';
     if (this.contentDOM) {
@@ -52,7 +53,7 @@ export class HeadingView extends BaseBlockView implements NodeView {
        this.contentDOM.remove();
     }
 
-    this.contentDOM = document.createElement(`h${this.level}`);
+    this.contentDOM = document.createElement(`h${level}`);
     this.contentDOM.innerHTML = orginalContent;
     this.dom.appendChild(this.contentDOM);
   }
