@@ -15,6 +15,8 @@ import { contextStore } from './Editor/context';
 import { docChanged$ } from './Editor/event';
 import { useAddEmptyBlock } from './Editor/hooks/useAddEmptyBlock';
 
+import { MentionTypeEnum } from './Editor/interface';
+
 import './Editor/theme/index.less';
 import headerImage from './header.png';
 
@@ -40,10 +42,10 @@ export default defineComponent({
             schema.node('heading', { level: 3, id: uuidv4() }, [schema.text('标题2')]),
             schema.node('heading', { level: 4, id: uuidv4() }, [schema.text('标题3')]),
             schema.node('heading', { level: 3, id: uuidv4() }, [schema.text('标题4')]),
-            schema.node('heading', { level: 1, id: uuidv4() }, [schema.text('标题5')]),
+            schema.node('heading', { level: 1, id: uuidv4() }, [schema.text('标题5'), schema.node('mention', { id: uuidv4(), type: MentionTypeEnum.USER, info: { username: '张三' }  }), schema.text(' ')]),
             schema.node('heading', { level: 6, id: uuidv4() }, [schema.text('标题6')]),
             schema.node('paragraph', { id: uuidv4() }, [schema.text('1. 任务处理信息展示优化，用户可以点击列表中的任务或者操作列的处理按钮，触发任务详情的展示。')]),
-            schema.node('paragraph', { id: uuidv4() }, [schema.text('2. 客户信息展示优化，将原有信息进行分类，按模块在左侧边栏展示。')]),
+            schema.node('paragraph', { id: uuidv4() }, [schema.text('2. 客户信息展示优化，将原有信息进行分类，按模块在左侧边栏展示。'), schema.node('mention', { id: uuidv4(), type: MentionTypeEnum.USER, info: { username: '李四' }  }, []), schema.text('将原有信息进行分类，按模块在左侧边栏展示。')]),
           ]),
         ])
       });
