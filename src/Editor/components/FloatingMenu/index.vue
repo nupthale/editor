@@ -3,13 +3,14 @@ import { defineComponent, Teleport, ref, watchEffect, nextTick, computed } from 
 import { switchMap, tap } from 'rxjs';
 import { useSubscription } from '@vueuse/rxjs';
 import domAlign from 'dom-align';
-import { GripVertical } from 'lucide';
+import { GripVertical, Plus } from 'lucide';
 import { Popover } from 'ant-design-vue';
 
 import { BaseBlockView } from '../../plugins/nodes/_common/baseBlockView';
 import LucideIcon from '../LucideIcon/index.vue';
 
 import TextMenu from './TextMenu/index.vue';
+import EmptyMenu from './EmptyMenu/index.vue';
 import { blockMouseEnter$, blockMouseLeave$ } from '../../event';
 
 export default defineComponent({
@@ -23,6 +24,12 @@ export default defineComponent({
         const sourceRef = ref<HTMLElement | null>(null);
 
         const nodeIconRef = computed(() => {
+            const nodeView = crtNodeViewRef.value;
+            
+            if (nodeView?.isEmpty) {
+                return Plus;
+            }
+
             return crtNodeViewRef.value?.icon;
         });
 
@@ -112,6 +119,19 @@ export default defineComponent({
             sourceRef.value?.classList.remove('overlay-transition');
         };
 
+        const renderContent = () => {
+            const nodeView = crtNodeViewRef.value as BaseBlockView;
+
+            if (!nodeView) return '';
+            const type = nodeView.node.type.name;
+
+            if (type === 'paragraph' && nodeView.isEmpty) {
+                return (<EmptyMenu nodeView={crtNodeViewRef.value as BaseBlockView} />);
+            }
+
+            return (<TextMenu nodeView={nodeView} />);
+        }
+
         return () => visibleRef.value ? (
             <Teleport to={document.body}>
                 <Popover title="" placement="left" overlayClassName="actionDrag-popover" onOpenChange={() => cancelHide()}>
@@ -124,9 +144,7 @@ export default defineComponent({
                                 <LucideIcon icon={GripVertical} width={14} color="#8f959e"></LucideIcon>
                             </div>
                         ),
-                        content: () => (
-                            <TextMenu nodeView={crtNodeViewRef.value as BaseBlockView} />
-                        ),
+                        content: () => renderContent(),
                     }}
                 </Popover>
                 

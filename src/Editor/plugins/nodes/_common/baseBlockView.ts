@@ -25,6 +25,10 @@ export class BaseBlockView implements NodeView {
     };
   }
 
+  get isEmpty() {
+    return this.node.content.size === 0;
+  }
+
   constructor(public node: Node, public view: EditorView, public getPos: () => number | undefined) {
     this.id = node.attrs.id || '';
 

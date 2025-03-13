@@ -148,10 +148,6 @@ export default defineComponent({
 </script>
 
 <style>
-.ant-popover .ant-popover-inner {
-    box-shadow: none !important;
-    border: none!important;
-}
 
 .ant-popover .ant-popover-arrow {
     display: none;
