@@ -44,9 +44,11 @@ export default defineComponent({
         );
 
         return () => headingsRef.value?.length ? (
-            <div class="doc-catalog-container w-fit h-fit">
-                <div class="font-medium text-[15px] mb-2 text-[#1456f0]">{docTitle.value}</div>
-                <Tree headings={headingsRef.value} />
+            <div class="doc-catalog-wrap">
+                <div class="doc-catalog-container w-fit h-fit">
+                    <div class="font-medium text-[15px] mb-2 text-[#1456f0]">{docTitle.value}</div>
+                    <Tree headings={headingsRef.value} />
+                </div>
             </div>
         ) : '';
     }
@@ -54,11 +56,19 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.doc-catalog-container {
+.doc-catalog-wrap {
     position: sticky;
-    top: 20px;
+    top: 32px;
     left: 20px;
+    height: 0px;
+    max-width: 495px;
+}
+
+.doc-catalog-container {
     z-index: 10;
     padding-top: 60px;
+
+    width: 100%;
+    overflow-x: hidden;
 }
 </style>

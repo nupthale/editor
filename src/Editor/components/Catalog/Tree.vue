@@ -44,6 +44,9 @@ export default defineComponent({
 .heading {
     cursor: pointer;
     padding-bottom: 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .heading:hover {

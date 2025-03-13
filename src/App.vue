@@ -38,7 +38,7 @@ export default defineComponent({
         doc: schema.node('doc', null, [
           schema.node('title', null, [schema.text('123👨👩👧👦')]),
           schema.node('body', null, [
-            schema.node('heading', { level: 1, id: uuidv4() }, [schema.text('标题1')]),
+            schema.node('heading', { level: 1, id: uuidv4() }, [schema.text('标题1标题1标题1标题1标题1标题1标题1标题1标题1标题1标题1标题1标题1标题1标题1标题1标题1标题1标题1标题1标题1标题1标题1标题1标题1标题1标题1标题1标题1标题1标题1标题1标题1标题1')]),
             schema.node('heading', { level: 3, id: uuidv4() }, [schema.text('标题2')]),
             schema.node('heading', { level: 4, id: uuidv4() }, [schema.text('标题3')]),
             schema.node('heading', { level: 3, id: uuidv4() }, [schema.text('标题4')]),
@@ -84,10 +84,10 @@ export default defineComponent({
         <div class="h-[278px] overflow-hidden bg-[auto_591px] bg-center" style={{ backgroundImage: `url(${headerImage})`}}>
         </div>
 
-        <div class="flex">
-          {/* 左侧目录 */}
-          <Catalog />
+         {/* 左侧目录 */}
+         <Catalog />
 
+        <div class="flex">
           <div class="w-[820px] mx-auto">
               <div ref={editorRef} class="min-h-[580px] prose max-w-none" />
           </div>
