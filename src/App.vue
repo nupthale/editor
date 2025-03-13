@@ -88,7 +88,7 @@ export default defineComponent({
          <Catalog />
 
         <div class="flex">
-          <div class="w-[820px] mx-auto">
+          <div class="w-[820px] pb-[220px] mx-auto">
               <div ref={editorRef} class="min-h-[580px] prose max-w-none" />
           </div>
         </div>

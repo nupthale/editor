@@ -20,12 +20,12 @@ export class MentionView implements NodeView {
 
     // 创建容器元素
     this.dom = document.createElement('span');
+    this.dom.contentEditable = 'false';
     this.dom.className = 'doc-mention';
 
     // 创建标题元素
     const user = document.createElement('span');
     user.className = 'inline-flex items-center';
-    user.contentEditable = 'false';
     this.contentDOM = user;
 
     // 组装DOM结构
@@ -47,18 +47,7 @@ export class MentionView implements NodeView {
   }
 
   ignoreMutation(record: ViewMutationRecord): boolean {
-    // 忽略metaContainer及其子元素的修改
-    const metaContainer = this.dom.querySelectorAll('[contentEditable=false]');
-
-    if (metaContainer?.length) {
-      for (let i = 0; i < metaContainer.length; i++) {
-        if (metaContainer[i].contains(record.target) || record.target === metaContainer[i]) {
-          return true;
-        }
-      }
-    }
-    
-    return false;
+    return true;
   }
 
   destroy() {

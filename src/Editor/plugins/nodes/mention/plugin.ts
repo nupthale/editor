@@ -31,6 +31,7 @@ export function mention(schema: Schema): Plugin[] {
                   type: PopoverTypeEnum.MENTION,
               });
           }
+          
           return false;
         },
       }

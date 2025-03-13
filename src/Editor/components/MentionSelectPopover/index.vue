@@ -1,5 +1,7 @@
 <script lang="tsx">
 import { defineComponent } from 'vue';
+import { TextSelection } from 'prosemirror-state';
+import { Fragment } from 'prosemirror-model';
 import { User } from '@zsfe/zsui';
 
 import Popover from '../Popover/index.vue';
@@ -33,10 +35,18 @@ export default defineComponent({
                 info: user,
             });
 
-            tr.replaceWith(Math.max(from - 1, 0), to, mentionNode);
-            dispatch(tr);
+            // 创建包含 mention 节点和空格的 Fragment
+            const fragment = Fragment.from([mentionNode, schema.text(' ')]);
 
             hidePopover$.next();
+            
+            const pos = Math.max(from - 1, 0);
+            tr.replaceWith(pos, to, fragment);
+            tr.setSelection(TextSelection.create(tr.doc, pos + 2));
+            dispatch(tr);
+
+            // 重新聚焦编辑器
+            editorView.focus();
         }
 
         return () => (
