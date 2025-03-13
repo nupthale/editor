@@ -1,6 +1,12 @@
 export const getText = (content) => {
     return content?.reduce((acc, crt) => {
-        return acc + crt.text;
+        if (crt.type === 'text') {
+            return acc + crt.text;
+        } else if (crt.type === 'mention') {
+            return acc + `@${crt.attrs.info?.username}`;
+        }
+        
+        return acc;
     }, '') || '';
 }
 
