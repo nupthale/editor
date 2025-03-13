@@ -22,13 +22,13 @@ export default defineComponent({
                 const { info: user } = props.meta || {};
 
                 return (
-                    <div class="inline-flex items-center userContainer" ref={containerRef}>
+                    <div class="inline-flex items-center userContainer">
                          <UserProfile username={user.username}>
                             {{
                                 user: () => (
-                                    <div class="inline-flex items-center">
+                                    <div class="inline-flex items-center userWrap" ref={containerRef}>
                                         <User size="small" username={user.username} showText={false} />
-                                        <span class="ml-1 text-[16px]">{user.username}</span>
+                                        <span class="ml-1 username">{user.username}</span>
                                     </div>
                                 ),
                                 profile: () => (
@@ -50,11 +50,21 @@ export default defineComponent({
 
 <style scoped>
 .userContainer {
-    background: #1456f0;
     color: #fff!important;
+    line-height: calc(1em + 2px);
+}
+
+.userWrap {
     border-radius: calc(0.5em + 3px);
-    cursor: pointer;
     padding: 1px calc(0.5em - 2px) 1px 1px;
-    line-height: 20px!important;
+    cursor: pointer;
+}
+
+.userContainer :deep(.zsui-user) {
+    height: 20px!important;
+}
+
+.username {
+    line-height: calc(1em + 4px);
 }
 </style>
