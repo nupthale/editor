@@ -60,8 +60,10 @@ export default defineComponent({
     cursor: pointer;
 }
 
-.userContainer :deep(.zsui-user) {
-    height: 20px!important;
+.userContainer :deep(.zsui-user__avatar) {
+    font-size: 1em!important;
+    width: calc(1em + 4px)!important;
+    height: calc(1em + 4px)!important;
 }
 
 .username {
