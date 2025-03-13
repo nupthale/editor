@@ -1,6 +1,6 @@
 <script lang="tsx">
 import { v4 as uuidv4 } from 'uuid';
-import { defineComponent, onMounted, onUnmounted, ref, provide } from 'vue';
+import { defineComponent, onMounted, onUnmounted, ref } from 'vue';
 import { EditorState } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { plugins } from './Editor/plugins';
@@ -13,6 +13,7 @@ import MentionSelectPopopver from './Editor/components/MentionSelectPopover/inde
 
 import { contextStore } from './Editor/context';
 import { docChanged$ } from './Editor/event';
+import { useAddEmptyBlock } from './Editor/hooks/useAddEmptyBlock';
 
 import './Editor/theme/index.less';
 import headerImage from './header.png';
@@ -23,10 +24,7 @@ export default defineComponent({
     const editorRef = ref<HTMLElement | null>(null);
     let view: EditorView | null = null;
 
-    // 提供应用上下文
-    provide('appContext', {
-      // 这里可以添加需要共享的数据和方法
-    });
+    const { editorDomRef } = useAddEmptyBlock();
 
     onMounted(() => {
       if (!editorRef.value) return;
@@ -88,7 +86,7 @@ export default defineComponent({
          <Catalog />
 
         <div class="flex">
-          <div class="w-[820px] pb-[220px] mx-auto">
+          <div class="w-[820px] pb-[220px] mx-auto" ref={editorDomRef}>
               <div ref={editorRef} class="min-h-[580px] prose max-w-none" />
           </div>
         </div>
