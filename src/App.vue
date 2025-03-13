@@ -9,6 +9,8 @@ import { schema } from './Editor/plugins/schema';
 import FloatingMenu from './Editor/components/FloatingMenu/index.vue';
 import BubbleMenu from './Editor/components/BubbleMenu/index.vue';
 import Catalog from './Editor/components/Catalog/index.vue';
+import MentionSelectPopopver from './Editor/components/MentionSelectPopover/index.vue';
+
 import { contextStore } from './Editor/context';
 import { docChanged$ } from './Editor/event';
 
@@ -94,6 +96,8 @@ export default defineComponent({
         <FloatingMenu />
 
         <BubbleMenu />
+
+        <MentionSelectPopopver />
       </div>
     );
   }

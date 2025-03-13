@@ -7,6 +7,7 @@ import { title } from './nodes/title/plugin';
 import { paragraph } from './nodes/paragraph/plugin';
 import { heading } from './nodes/heading/plugin';
 
+import { mention } from './nodes/mention/plugin';
 
 // 导入更多插件...
 
@@ -20,5 +21,6 @@ export function plugins(schema: Schema): Plugin[] {
     ...paragraph(schema),
     ...heading(schema),
     // 添加更多插件...
+    ...mention(schema),
   ];
 }

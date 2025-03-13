@@ -1,7 +1,7 @@
 export const getText = (content) => {
-    return content.reduce((acc, crt) => {
+    return content?.reduce((acc, crt) => {
         return acc + crt.text;
-    }, '');
+    }, '') || '';
 }
 
 /**

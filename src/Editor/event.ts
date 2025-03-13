@@ -3,6 +3,8 @@ import { Selection } from 'prosemirror-state';
 
 import { BaseBlockView } from './plugins/nodes/_common/baseBlockView';
 
+import { PopoverTypeEnum } from './interface';
+
 // floating menu
 export const blockMouseEnter$ = new Subject<{
   nodeView: BaseBlockView,
@@ -19,6 +21,14 @@ export const showBubbleMenu$ = new Subject<{
   y: number,
   selection: Selection, 
 }>();
+
+export const showPopover$ = new Subject<{
+  x: number,
+  y: number,
+  type: PopoverTypeEnum,
+}>();
+
+export const hidePopover$ = new Subject<void>();
 
 export const hideBubbleMenu$ = new Subject<void>();
 

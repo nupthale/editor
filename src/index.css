@@ -14,3 +14,7 @@ html, body {
     text-rendering: auto;
     -webkit-font-smoothing: antialiased;
 }
+
+.lightText {
+    color: #8f959e;
+}
