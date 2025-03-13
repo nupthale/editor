@@ -1,4 +1,5 @@
 import { Ref } from 'vue';
+import { Selection } from 'prosemirror-state';
 import { BaseBlockView } from '../../plugins/nodes/_common/baseBlockView';
 
 import { contextStore } from '../../context';
@@ -33,15 +34,20 @@ export const useUpdateBlockNodeType = (
             return;
         }
 
-        view.dispatch(
-            tr.replaceRangeWith(
-                from, 
-                to, 
-                targetNode,
-            ),
+        tr.replaceRangeWith(
+            from, 
+            to, 
+            targetNode,
         );
 
-        console.log('Current document after dispatch:', view.state.doc.toJSON());
+        tr.setSelection(
+            Selection.near(tr.doc.resolve(from))
+        );
+
+        view.dispatch(tr);
+
+        view.focus();
+
         // 直接隐藏actionDrag, 要不然定位不准确
         blockMouseLeave$.next({ delay: 0 });
     }
