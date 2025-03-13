@@ -2,7 +2,7 @@ import { Schema } from 'prosemirror-model';
 import { Plugin, PluginKey } from 'prosemirror-state';
 import { MentionView } from './view';
 
-import { showPopover$ } from '../../../event';
+import { showPopover$, hidePopover$ } from '../../../event';
 import { contextStore } from '../../../context';
 import { PopoverTypeEnum } from '../../../interface';
 
@@ -21,10 +21,17 @@ export function mention(schema: Schema): Plugin[] {
 
           // 如果popover visible， 那么禁用方向按键的处理
           if (
-            popoverVisible && 
-            ['ArrowUp', 'ArrowDown'].includes(event.key)
+            popoverVisible
           ) {
-            return true;
+            if (['ArrowUp', 'ArrowDown'].includes(event.key)) {
+              return true;
+            }
+           
+            if (['ArrowLeft', 'ArrowRight'].includes(event.key)) {
+              // 隐藏popover
+              hidePopover$.next();
+              return false;
+            }
           }
 
           if (event.key === '@') {
