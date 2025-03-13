@@ -16,9 +16,9 @@ export default defineComponent({
     setup(_props) {
 
         const users = ref([
-            { username: '张三', userId: '1', department: '统计分析部' },
-            { username: '李四', userId: '2', department: '法务部' },
-            { username: '王五', userId: '2', department: '商务部' },
+            { username: '胡雪', userId: '1', department: '统计分析部' },
+            { username: 'Diana Duan', userId: '2', department: '安克创新科技股份有限公司' },
+            { username: '颗颗', userId: '2', department: '北京米可世界科技有限公司' },
         ]);
 
         const { crtItem } = useNavigate(users, (item) => handleSelect(item));
