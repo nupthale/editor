@@ -3,6 +3,7 @@ import { Plugin, PluginKey } from 'prosemirror-state';
 import { MentionView } from './view';
 
 import { showPopover$ } from '../../../event';
+import { contextStore } from '../../../context';
 import { PopoverTypeEnum } from '../../../interface';
 
 export function mention(schema: Schema): Plugin[] {
@@ -16,6 +17,16 @@ export function mention(schema: Schema): Plugin[] {
           }
         },
         handleKeyDown: (view, event) => {
+          const popoverVisible = contextStore.getState().popoverVisible;
+
+          // 如果popover visible， 那么禁用方向按键的处理
+          if (
+            popoverVisible && 
+            ['ArrowUp', 'ArrowDown'].includes(event.key)
+          ) {
+            return true;
+          }
+
           if (event.key === '@') {
               const { state } = view;
               const { selection } = state;

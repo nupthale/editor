@@ -6,20 +6,21 @@ import { useSubscription } from '@vueuse/rxjs';
 import domAlign from 'dom-align';
 import { showPopover$, hidePopover$ } from '../../event';
 import { PopoverTypeEnum } from '../../interface';
+import { useContextStore } from '../../context';
 
 export default defineComponent({
     props: {
         type: String as PropType<PopoverTypeEnum>
     },
     setup(props, { slots }) {
-        const visibleRef = ref(true);
+        const { state, setPopoverVisible } = useContextStore();
 
         const coordRef = ref<[number, number]>([0, 0]);
         const sourceRef = ref<HTMLElement | null>(null);
         const targetRef = ref<HTMLElement | null>(null);
 
         const hide = () => {
-            visibleRef.value = false;
+            setPopoverVisible(false);
         }
 
         const layout = () => {
@@ -45,7 +46,8 @@ export default defineComponent({
             showPopover$.pipe(
                 filter(({ type }) => type === props.type),
                 tap(({ x, y }) => {
-                    visibleRef.value = true;
+                    setPopoverVisible(true);
+
                     coordRef.value = [x, y];
 
                     layout();
@@ -65,7 +67,7 @@ export default defineComponent({
             <div>
                 <div ref={targetRef} class="fixed" style={{ left: `${coordRef.value?.[0]}px`, top: `${coordRef.value?.[1]}px` }}></div>
                 <div ref={sourceRef} class="content">
-                    {visibleRef.value ? slots.default?.() : ''}
+                    {state.value?.popoverVisible ? slots.default?.() : ''}
                 </div>
             </div>
         );

@@ -1,5 +1,5 @@
 <script lang="tsx">
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue';
 import { TextSelection } from 'prosemirror-state';
 import { Fragment } from 'prosemirror-model';
 import { User } from '@zsfe/zsui';
@@ -10,15 +10,18 @@ import { schema } from '../../plugins/schema/index';
 import { contextStore } from '../../context';
 import { MentionTypeEnum, PopoverTypeEnum } from '../../interface';
 import { hidePopover$ } from '../../event';
+import { useNavigate } from './useNavigate';
 
 export default defineComponent({
     setup(_props) {
 
-        const users = [
+        const users = ref([
             { username: '张三', userId: '1', department: '统计分析部' },
             { username: '李四', userId: '2', department: '法务部' },
             { username: '王五', userId: '2', department: '商务部' },
-        ];
+        ]);
+
+        const { crtItem } = useNavigate(users, (item) => handleSelect(item));
 
         const handleSelect = (user) => {
             const editorView = contextStore.getState().editorView;
@@ -55,8 +58,8 @@ export default defineComponent({
                     default: () => (
                         <div class="container">
                             {
-                                users.map(user => (
-                                    <div class="user" onClick={() => handleSelect(user)}>
+                                users.value.map(user => (
+                                    <div class={['user', crtItem.value === user ? 'active' : '']} onClick={() => handleSelect(user)}>
                                         <User size="large" username={user.username} showText={false} />
                                         <div class="pl-2">
                                             <div>{user.username}</div>
@@ -94,6 +97,10 @@ export default defineComponent({
 }
 
 .user:hover {
+    background-color: #1f232914;
+}
+
+.user.active {
     background-color: #1f232914;
 }
 </style>
