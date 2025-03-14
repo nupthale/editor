@@ -10,6 +10,7 @@ import FloatingMenu from './Editor/components/FloatingMenu/index.vue';
 import BubbleMenu from './Editor/components/BubbleMenu/index.vue';
 import Catalog from './Editor/components/Catalog/index.vue';
 import MentionSelectPopopver from './Editor/components/MentionSelectPopover/index.vue';
+import LikeSection from './Editor/components/LikeSection/index.vue';
 
 import { contextStore } from './Editor/context';
 import { docChanged$, docScroll$ } from './Editor/event';
@@ -92,10 +93,12 @@ export default defineComponent({
          <Catalog />
 
         <div class="flex">
-          <div class="w-[820px] pb-[220px] mx-auto" ref={editorDomRef}>
+          <div class="w-[820px] pb-[72px] mx-auto" ref={editorDomRef}>
               <div ref={editorRef} class="min-h-[580px] prose max-w-none" />
           </div>
         </div>
+
+        <LikeSection />
 
         <FloatingMenu />
 
