@@ -1,16 +1,34 @@
 <script lang="tsx">
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue';
 import { User } from '@zsfe/zsui';
 import { ThumbsUp } from 'lucide';
+import confetti from 'canvas-confetti';
 
 import LucideIcon from '../LucideIcon/index.vue';
 
 export default defineComponent({
     setup() {
+        const buttonRef = ref<HTMLElement | null>(null);
+
+        const handleClick = () => {
+            if (!buttonRef.value) return;
+ 
+            const rect = buttonRef.value.getBoundingClientRect();
+            
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: {
+                    x: (rect.left + rect.width / 2) / window.innerWidth,
+                    y: (rect.top + rect.height / 2) / window.innerHeight,
+                },
+            });
+        }
+
         return () => (
             <div class="likeSection">
                 <div class="flex justify-center">
-                    <div class="likeButton">
+                    <div class="likeButton" ref={buttonRef} onClick={handleClick}>
                         <LucideIcon icon={ThumbsUp} color="#336FFF" width={22} />
                     </div>
                 </div>
@@ -47,6 +65,10 @@ export default defineComponent({
 
 .likeButton:hover {
     background: #EFF4FF;
+}
+
+.likeButton:active {
+    background: #c2d4ff;
 }
 
 .desc {
