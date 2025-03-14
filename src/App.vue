@@ -12,7 +12,7 @@ import Catalog from './Editor/components/Catalog/index.vue';
 import MentionSelectPopopver from './Editor/components/MentionSelectPopover/index.vue';
 
 import { contextStore } from './Editor/context';
-import { docChanged$ } from './Editor/event';
+import { docChanged$, docScroll$ } from './Editor/event';
 import { useAddEmptyBlock } from './Editor/hooks/useAddEmptyBlock';
 
 import { MentionTypeEnum } from './Editor/interface';
@@ -78,7 +78,7 @@ export default defineComponent({
     });
 
     return () => (
-      <div>
+      <div class="w-full h-full overflow-auto" onScroll={() => docScroll$.next()}>
         <div class="sticky top-0 h-[64px] border-b-[1px] border-[#dee0e3] border-solid bg-white z-10"></div>
 
         <div class="h-[278px] overflow-hidden bg-[auto_591px] bg-center" style={{ backgroundImage: `url(${headerImage})`}}>

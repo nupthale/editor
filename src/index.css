@@ -2,7 +2,11 @@
 @tailwind components;
 @tailwind utilities; 
 
-html, body {
+html, body, #root {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+
     color: #1f2329;
     overscroll-behavior: none;
 

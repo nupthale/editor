@@ -5,6 +5,9 @@ import { BaseBlockView } from './plugins/nodes/_common/baseBlockView';
 
 import { PopoverTypeEnum } from './interface';
 
+// doc scroll
+export const docScroll$ = new Subject<void>();
+
 // floating menu
 export const blockMouseEnter$ = new Subject<{
   nodeView: BaseBlockView,
@@ -23,8 +26,7 @@ export const showBubbleMenu$ = new Subject<{
 }>();
 
 export const showPopover$ = new Subject<{
-  x: number,
-  y: number,
+  from: number,
   type: PopoverTypeEnum,
 }>();
 

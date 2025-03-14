@@ -2,9 +2,9 @@
 import { PropType } from 'vue';
 import { defineComponent, ref, nextTick } from 'vue';
 import { tap, filter } from 'rxjs';
-import { useSubscription } from '@vueuse/rxjs';
+import { useSubscription,  } from '@vueuse/rxjs';
 import domAlign from 'dom-align';
-import { showPopover$, hidePopover$ } from '../../event';
+import { showPopover$, hidePopover$, docScroll$ } from '../../event';
 import { PopoverTypeEnum } from '../../interface';
 import { useContextStore } from '../../context';
 
@@ -15,6 +15,7 @@ export default defineComponent({
     setup(props, { slots }) {
         const { state, setPopoverVisible } = useContextStore();
 
+        const fromRef = ref();
         const coordRef = ref<[number, number]>([0, 0]);
         const sourceRef = ref<HTMLElement | null>(null);
         const targetRef = ref<HTMLElement | null>(null);
@@ -24,6 +25,13 @@ export default defineComponent({
         }
 
         const layout = () => {
+            // 获取@符号的位置
+            const editorView = state.value?.editorView;
+            if (!editorView) return;
+
+            const pos = editorView.coordsAtPos(fromRef.value);
+            coordRef.value = [pos.right, pos.top];
+
             nextTick(() => {
                 const $source = sourceRef.value;
             
@@ -43,13 +51,24 @@ export default defineComponent({
         }
 
         useSubscription(
+            docScroll$.pipe(
+                filter(() => state.value?.popoverVisible),
+                tap(() => {
+                    layout();
+                }),
+            ).subscribe()
+        );
+
+        useSubscription(
             showPopover$.pipe(
                 filter(({ type }) => type === props.type),
-                tap(({ x, y }) => {
+                tap(({ from }) => {
+                    // 获取@符号的位置
+                    const editorView = state.value?.editorView;
+                    if (!editorView) return;
+
                     setPopoverVisible(true);
-
-                    coordRef.value = [x, y];
-
+                    fromRef.value = from;
                     layout();
                 }),
             ).subscribe()

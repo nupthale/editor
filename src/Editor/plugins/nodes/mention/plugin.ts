@@ -39,13 +39,9 @@ export function mention(schema: Schema): Plugin[] {
               const { selection } = state;
               const { from } = selection;
   
-              // 获取@符号的位置
-              const pos = view.coordsAtPos(from);
-  
               // 触发显示选择菜单
               showPopover$.next({
-                  x: pos.right,
-                  y: pos.top,
+                  from,
                   type: PopoverTypeEnum.MENTION,
               });
           }
