@@ -21,7 +21,7 @@ export class HighlightView extends BaseBlockView implements NodeView {
 
     // 创建
     const container = document.createElement('div');
-    container.classList.add('flex', 'items-center');
+    container.classList.add('flex', 'items-start');
 
     const icon = document.createElement('div');
     icon.classList.add('mr-3');
