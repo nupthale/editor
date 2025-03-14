@@ -29,6 +29,14 @@ export class BaseBlockView implements NodeView {
     return this.node.content.size === 0;
   }
 
+  get depth() {
+    const pos = this.getPos();
+    if (pos === undefined) return false;
+    
+    const $pos = this.view.state.doc.resolve(pos);
+    return $pos.depth;  // doc -> body -> block (depth = 2)
+  }
+
   constructor(public node: Node, public view: EditorView, public getPos: () => number | undefined) {
     this.id = node.attrs.id || '';
 
@@ -47,6 +55,11 @@ export class BaseBlockView implements NodeView {
   }
 
   initEvt() {
+    // 仅限第一级的block，绑定事件
+    if (this.depth !== 1) {
+      return;
+    };
+  
     this.dom.addEventListener('mouseenter', this.mouseEnter);
 
     this.dom.addEventListener('mouseleave', this.mouseLeave);

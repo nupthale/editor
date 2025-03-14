@@ -63,7 +63,7 @@ export default defineComponent({
                             无序列表
                         </div>
                     </MenuItem>
-                    <MenuItem key="6" class="!w-full !p-1 !m-0 !h-auto !min-h-auto !leading-none !rounded-[4px]">
+                    <MenuItem key="6" class="!w-full !p-1 !m-0 !h-auto !min-h-auto !leading-none !rounded-[4px]" onClick={() => handleSelectType('highlight', {})}>
                         <div class="flex items-center highlightBlock">
                             <span class="mr-4 inline-flex items-center justify-center w-[24px] h-[24px]">
                                 <LucideIcon icon={TextQuote} width={20} color="#994bff"></LucideIcon>

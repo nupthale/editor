@@ -46,6 +46,7 @@ export default defineComponent({
             schema.node('heading', { level: 2, id: uuidv4() }, [schema.text('❓ 热门问题')]),
             schema.node('paragraph', { id: uuidv4() }, [schema.text('1. 任务处理信息展示优化，用户可以点击列表中的任务或者操作列的处理按钮，触发任务详情的展示。')]),
             schema.node('paragraph', { id: uuidv4() }, [schema.text('2. 客户信息展示优化，将原有信息进行分类，按模块在左侧边栏展示。'), schema.node('mention', { id: uuidv4(), type: MentionTypeEnum.USER, name: 'Leona Wang'  }, []), schema.text('将原有信息进行分类，按模块在左侧边栏展示。')]),
+            schema.node('highlight', { id: uuidv4() }, [schema.node('paragraph', { id: uuidv4() }, [schema.text('1. 任务处理信息展示优化，用户可以点击列表中的任务或者操作列的处理按钮，触发任务详情的展示。')])]),
           ]),
         ])
       });

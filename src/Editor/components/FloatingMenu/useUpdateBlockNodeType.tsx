@@ -19,14 +19,18 @@ export const useUpdateBlockNodeType = (
         
         const schema = state.schema;
         const targetTypeSchema = schema.nodes[targetType];
-       
+        const customCreate = targetTypeSchema.spec.customCreate;
+
         const tr = state.tr;
         const { from, to } = srcNodeView.range;
-
-        const targetNode = targetTypeSchema.create({ 
+        const newAttrs = {
             ...srcNodeView.node.attrs, 
             ...attrs, 
-        }, srcNodeView.node.content, srcNodeView.node.marks);
+        }
+
+        const targetNode = customCreate ? 
+            customCreate(schema, newAttrs, srcNodeView.node.content, srcNodeView.node.marks) : 
+            targetTypeSchema.create(newAttrs, srcNodeView.node.content, srcNodeView.node.marks);
        
         // 确保目标节点有效
         if (!targetNode) {

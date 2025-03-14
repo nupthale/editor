@@ -73,7 +73,7 @@ export default defineComponent({
                 tap(({ nodeView, offsetY }) => {
                     crtNodeViewRef.value = nodeView;
 
-                    targetRef.value = nodeView.contentDOM as HTMLElement;
+                    targetRef.value = nodeView.dom as HTMLElement;
                     offsetYRef.value = offsetY || 0;
 
                     cancelHide();
