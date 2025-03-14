@@ -1,5 +1,5 @@
 import { Plugin } from 'prosemirror-state';
-import { Slice, Fragment, Node } from 'prosemirror-model';
+import { Node } from 'prosemirror-model';
 
 export const copyPastePlugin = () => {
     return [new Plugin({
