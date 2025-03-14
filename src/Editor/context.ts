@@ -6,13 +6,17 @@ import { PopoverTypeEnum } from './interface';
 export const contextStore = createStore<{
     editorView: EditorView | null,
     popovers: Record<PopoverTypeEnum, boolean>,
+    hasPopoverVisible: boolean,
     setEditorView: (view: EditorView) => void,
     setPopoverVisible: (type: PopoverTypeEnum, visible: boolean) => void,
-}>((set) => ({
+}>((set, get) => ({
     editorView: null,
     popovers: {
         [PopoverTypeEnum.MENTION]: false,
         [PopoverTypeEnum.BUBBLE_MENU]: false,
+    },
+    get hasPopoverVisible() {
+        return Object.values(get().popovers).some(visible => visible);
     },
     setEditorView: (view: EditorView | null) => set({ editorView: view }),
     setPopoverVisible: (type: PopoverTypeEnum, visible: boolean) => set((state) => ({

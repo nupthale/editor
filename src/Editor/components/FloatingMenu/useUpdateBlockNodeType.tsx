@@ -1,5 +1,5 @@
 import { Ref } from 'vue';
-import { Selection } from 'prosemirror-state';
+import { TextSelection } from 'prosemirror-state';
 import { BaseBlockView } from '../../plugins/nodes/_common/baseBlockView';
 
 import { contextStore } from '../../context';
@@ -19,7 +19,7 @@ export const useUpdateBlockNodeType = (
         
         const schema = state.schema;
         const targetTypeSchema = schema.nodes[targetType];
-        const customCreate = targetTypeSchema.spec.customCreate;
+        const { customCreate, customStartOffset = 0 } = targetTypeSchema.spec;
 
         const tr = state.tr;
         const { from, to } = srcNodeView.range;
@@ -45,7 +45,7 @@ export const useUpdateBlockNodeType = (
         );
 
         tr.setSelection(
-            Selection.near(tr.doc.resolve(from))
+            TextSelection.create(tr.doc, from + customStartOffset),
         );
 
         view.dispatch(tr);

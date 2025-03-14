@@ -30,6 +30,7 @@ export const highlightSchema: Record<string, NodeSpec> = {
           (content as Node[])?.length ? content : (content as Fragment)?.size ? [content] : [paragraph],
           marks,
         );
-      }
+      },
+      customStartOffset: 1,
     },
   };

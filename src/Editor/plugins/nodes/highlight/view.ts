@@ -29,6 +29,7 @@ export class HighlightView extends BaseBlockView implements NodeView {
     icon.innerText = '🎵';
 
     const content = document.createElement('div');
+    content.classList.add('flex-1');
     container.appendChild(icon);
     container.appendChild(content);
 

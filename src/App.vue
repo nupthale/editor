@@ -15,7 +15,6 @@ import LikeSection from './Editor/components/LikeSection/index.vue';
 import { contextStore } from './Editor/context';
 import { docChanged$, docScroll$ } from './Editor/event';
 import { useAddEmptyBlock } from './Editor/hooks/useAddEmptyBlock';
-import { useMouseLeaveDocBody } from './Editor/hooks/useMouseLeaveDocBody';
 
 import { MentionTypeEnum } from './Editor/interface';
 
@@ -29,8 +28,6 @@ export default defineComponent({
     let view: EditorView | null = null;
 
     const { editorDomRef } = useAddEmptyBlock();
-
-    useMouseLeaveDocBody();
 
     onMounted(() => {
       if (!editorRef.value) return;
