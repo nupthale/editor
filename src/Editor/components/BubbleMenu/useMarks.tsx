@@ -1,13 +1,14 @@
 import { ref } from 'vue';
-import { Selection } from 'prosemirror-state';
 
 import { schema } from '../../plugins/schema';
 import { contextStore } from '../../context';
 export const useMarks = () => {
     const marksRef = ref<string[]>([]);
 
-    const updateMarks = (selection: Selection) => {
+    const updateMarks = () => {
         const editorView = contextStore.getState().editorView;
+        const selection = editorView?.state?.selection;
+
         if (!editorView || !selection) return;
     
         const { state } = editorView;

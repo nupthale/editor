@@ -1,6 +1,7 @@
 import { Plugin, PluginKey } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
-import { showBubbleMenu$, hideBubbleMenu$ } from '../../event';
+import { showPopover$, hidePopover$ } from '../../event';
+import { PopoverTypeEnum } from '../../interface';
 
 export const bubbleMenuPluginKey = new PluginKey('bubbleMenu');
 
@@ -18,26 +19,17 @@ export const bubbleMenuPlugin = () => {
 
                         // 如果选区为空，隐藏菜单
                         if (empty || from === to) {
-                            hideBubbleMenu$.next();
+                            hidePopover$.next({ type: PopoverTypeEnum.BUBBLE_MENU });
                             return;
                         }
 
-                        // 获取选区的 DOM 范围
-                        const start = view.coordsAtPos(from);
-                        const end = view.coordsAtPos(to);
-
-                        // 计算选区的中心位置
-                        const centerX = (start.left + end.right) / 2;
-                        const centerY = start.top;
-
                         // 先隐藏，再展示
-                        hideBubbleMenu$.next();
+                        hidePopover$.next({ type: PopoverTypeEnum.BUBBLE_MENU });
 
                         // 触发显示气泡菜单
-                        showBubbleMenu$.next({
-                            x: centerX,
-                            y: centerY,
-                            selection,
+                        showPopover$.next({
+                            type: PopoverTypeEnum.BUBBLE_MENU,
+                            range: [from, to],
                         });
                     }
                 };

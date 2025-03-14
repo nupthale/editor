@@ -1,17 +1,26 @@
 import { ref, onUnmounted } from 'vue';
 import { EditorView } from 'prosemirror-view';
 import { createStore } from 'zustand/vanilla';
+import { PopoverTypeEnum } from './interface';
 
 export const contextStore = createStore<{
     editorView: EditorView | null,
-    popoverVisible: boolean,
+    popovers: Record<PopoverTypeEnum, boolean>,
     setEditorView: (view: EditorView) => void,
-    setPopoverVisible: (visible: boolean) => void,
+    setPopoverVisible: (type: PopoverTypeEnum, visible: boolean) => void,
 }>((set) => ({
     editorView: null,
-    popoverVisible: false,
+    popovers: {
+        [PopoverTypeEnum.MENTION]: false,
+        [PopoverTypeEnum.BUBBLE_MENU]: false,
+    },
     setEditorView: (view: EditorView | null) => set({ editorView: view }),
-    setPopoverVisible: (visible: boolean) => set({ popoverVisible: visible }),
+    setPopoverVisible: (type: PopoverTypeEnum, visible: boolean) => set((state) => ({
+        popovers: {
+            ...state.popovers,
+            [type]: visible,
+        }
+    })),
 }))
 
 export function useContextStore() {

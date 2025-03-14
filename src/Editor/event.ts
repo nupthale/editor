@@ -18,21 +18,14 @@ export const blockMouseLeave$ = new Subject<{
   delay?: number,
 }>();
 
-// bubble menu
-export const showBubbleMenu$ = new Subject<{
-  x: number,
-  y: number,
-  selection: Selection, 
-}>();
-
 export const showPopover$ = new Subject<{
-  from: number,
+  range: [number, number],
   type: PopoverTypeEnum,
 }>();
 
-export const hidePopover$ = new Subject<void>();
-
-export const hideBubbleMenu$ = new Subject<void>();
+export const hidePopover$ = new Subject<{
+  type: PopoverTypeEnum,
+}>();
 
 // 文档内容变化
 export const docChanged$ = new Subject<void>();

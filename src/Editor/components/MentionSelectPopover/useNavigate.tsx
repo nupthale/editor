@@ -3,6 +3,7 @@ import { ref, watchEffect, Ref } from 'vue';
 import { useEventListener } from '@vueuse/core';
 
 import { useContextStore } from '../../context';
+import { PopoverTypeEnum } from '../../interface';
 
 export const useNavigate = (
     allItems: Ref<Record<string, any>[]>,
@@ -17,7 +18,7 @@ export const useNavigate = (
     });
 
     const handleKeyDown = (e) => {
-        if (!state.value?.popoverVisible) {
+        if (!state.value?.popovers[PopoverTypeEnum.MENTION]) {
             return;
         }
 

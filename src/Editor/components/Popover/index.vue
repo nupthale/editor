@@ -15,13 +15,13 @@ export default defineComponent({
     setup(props, { slots }) {
         const { state, setPopoverVisible } = useContextStore();
 
-        const fromRef = ref();
+        const rangeRef = ref<[number, number]>([0, 0]);
         const coordRef = ref<[number, number]>([0, 0]);
         const sourceRef = ref<HTMLElement | null>(null);
         const targetRef = ref<HTMLElement | null>(null);
 
         const hide = () => {
-            setPopoverVisible(false);
+            setPopoverVisible(props.type!, false);
         }
 
         const layout = () => {
@@ -29,8 +29,16 @@ export default defineComponent({
             const editorView = state.value?.editorView;
             if (!editorView) return;
 
-            const pos = editorView.coordsAtPos(fromRef.value);
-            coordRef.value = [pos.right, pos.top];
+            // 获取选区的 DOM 范围
+            const [from, to] = rangeRef.value;
+            const start = editorView.coordsAtPos(from);
+            const end = editorView.coordsAtPos(to);
+
+            // 计算选区的中心位置
+            const centerX = (start.left + end.right) / 2;
+            const centerY = start.top;
+
+            coordRef.value = [centerX, centerY];
 
             nextTick(() => {
                 const $source = sourceRef.value;
@@ -52,7 +60,7 @@ export default defineComponent({
 
         useSubscription(
             docScroll$.pipe(
-                filter(() => state.value?.popoverVisible),
+                filter(() => state.value?.popovers[props.type!]),
                 tap(() => {
                     layout();
                 }),
@@ -62,13 +70,13 @@ export default defineComponent({
         useSubscription(
             showPopover$.pipe(
                 filter(({ type }) => type === props.type),
-                tap(({ from }) => {
+                tap(({ range }) => {
                     // 获取@符号的位置
                     const editorView = state.value?.editorView;
                     if (!editorView) return;
 
-                    setPopoverVisible(true);
-                    fromRef.value = from;
+                    setPopoverVisible(props.type!, true);
+                    rangeRef.value = range;
                     layout();
                 }),
             ).subscribe()
@@ -76,6 +84,7 @@ export default defineComponent({
 
         useSubscription(
             hidePopover$.pipe(
+                filter(({ type }) => type === props.type),
                 tap(() => {
                     hide();
                 }),
@@ -86,7 +95,7 @@ export default defineComponent({
             <div>
                 <div ref={targetRef} class="fixed" style={{ left: `${coordRef.value?.[0]}px`, top: `${coordRef.value?.[1]}px` }}></div>
                 <div ref={sourceRef} class="content">
-                    {state.value?.popoverVisible ? slots.default?.() : ''}
+                    {state.value?.popovers[props.type!] ? slots.default?.() : ''}
                 </div>
             </div>
         );

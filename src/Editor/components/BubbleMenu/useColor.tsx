@@ -1,20 +1,18 @@
-import { Ref } from 'vue';
-import { Selection } from 'prosemirror-state';
-
 import { schema } from '../../plugins/schema';
 import { contextStore } from '../../context';
 
-export const useColor = (selectionRef: Ref<Selection | null>) => {
+export const useColor = () => {
     const updateTextColor = (color: string) => {
         const editorView = contextStore.getState().editorView;
+        const selection = editorView?.state.selection;
 
-        if (!editorView || !selectionRef.value) return;
+        if (!editorView || !selection) return;
 
         const colorMark = schema.marks.color.create({ color });
 
         // 在编辑器中应用这个 mark
         const { state, dispatch } = editorView;
-        const { from, to } = selectionRef.value;
+        const { from, to } = selection;
 
         dispatch(
             state.tr.addMark(from, to, colorMark)
@@ -23,14 +21,15 @@ export const useColor = (selectionRef: Ref<Selection | null>) => {
 
     const updateBackgroundColor = (color: string) => {
         const editorView = contextStore.getState().editorView;
+        const selection = editorView?.state.selection;
 
-        if (!editorView || !selectionRef.value) return;
+        if (!editorView || !selection) return;
 
         const backgroundMark = schema.marks.background.create({ color });
 
         // 在编辑器中应用这个 mark
         const { state, dispatch } = editorView;
-        const { from, to } = selectionRef.value;
+        const { from, to } = selection;
 
         dispatch(
             state.tr.addMark(from, to, backgroundMark)

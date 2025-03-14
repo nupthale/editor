@@ -42,7 +42,7 @@ export default defineComponent({
             // 创建包含 mention 节点和空格的 Fragment
             const fragment = Fragment.from([mentionNode, schema.text(' ')]);
 
-            hidePopover$.next();
+            hidePopover$.next({ type: PopoverTypeEnum.MENTION });
             
             const pos = Math.max(from - 1, 0);
             tr.replaceWith(pos, to, fragment);

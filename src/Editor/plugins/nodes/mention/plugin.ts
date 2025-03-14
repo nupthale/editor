@@ -17,7 +17,7 @@ export function mention(schema: Schema): Plugin[] {
           }
         },
         handleKeyDown: (view, event) => {
-          const popoverVisible = contextStore.getState().popoverVisible;
+          const popoverVisible = contextStore.getState().popovers[PopoverTypeEnum.MENTION];
 
           // 如果popover visible， 那么禁用方向按键的处理
           if (
@@ -29,7 +29,7 @@ export function mention(schema: Schema): Plugin[] {
            
             if (['ArrowLeft', 'ArrowRight'].includes(event.key)) {
               // 隐藏popover
-              hidePopover$.next();
+              hidePopover$.next({ type: PopoverTypeEnum.MENTION });
               return false;
             }
           }
@@ -37,11 +37,11 @@ export function mention(schema: Schema): Plugin[] {
           if (event.key === '@') {
               const { state } = view;
               const { selection } = state;
-              const { from } = selection;
+              const { from, to } = selection;
   
               // 触发显示选择菜单
               showPopover$.next({
-                  from,
+                  range: [from, to],
                   type: PopoverTypeEnum.MENTION,
               });
           }
