@@ -19,20 +19,20 @@ export default defineComponent({
 
         return () => {
             if (props.meta?.type === MentionTypeEnum.USER) {
-                const { info: user } = props.meta || {};
+                const { name } = props.meta || {};
 
                 return (
                     <div class="inline-flex items-center userContainer">
-                         <UserProfile username={user.username}>
+                         <UserProfile username={name}>
                             {{
                                 user: () => (
                                     <div class="inline-flex items-center userWrap" ref={containerRef}>
-                                        <User size="small" username={user.username} showText={false} />
-                                        <span class="ml-1 username">{user.username}</span>
+                                        <User size="small" username={name} showText={false} />
+                                        <span class="ml-1 username">{name}</span>
                                     </div>
                                 ),
                                 profile: () => (
-                                    <div class="p-[15px]">这是关于{user.username}的个人简介</div>
+                                    <div class="p-[15px]">这是关于{name}的个人简介</div>
                                 ),
                             }}
                         </UserProfile>

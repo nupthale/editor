@@ -2,6 +2,7 @@ import { Schema } from 'prosemirror-model';
 import { Plugin } from 'prosemirror-state';
 import { keymapPlugin } from './core/keymap';
 import { history } from './core/history';
+import { copyPastePlugin } from './core/copyPaste';
 import { bubbleMenuPlugin } from './core/bubbleMenu';
 import { title } from './nodes/title/plugin';
 import { paragraph } from './nodes/paragraph/plugin';
@@ -16,6 +17,7 @@ export function plugins(schema: Schema): Plugin[] {
   return [
     ...keymapPlugin(),
     ...history(),
+    ...copyPastePlugin(),
     ...bubbleMenuPlugin(),
     ...title(schema),
     ...paragraph(schema),

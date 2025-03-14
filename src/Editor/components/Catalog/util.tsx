@@ -3,7 +3,7 @@ export const getText = (content) => {
         if (crt.type === 'text') {
             return acc + crt.text;
         } else if (crt.type === 'mention') {
-            return acc + `@${crt.attrs.info?.username}`;
+            return acc + `@${crt.attrs.name}`;
         }
         
         return acc;

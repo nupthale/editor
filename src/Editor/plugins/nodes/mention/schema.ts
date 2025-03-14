@@ -1,4 +1,4 @@
-import { NodeSpec } from 'prosemirror-model';
+import { NodeSpec, DOMOutputSpec } from 'prosemirror-model';
 
 import { MentionTypeEnum } from '../../../interface';
 
@@ -8,13 +8,33 @@ export const mentionSchema: Record<string, NodeSpec> = {
       group: "inline",
       attrs: {
         type: { default: MentionTypeEnum.USER },
-        info: { default: {} },
+        name: { default: '' },
+        id: { default: '' },
       },
       parseDOM: [{ 
         tag: "span", 
         attrs: {
           class: "doc-mention",
-        } 
+        },
+        getAttrs(dom) {
+          if (!(dom instanceof HTMLElement)) return {};
+
+          return {
+            type: dom.getAttribute('type'),
+            name: dom.getAttribute('name'),
+            id: dom.getAttribute('id'),
+          };
+        }
       }],
+      toDOM(node): DOMOutputSpec {
+        const { name } = node.attrs;
+
+        return ['span', {
+          class: "doc-mention",
+          type: node.attrs.type,
+          name: node.attrs.name,
+          id: node.attrs.id,
+        }, `@${name || ''}`];
+      },
     },
   };

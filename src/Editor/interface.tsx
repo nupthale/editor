@@ -8,5 +8,6 @@ export enum MentionTypeEnum {
 
 export type MentionParam = {
   type: MentionTypeEnum;
-  info: Record<string, any>;
+  name: string;
+  id: string;
 }

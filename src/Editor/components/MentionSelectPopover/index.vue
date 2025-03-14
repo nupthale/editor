@@ -35,7 +35,8 @@ export default defineComponent({
             const { from, to } = selection;
             const mentionNode = schema.nodes.mention.create({
                 type: MentionTypeEnum.USER,
-                info: user,
+                name: user.username,
+                id: user.userId,
             });
 
             // 创建包含 mention 节点和空格的 Fragment
