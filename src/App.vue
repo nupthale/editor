@@ -14,6 +14,7 @@ import MentionSelectPopopver from './Editor/components/MentionSelectPopover/inde
 import { contextStore } from './Editor/context';
 import { docChanged$, docScroll$ } from './Editor/event';
 import { useAddEmptyBlock } from './Editor/hooks/useAddEmptyBlock';
+import { useEditorBottomHover } from './Editor/hooks/useEditorBottomHover';
 
 import { MentionTypeEnum } from './Editor/interface';
 
@@ -27,6 +28,8 @@ export default defineComponent({
     let view: EditorView | null = null;
 
     const { editorDomRef } = useAddEmptyBlock();
+
+    useEditorBottomHover(editorDomRef);
 
     onMounted(() => {
       if (!editorRef.value) return;
@@ -103,4 +106,4 @@ export default defineComponent({
     );
   }
 });
-</script>./Editor/components/FloatingMenu/index.vue
+</script>

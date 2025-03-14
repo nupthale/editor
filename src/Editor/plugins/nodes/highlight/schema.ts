@@ -20,7 +20,7 @@ export const highlightSchema: Record<string, NodeSpec> = {
         }, 0]
       },
       customCreate: (schema, attrs?: Attrs | null, content?: Fragment | Node | readonly Node[] | null, marks?: readonly Mark[]) => {
-        const paragraph = schema.nodes.paragraph.create({ id: uuidv4() });
+        const paragraph = schema.nodes.paragraph.create({ id: uuidv4() }, []);
 
         return schema.nodes.highlight.create(
           { 

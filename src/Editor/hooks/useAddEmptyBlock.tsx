@@ -7,7 +7,7 @@ import { contextStore } from '../context';
 import { schema } from '../plugins/schema/index';
 
 export const useAddEmptyBlock = () => {
-  const editorDomRef = ref(null);
+  const editorDomRef = ref<HTMLElement | null>(null);
 
   const handleEditorBottomClick = (event) => {
     if (!editorDomRef.value) return;
