@@ -11,12 +11,13 @@ import { heading } from './nodes/heading/plugin';
 import { mention } from './nodes/mention/plugin';
 import { highlight } from './nodes/highlight/plugin';
 
+import { list } from './nodes/list/plugin';
+
 // 导入更多插件...
 
 // 集中注册所有插件
 export function plugins(schema: Schema): Plugin[] {
   return [
-    ...keymapPlugin(),
     ...history(),
     ...copyPastePlugin(),
     ...bubbleMenuPlugin(),
@@ -26,5 +27,9 @@ export function plugins(schema: Schema): Plugin[] {
     // 添加更多插件...
     ...mention(schema),
     ...highlight(schema),
+    ...list(),
+
+    // 优先级最低
+    ...keymapPlugin(),
   ];
 }

@@ -34,6 +34,7 @@ const bgColors = [
 ];
 
 export default defineComponent({
+    emits: ['background', 'color'],
     setup(_props, { emit }) {
 
         return () => (
