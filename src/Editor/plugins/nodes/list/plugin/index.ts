@@ -38,18 +38,8 @@ export const list = () => {
       }
     }),
     keymap({
-      'Shift-Tab': (state, dispatch, _view) => {
-        const { $from } = state.selection;
-        const tr = state.tr;
-        if (
-          $from.parent.type.name!== 'list_head'
-        ) {
-          return false;
-        }
-        const listNode = $from.node($from.depth - 1);
-        if (!listNode) return false;
-
-        return true;
+      'Shift-Tab': (state, dispatch, view) => {
+        return decreaseIndent(state, dispatch, view);
       },
       Tab: (state, dispatch, view) => {
         return increaseIndent(state, dispatch, view);

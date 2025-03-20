@@ -23,6 +23,7 @@ const getCurrentPos = (state) => {
     return $from.before($from.depth - 1);
 }
 
+// 同一级找到上一个 list
 const getPrevListNode = (state) => {
     const { $from } = state.selection;
 
@@ -33,6 +34,7 @@ const getPrevListNode = (state) => {
     const currentDepth = $from.depth - 1;  // list 节点的深度
     const prevPos = resolvedPrevPos.before(resolvedPrevPos.depth);
 
+    debugger;
     if (resolvedPrevPos.depth !== currentDepth) {
         return {
             prevPos,
@@ -44,6 +46,19 @@ const getPrevListNode = (state) => {
         prevPos,
         prevListNode: resolvedPrevPos.node(),
     };
+}
+
+// 找父级的list
+const getParentListNode = (state) => {
+    const { $from } = state.selection;
+
+    const node = $from.node($from.depth - 3);
+
+    if (!node || node.type.name !== 'list') {
+        return null;
+    }
+
+    return node;
 }
 
 export const increaseIndent = (state, dispatch, view) => {
@@ -78,7 +93,7 @@ export const increaseIndent = (state, dispatch, view) => {
         const bodyPos = prevPos + prevListNode.nodeSize - 2;
 
         tr.delete(currentListPos, currentListPos + listNode.nodeSize)
-            .insert(bodyPos, listNode);
+          .insert(bodyPos, listNode);
     } else {
         // 创建 body 并移动
         const newBody = schema.nodes.list_body.create(null, Fragment.from(listNode));
@@ -87,8 +102,8 @@ export const increaseIndent = (state, dispatch, view) => {
         const relativePos = $from.pos - currentListPos;
 
         tr.delete(currentListPos, currentListPos + listNode.nodeSize)
-            .insert(insertPos, newBody)
-            .setSelection(TextSelection.create(tr.doc, insertPos + relativePos + 2));
+          .insert(insertPos, newBody)
+          .setSelection(TextSelection.create(tr.doc, insertPos + relativePos + 2));
     }
 
     dispatch?.(tr);
@@ -96,18 +111,29 @@ export const increaseIndent = (state, dispatch, view) => {
     return true;
 }
 
-export const decreaseIndent = (state, dispatch) => {
+// 找到上一层的list， 从上一层的list的body里移到上一层list后面
+export const decreaseIndent = (state, dispatch, view) => {
     const listNode = getListNode(state);
 
     if (!listNode) return false;
 
+    const parentListNode = getParentListNode(state);
     const currentListPos = getCurrentPos(state);
-    const { prevListNode, prevPos } = getPrevListNode(state);
 
-    if (
-        !prevListNode ||
-        prevListNode.type.name !== 'list'
-    ) {
+    if (!parentListNode) {
         return false;
     }
+
+    const { $from } = state.selection;
+    const { tr } = state;
+
+    const parentStart = $from.before($from.depth - 3);
+    const parentEnd = parentStart + parentListNode.nodeSize;
+
+    tr.delete(currentListPos - 1, currentListPos + listNode.nodeSize);
+    //   .insert(parentEnd, listNode);
+
+    dispatch?.(tr);
+
+    return true;
 }
