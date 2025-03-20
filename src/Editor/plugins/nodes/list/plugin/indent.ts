@@ -147,20 +147,23 @@ export const decreaseIndent = (state, dispatch, view) => {
         });
 
         // 创建新的 list_body 包含剩余节点
-        const newBody = schema.nodes.list_body.create(
-            null,
-            Fragment.from([
-                ...listNode.lastChild.children,
-                ...remainingNodes,
-            ])
-        );
+        const newBody = [
+            ...(listNode.childCount > 1 ? listNode.lastChild.children : []),
+            ...remainingNodes,
+        ];
 
         // 创建新的 list 结构，包含原有的 list_head 和新的 list_body
+
         const newListNode = schema.nodes.list.create(
             { ...listNode.attrs },
-            Fragment.from([
+            newBody.length === 0 ? Fragment.from([
                 listNode.firstChild,
-                newBody
+            ]) : Fragment.from([
+                listNode.firstChild,
+                schema.nodes.list_body.create(
+                    null,
+                    Fragment.from(newBody)
+                )
             ])
         );
 
@@ -178,7 +181,7 @@ export const decreaseIndent = (state, dispatch, view) => {
         const deleteEnd = currentListPos + deleteSize;
 
         tr.delete(currentListPos - 1, deleteEnd)
-          .insert(parentEnd - 2, newListNode)
+          .insert(parentEnd - (currentIndex === 0 ? 2 : 0), newListNode)
           .setSelection(TextSelection.create(tr.doc, insertPos + relativePos));
     } else {
         // 要减去listNode.nodeSize，是因为parent的nodeSize是包含这个子list的nodeSize的。
