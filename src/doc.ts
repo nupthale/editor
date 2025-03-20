@@ -51,6 +51,26 @@ export const doc = [
                 schema.node('list_head', { id: uuidv4() }, [
                     schema.text('将原有信息进行分类，按模块在左侧边栏展示。')
                 ]),
+                schema.node('list_body', { id: uuidv4() }, [
+                    schema.node(
+                        'list',
+                        { id: uuidv4(), level: 2, start: 1 }, 
+                        [
+                            schema.node('list_head', { id: uuidv4() }, [
+                                schema.text('first parargraph')
+                            ]),
+                        ]
+                    ),
+                    schema.node(
+                        'list',
+                        { id: uuidv4(), level: 2, start: 1 }, 
+                        [
+                            schema.node('list_head', { id: uuidv4() }, [
+                                schema.text('second paragraph')
+                            ]),
+                        ]
+                    ),
+                ]),
             ]
         ),
     ]),

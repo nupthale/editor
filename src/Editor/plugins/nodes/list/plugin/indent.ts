@@ -1,4 +1,4 @@
-import { Fragment } from 'prosemirror-model';
+import { Fragment, Node } from 'prosemirror-model';
 import { TextSelection } from 'prosemirror-state';
 
 import { message } from 'ant-design-vue';
@@ -125,18 +125,73 @@ export const decreaseIndent = (state, dispatch, view) => {
 
     const { $from } = state.selection;
     const { tr } = state;
-
     const parentStart = $from.before($from.depth - 3);
-    // 要减去listNode.nodeSize，是因为parent的nodeSize是包含这个子list的nodeSize的。
-    const parentEnd = parentStart + parentListNode.nodeSize - listNode.nodeSize - 2;
 
-    const insertPos = parentEnd;
-    // 计算当前光标相对于 listNode 开始位置的偏移量
-    const relativePos = $from.pos - currentListPos;
+    if (
+        parentListNode.childCount === 2 && 
+        parentListNode.lastChild.childCount > 1
+    ) {
+        // 如果还有其他子节点， 后续子节点应该放到当前list里面
 
-    tr.delete(currentListPos - 1, currentListPos + listNode.nodeSize)
-      .insert(parentEnd, listNode)
-      .setSelection(TextSelection.create(tr.doc, insertPos + relativePos));
+        // 获取当前节点在 list_body 中的索引位置
+        const currentIndex = parentListNode.lastChild.children.findIndex(
+            node => node.eq(listNode)
+        );
+
+        // 获取后续的所有兄弟节点
+        const remainingNodes: Node[] = [];
+        parentListNode.lastChild.forEach((node, _, i) => {
+            if (i > currentIndex) {
+                remainingNodes.push(node);
+            }
+        });
+
+        // 创建新的 list_body 包含剩余节点
+        const newBody = schema.nodes.list_body.create(
+            null,
+            Fragment.from([
+                ...listNode.lastChild.children,
+                ...remainingNodes,
+            ])
+        );
+
+        // 创建新的 list 结构，包含原有的 list_head 和新的 list_body
+        const newListNode = schema.nodes.list.create(
+            { ...listNode.attrs },
+            Fragment.from([
+                listNode.firstChild,
+                newBody
+            ])
+        );
+
+        const parentStart = $from.before($from.depth - 3);
+        const deleteSize = listNode.nodeSize + remainingNodes.reduce((sum, node) => sum + node.nodeSize, 0);
+
+        // 要减去listNode.nodeSize，是因为parent的nodeSize是包含这个子list的nodeSize的。
+        const parentEnd = parentStart + parentListNode.nodeSize - deleteSize;
+
+        const insertPos = parentEnd;
+        // 计算当前光标相对于 listNode 开始位置的偏移量
+        const relativePos = $from.pos - currentListPos;
+
+        // 删除范围需要包含当前节点到最后的所有节点
+        const deleteEnd = currentListPos + deleteSize;
+
+        tr.delete(currentListPos - 1, deleteEnd)
+          .insert(parentEnd - 2, newListNode)
+          .setSelection(TextSelection.create(tr.doc, insertPos + relativePos));
+    } else {
+        // 要减去listNode.nodeSize，是因为parent的nodeSize是包含这个子list的nodeSize的。
+        const parentEnd = parentStart + parentListNode.nodeSize - listNode.nodeSize;
+
+        const insertPos = parentEnd;
+        // 计算当前光标相对于 listNode 开始位置的偏移量
+        const relativePos = $from.pos - currentListPos;
+    
+        tr.delete(currentListPos - 1, currentListPos + listNode.nodeSize)
+          .insert(parentEnd - 2, listNode)
+          .setSelection(TextSelection.create(tr.doc, insertPos + relativePos));
+    }
 
     dispatch?.(tr);
 
