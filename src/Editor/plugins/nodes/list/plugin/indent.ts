@@ -10,7 +10,7 @@ const getListNode = (state) => {
     const { $from } = state.selection;
 
     if (
-      $from.parent.type.name!== 'list_head'
+      $from.parent.type.name !== 'list_head'
     ) {
       return false;
     }
@@ -34,7 +34,6 @@ const getPrevListNode = (state) => {
     const currentDepth = $from.depth - 1;  // list 节点的深度
     const prevPos = resolvedPrevPos.before(resolvedPrevPos.depth);
 
-    debugger;
     if (resolvedPrevPos.depth !== currentDepth) {
         return {
             prevPos,
@@ -128,10 +127,16 @@ export const decreaseIndent = (state, dispatch, view) => {
     const { tr } = state;
 
     const parentStart = $from.before($from.depth - 3);
-    const parentEnd = parentStart + parentListNode.nodeSize;
+    // 要减去listNode.nodeSize，是因为parent的nodeSize是包含这个子list的nodeSize的。
+    const parentEnd = parentStart + parentListNode.nodeSize - listNode.nodeSize - 2;
 
-    tr.delete(currentListPos - 1, currentListPos + listNode.nodeSize);
-    //   .insert(parentEnd, listNode);
+    const insertPos = parentEnd;
+    // 计算当前光标相对于 listNode 开始位置的偏移量
+    const relativePos = $from.pos - currentListPos;
+
+    tr.delete(currentListPos - 1, currentListPos + listNode.nodeSize)
+      .insert(parentEnd, listNode)
+      .setSelection(TextSelection.create(tr.doc, insertPos + relativePos));
 
     dispatch?.(tr);
 

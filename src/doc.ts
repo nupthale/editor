@@ -49,7 +49,7 @@ export const doc = [
             { id: uuidv4(), level: 1, start: 1 }, 
             [
                 schema.node('list_head', { id: uuidv4() }, [
-                    schema.text('任务处理信息展示优化任务处理信息展示优化任务处理信息展示优化任务处理信息展示优化任务处理信息展示优化任务处理信息展示优化任务处理信息展示优化任务处理信息展示优化任务处理信息展示优化')
+                    schema.text('将原有信息进行分类，按模块在左侧边栏展示。')
                 ]),
             ]
         ),
