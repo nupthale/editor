@@ -11,7 +11,7 @@ import { heading } from './nodes/heading/plugin';
 import { mention } from './nodes/mention/plugin';
 import { highlight } from './nodes/highlight/plugin';
 
-import { list } from './nodes/list/plugin';
+import { list } from './nodes/list/plugin/index';
 
 // 导入更多插件...
 

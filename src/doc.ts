@@ -24,5 +24,34 @@ export const doc = [
                 ]),
             ]
         ),
+        schema.node(
+            'list',
+            { id: uuidv4(), level: 1, start: 1 }, 
+            [
+                schema.node('list_head', { id: uuidv4() }, [
+                    schema.text('父级任务')
+                ]),
+                schema.node('list_body', { id: uuidv4() }, [
+                    schema.node(
+                        'list',
+                        { id: uuidv4(), level: 2, start: 1 }, 
+                        [
+                            schema.node('list_head', { id: uuidv4() }, [
+                                schema.text('123')
+                            ]),
+                        ]
+                    ),
+                ]),
+            ]
+        ),
+        schema.node(
+            'list',
+            { id: uuidv4(), level: 1, start: 1 }, 
+            [
+                schema.node('list_head', { id: uuidv4() }, [
+                    schema.text('任务处理信息展示优化任务处理信息展示优化任务处理信息展示优化任务处理信息展示优化任务处理信息展示优化任务处理信息展示优化任务处理信息展示优化任务处理信息展示优化任务处理信息展示优化')
+                ]),
+            ]
+        ),
     ]),
 ];

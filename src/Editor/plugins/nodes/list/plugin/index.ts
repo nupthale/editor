@@ -1,19 +1,22 @@
-import { Plugin, PluginKey, TextSelection, NodeSelection } from 'prosemirror-state';
+import { Plugin, PluginKey, TextSelection } from 'prosemirror-state';
 import { keymap } from 'prosemirror-keymap';
 import { Node, Fragment } from 'prosemirror-model';
 import { v4 as uuidv4 } from 'uuid';
 
-import { schema } from '../../schema/index';
+import { schema } from '../../../schema/index';
 
-import { ListView } from './view/index';
-import { ListHeadView } from './view/head';
-import { ListBodyView } from './view/body';
+import { ListView } from '../view/index';
+import { ListHeadView } from '../view/head';
+import { ListBodyView } from '../view/body';
 
+import { increaseIndent, decreaseIndent } from './indent';
+import { decorationPlugin } from './decoration';
 
 const pluginKey = new PluginKey('list');
 
 export const list = () => {
   return [
+    decorationPlugin,
     new Plugin({
       key: pluginKey,
       
@@ -29,9 +32,28 @@ export const list = () => {
             return new ListBodyView(node, view, getPos);
           }
         },
+        decorations(state) {
+          return this.getState(state);
+        },
       }
     }),
     keymap({
+      'Shift-Tab': (state, dispatch, _view) => {
+        const { $from } = state.selection;
+        const tr = state.tr;
+        if (
+          $from.parent.type.name!== 'list_head'
+        ) {
+          return false;
+        }
+        const listNode = $from.node($from.depth - 1);
+        if (!listNode) return false;
+
+        return true;
+      },
+      Tab: (state, dispatch, view) => {
+        return increaseIndent(state, dispatch, view);
+      },
       Enter: (state, dispatch, _view) => {
         const { $from } = state.selection;
         const tr = state.tr;
@@ -62,10 +84,9 @@ export const list = () => {
             },
           }]).scrollIntoView();
 
-          // tr.setSelection(TextSelection.create(tr.doc, $from.pos + 4));
-
-          dispatch(tr);
         }
+
+        dispatch?.(tr);
 
         return true;
       }

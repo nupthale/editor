@@ -1,5 +1,6 @@
 <script lang="tsx">
 import { defineComponent, onMounted, onUnmounted, ref } from 'vue';
+import { message } from 'ant-design-vue';
 import { EditorState } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { plugins } from './Editor/plugins';
@@ -19,6 +20,10 @@ import { doc } from './doc';
 
 import './Editor/theme/index.less';
 import headerImage from './header.png';
+
+message.config({
+  maxCount: 1,
+});
 
 export default defineComponent({
   name: 'App',
@@ -51,6 +56,14 @@ export default defineComponent({
             docChanged$.next();
           }
         },
+      });
+
+      // 在编辑器区域内阻止默认行为
+      editorRef.value.addEventListener('keydown', (e) => {
+        if (e.key === 'Tab') {
+          e.stopPropagation();
+          e.preventDefault();
+        }
       });
 
       contextStore.getState().setEditorView(view);
