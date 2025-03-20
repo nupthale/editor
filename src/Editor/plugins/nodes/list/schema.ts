@@ -40,6 +40,7 @@ export const listSchema: Record<string, NodeSpec> = {
       level: { default: 1 },
       id: { default: '' },
       parentId: { default: null },
+      ordered: { default: true },
     },
     parseDOM: [{
       tag: "div",

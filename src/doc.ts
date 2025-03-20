@@ -46,7 +46,7 @@ export const doc = [
         ),
         schema.node(
             'list',
-            { id: uuidv4(), level: 1, start: 1 }, 
+            { id: uuidv4(), level: 1, start: 1, order: false }, 
             [
                 schema.node('list_head', { id: uuidv4() }, [
                     schema.text('将原有信息进行分类，按模块在左侧边栏展示。')
