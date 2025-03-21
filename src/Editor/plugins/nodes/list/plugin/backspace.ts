@@ -1,10 +1,9 @@
 
 import { Fragment } from 'prosemirror-model';
+import { TextSelection } from 'prosemirror-state';
 
 import { decreaseIndent } from './indent';
 import { getListBodyNodes, getRangeByPos, getPrevNodeRange, getDeepestContentEnd } from '../../../../shared';
-
-import { schema } from '../../../schema/index';
 
 export const hideIndex = (state, dispatch, view) => {
   const { $from } = state.selection;
@@ -12,12 +11,12 @@ export const hideIndex = (state, dispatch, view) => {
 
   const listHeadNode = $from.node();
 
-  // 当内容为空， 且有序号展示， 就先把序号隐藏掉
+  // 当光标位于开始位置， 且有序号展示， 就先把序号隐藏掉
   if (
-    $from.parent.textContent === '' &&
+    $from.parentOffset === 0 &&
     listHeadNode?.attrs?.showIndex
   ) {
-    tr.setNodeMarkup($from.pos - listHeadNode.nodeSize + 1, undefined, {
+    tr.setNodeMarkup($from.pos - 1, undefined, {
       ...listHeadNode.attrs,
       showIndex: false,
     });
@@ -69,20 +68,24 @@ export const backspaceAtEdge = (state, dispatch, view) => {
           $from.before($from.depth - 1) + 1
         )
       );
-      
-      if (prevNodeRange && leftNodeContent.length) {
-        const prevNodeEnd = getDeepestContentEnd(state.doc.resolve(prevNodeRange?.[0] + 1));
 
+      if (!prevNodeRange) {
+        return false;
+      }
+
+      const prevNodeEnd = getDeepestContentEnd(state.doc.resolve(prevNodeRange?.[0] + 1));
+      
+      if (leftNodeContent.length) {
         // 将leftText插入到prevNode的最后
         tr.insert(
           prevNodeEnd,
-          schema.text(leftNodeContent?.[0]?.textContent),
-          // Fragment.from(leftNodeContent)
+          leftNodeContent
         );
       }
-      // tr.setSelection(
-      //   TextSelection.create(tr.doc, listRange[0]),
-      // );
+
+      tr.setSelection(
+        TextSelection.create(tr.doc, prevNodeEnd),
+      );
 
       dispatch?.(tr);
 
