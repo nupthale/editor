@@ -73,5 +73,34 @@ export const doc = [
                 ]),
             ]
         ),
+        schema.node(
+            'list',
+            { id: uuidv4(), level: 1, start: 1, order: false }, 
+            [
+                schema.node('list_head', { id: uuidv4(), showIndex: false }, []),
+                schema.node('list_body', { id: uuidv4() }, [
+                    schema.node(
+                        'list',
+                        { id: uuidv4(), level: 2, start: 1 }, 
+                        [
+                            schema.node('list_head', { id: uuidv4() }, [
+                                schema.text('2')
+                            ]),
+                            schema.node('list_body', { id: uuidv4() }, [
+                                schema.node(
+                                    'list',
+                                    { id: uuidv4(), level: 2, start: 1 }, 
+                                    [
+                                        schema.node('list_head', { id: uuidv4() }, [
+                                            schema.text('3')
+                                        ]),
+                                    ]
+                                ),
+                            ])
+                        ]
+                    ),
+                ]),
+            ]
+        ),
     ]),
 ];

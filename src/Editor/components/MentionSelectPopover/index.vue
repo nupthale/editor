@@ -40,7 +40,7 @@ export default defineComponent({
             });
 
             // 创建包含 mention 节点和空格的 Fragment
-            const fragment = Fragment.from([mentionNode, schema.text(' ')]);
+            const fragment = Fragment.from([mentionNode, schema.text('\u200B')]);
 
             hidePopover$.next({ type: PopoverTypeEnum.MENTION });
             

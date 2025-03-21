@@ -184,16 +184,22 @@ export const decreaseIndent = (state, dispatch, view) => {
           .insert(parentEnd - (currentIndex === 0 ? 2 : 0), newListNode)
           .setSelection(TextSelection.create(tr.doc, insertPos + relativePos));
     } else {
-        // 要减去listNode.nodeSize，是因为parent的nodeSize是包含这个子list的nodeSize的。
-        const parentEnd = parentStart + parentListNode.nodeSize - listNode.nodeSize;
+        const parentEnd = parentStart + parentListNode.nodeSize;
 
-        const insertPos = parentEnd;
+        // 要减去listNode.nodeSize，是因为parent的nodeSize是包含这个子list的nodeSize的。
+        const insertPos = parentEnd - listNode.nodeSize;
         // 计算当前光标相对于 listNode 开始位置的偏移量
         const relativePos = $from.pos - currentListPos;
     
-        tr.delete(currentListPos - 1, currentListPos + listNode.nodeSize)
-          .insert(parentEnd - 2, listNode)
-          .setSelection(TextSelection.create(tr.doc, insertPos + relativePos));
+        tr.insert(parentEnd, listNode);
+
+        if (parentListNode.childCount === 2 && parentListNode.lastChild.childCount === 1) {
+            // parent_list_body已经空了， 就把parent_list_body删除， 后光标定位到新的listNode的位置
+            tr.delete(currentListPos - 1, currentListPos + listNode.nodeSize);
+        } else {
+            tr.delete(currentListPos, currentListPos + listNode.nodeSize);
+            tr.setSelection(TextSelection.create(tr.doc, insertPos + relativePos));
+        }
     }
 
     dispatch?.(tr);

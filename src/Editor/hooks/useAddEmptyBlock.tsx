@@ -39,7 +39,7 @@ export const useAddEmptyBlock = () => {
             tr.insert(
                 docSize - 1,
                 schema.nodes.paragraph.create({
-                id: uuidv4(),
+                  id: uuidv4(),
                 })
             );
         }

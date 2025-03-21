@@ -7,6 +7,7 @@ import { ListBodyView } from '../view/body';
 
 import { increaseIndent, decreaseIndent } from './indent';
 import { enter } from './enter';
+import { backspace } from './backspace';
 import { decorationPlugin } from './decoration';
 
 const pluginKey = new PluginKey('list');
@@ -43,6 +44,9 @@ export const list = () => {
       },
       Enter: (state, dispatch, view) => {
         return enter(state, dispatch, view);
+      },
+      Backspace: (state, dispatch, view) => {
+        return backspace(state, dispatch, view);
       }
     })
   ];

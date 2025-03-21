@@ -3,6 +3,8 @@ import { defineComponent, onMounted, onUnmounted, ref } from 'vue';
 import { message } from 'ant-design-vue';
 import { EditorState } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
+import { applyDevTools } from 'prosemirror-dev-toolkit'
+
 import { plugins } from './Editor/plugins';
 import { schema } from './Editor/plugins/schema';
 
@@ -70,6 +72,8 @@ export default defineComponent({
 
       // 初始化
       docChanged$.next();
+
+      applyDevTools(view);
     });
 
     onUnmounted(() => {

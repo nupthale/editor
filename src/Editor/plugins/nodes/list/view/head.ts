@@ -28,10 +28,16 @@ export class ListHeadView implements NodeView {
 
         this.dom.appendChild(wrapDOM);
 
-        this.updateIndexDOM();
+        this.updateIndexDOM(node);
     }
 
-    updateIndexDOM() {
+    updateIndexDOM(node) {
+      if (node.attrs.showIndex) {
+        this.indexDOM.style.display = 'block';
+      } else {
+        this.indexDOM.style.display = 'none';
+      }
+
       // 获取父节点（list）的属性
       const pos = this.getPos();
       if (pos !== undefined) {
@@ -47,9 +53,16 @@ export class ListHeadView implements NodeView {
     update(node: Node) {
         if (node.type !== this.node.type) return false;
         
+        if (
+          node.attrs.showIndex !== this.node.attrs.showIndex ||
+          node.attrs.ordered
+        ) {
+          this.updateIndexDOM(node);
+        }
+      
         // 更新节点引用
         this.node = node;
-        
+
         return true;
     }
 
@@ -65,5 +78,10 @@ export class ListHeadView implements NodeView {
         }
         
         return false;
-      }
+    }
+
+    selectNode() {
+      // 返回 false 表示不要应用选中样式
+      return false;
+    }
 }

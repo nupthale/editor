@@ -4,9 +4,11 @@ export const listSchema: Record<string, NodeSpec> = {
   list_head: {
     content: "inline*",
     group: "block",
+    attrs: {
+      showIndex: { default: true },
+    },
     parseDOM: [{
       tag: "div",
-      contentElement: ".doc-list-content", // 指定可编辑区域
       attrs: {
         class: "doc-list-head",
       },
@@ -18,7 +20,7 @@ export const listSchema: Record<string, NodeSpec> = {
     }
   },
   list_body: {
-    content: "list+",
+    content: "(list | paragraph)+",
     group: "block",
     parseDOM: [{
       tag: "div",
@@ -44,14 +46,12 @@ export const listSchema: Record<string, NodeSpec> = {
     },
     parseDOM: [{
       tag: "div",
-      getAttrs(dom) {
-        return {
-          class: "doc-list",
-        };
-      }
+      attrs: {
+        class: "doc-list",
+      },
     }],
     toDOM(node) {
-      return ["ol", {
+      return ["div", {
         class: "doc-list",
       }, 0];
     }

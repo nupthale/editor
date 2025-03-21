@@ -22,4 +22,9 @@ export class ListBodyView implements NodeView {
         
         return true;
     }
+
+    selectNode() {
+        // 返回 false 表示不要应用选中样式
+        return false;
+    }
 }

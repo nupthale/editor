@@ -11,7 +11,7 @@ import { listSchema } from '../nodes/list/schema';
 
 export const nodes: Record<string, NodeSpec> = {
   // 使用基础节点
-  ...basicNodes,
+  // ...basicNodes,
   
   doc: {
     content: "title body"
