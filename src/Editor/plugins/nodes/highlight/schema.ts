@@ -9,10 +9,8 @@ export const highlightSchema: Record<string, NodeSpec> = {
         id: { default: '' },
       },
       parseDOM: [{ 
-        tag: "div", 
-        attrs: {
-          class: "doc-highlight",
-        } 
+        tag: "div.doc-highlight", 
+        priority: 51,  // 提高优先级
       }],
       toDOM(node): DOMOutputSpec {
         return ["div", {

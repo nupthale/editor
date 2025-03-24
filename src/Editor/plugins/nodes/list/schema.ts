@@ -45,10 +45,8 @@ export const listSchema: Record<string, NodeSpec> = {
       ordered: { default: true },
     },
     parseDOM: [{
-      tag: "div",
-      attrs: {
-        class: "doc-list",
-      },
+      tag: "div.doc-list",
+      priority: 52,  // 提高优先级
     }],
     toDOM(node) {
       return ["div", {
