@@ -102,8 +102,9 @@ export class ListHeadView implements NodeView {
       const id = this.getListId();
 
       const map = contextStore.getState().orderedListMap || {};
+      const indexStr = map[id]?.join('.');
     
-      return map[id]?.join('.') || '';
+      return indexStr ? `${indexStr}.` : '';
     }
 
     subscribeEvts() {
