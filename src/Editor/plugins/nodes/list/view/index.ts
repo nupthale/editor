@@ -2,7 +2,6 @@ import { Node } from 'prosemirror-model';
 import { EditorView, NodeView } from 'prosemirror-view';
 
 import { BaseBlockView } from '../../_common/baseBlockView';
-import { contextStore } from '../../../../context';
 
 import '../index.less';
 
@@ -13,8 +12,6 @@ export class ListView extends BaseBlockView implements NodeView {
     this.dom.classList.add('doc-list');
 
     this.contentDOM = this.dom;
-
-    contextStore.getState()?.addOrderedListMap(node.attrs.id, this);
 
     this.initEvt();
   }

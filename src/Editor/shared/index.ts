@@ -1,4 +1,5 @@
 import { Node, ResolvedPos, Fragment } from 'prosemirror-model';
+import { EditorView } from 'prosemirror-view';
 
 export const getRangeByNode = (state, node: Node) => {
     // 根据node获取node的range
@@ -107,4 +108,10 @@ export const getDeepestContentEnd = ($pos: ResolvedPos) => {
 
 export const getParentNode = ($pos: ResolvedPos, depthOffset = 1) => {
     return $pos.node($pos.depth - depthOffset);
+}
+
+export const getParentNodeByPos = (view: EditorView, pos: number, depthOffset = 1) => {
+    const $pos = view.state.doc.resolve(pos);
+        
+    return getParentNode($pos, depthOffset);  // 获取父节点（list）
 }

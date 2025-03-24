@@ -38,10 +38,7 @@ export const listSchema: Record<string, NodeSpec> = {
     content: "list_head list_body?",
     group: "block",
     attrs: {
-      start: { default: 1 },
-      level: { default: 1 },
       id: { default: '' },
-      parentId: { default: null },
       ordered: { default: true },
     },
     parseDOM: [{

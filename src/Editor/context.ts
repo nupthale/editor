@@ -1,16 +1,17 @@
 import { ref, onUnmounted } from 'vue';
-import { EditorView, NodeView } from 'prosemirror-view';
+import { EditorView } from 'prosemirror-view';
 import { createStore } from 'zustand/vanilla';
+
 import { PopoverTypeEnum } from './interface';
 
 export const contextStore = createStore<{
     editorView: EditorView | null,
     popovers: Record<PopoverTypeEnum, boolean>,
     hasPopoverVisible: boolean,
-    orderedListMap: Record<string, NodeView>,
+    orderedListMap: Record<string, number[]>,
     setEditorView: (view: EditorView) => void,
     setPopoverVisible: (type: PopoverTypeEnum, visible: boolean) => void,
-    addOrderedListMap: (id: string, view: NodeView) => void,
+    setOrderedListMap: (map: Record<string, number[]>) => void,
 }>((set, get) => ({
     editorView: null,
     popovers: {
@@ -29,12 +30,11 @@ export const contextStore = createStore<{
             [type]: visible,
         }
     })),
-    addOrderedListMap: (id: string, view: NodeView) => set((state) => ({
-        orderedListMap: {
-            ...state.orderedListMap,
-            [id]: view,
-        }
-    })) 
+    setOrderedListMap: (map: Record<string, number[]>) => set(() => {
+        return {
+            orderedListMap: map,
+        };
+    })
 }))
 
 export function useContextStore() {

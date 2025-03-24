@@ -9,12 +9,14 @@ import { increaseIndent, decreaseIndent } from './indent';
 import { enter } from './enter';
 import { backspace } from './backspace';
 import { decorationPlugin } from './decoration';
+import { listOrderPlugin } from './order';
 
 const pluginKey = new PluginKey('list');
 
 export const list = () => {
   return [
     decorationPlugin,
+    listOrderPlugin,
     new Plugin({
       key: pluginKey,
       

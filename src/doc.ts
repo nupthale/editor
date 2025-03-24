@@ -17,7 +17,7 @@ export const doc = [
         schema.node('highlight', { id: uuidv4() }, [schema.node('paragraph', { id: uuidv4() }, [schema.text('1. 任务处理信息展示优化，用户可以点击列表中的任务或者操作列的处理按钮，触发任务详情的展示。')])]),
         schema.node(
             'list',
-            { id: uuidv4(), level: 1, start: 1 }, 
+            { id: uuidv4(), order: true }, 
             [
                 schema.node('list_head', { id: uuidv4() }, [
                     schema.text('任务处理信息展示优化任务处理信息展示优化任务处理信息展示优化任务处理信息展示优化任务处理信息展示优化任务处理信息展示优化任务处理信息展示优化任务处理信息展示优化任务处理信息展示优化')
@@ -26,7 +26,7 @@ export const doc = [
         ),
         schema.node(
             'list',
-            { id: uuidv4(), level: 1, start: 1 }, 
+            { id: uuidv4(), order: true }, 
             [
                 schema.node('list_head', { id: uuidv4() }, [
                     schema.text('父级任务')
@@ -34,7 +34,7 @@ export const doc = [
                 schema.node('list_body', { id: uuidv4() }, [
                     schema.node(
                         'list',
-                        { id: uuidv4(), level: 2, start: 1 }, 
+                        { id: uuidv4(), order: true }, 
                         [
                             schema.node('list_head', { id: uuidv4() }, [
                                 schema.text('123')
@@ -46,7 +46,7 @@ export const doc = [
         ),
         schema.node(
             'list',
-            { id: uuidv4(), level: 1, start: 1, order: false }, 
+            { id: uuidv4(), order: true }, 
             [
                 schema.node('list_head', { id: uuidv4() }, [
                     schema.text('将原有信息进行分类，按模块在左侧边栏展示。')
@@ -54,7 +54,7 @@ export const doc = [
                 schema.node('list_body', { id: uuidv4() }, [
                     schema.node(
                         'list',
-                        { id: uuidv4(), level: 2, start: 1 }, 
+                        { id: uuidv4(), order: true, }, 
                         [
                             schema.node('list_head', { id: uuidv4() }, [
                                 schema.text('first parargraph')
@@ -63,7 +63,7 @@ export const doc = [
                     ),
                     schema.node(
                         'list',
-                        { id: uuidv4(), level: 2, start: 1 }, 
+                        { id: uuidv4(), order: true, }, 
                         [
                             schema.node('list_head', { id: uuidv4() }, [
                                 schema.text('second paragraph')
@@ -75,13 +75,13 @@ export const doc = [
         ),
         schema.node(
             'list',
-            { id: uuidv4(), level: 1, start: 1, order: false }, 
+            { id: uuidv4(), order: true }, 
             [
                 schema.node('list_head', { id: uuidv4(), showIndex: false }, []),
                 schema.node('list_body', { id: uuidv4() }, [
                     schema.node(
                         'list',
-                        { id: uuidv4(), level: 2, start: 1 }, 
+                        { id: uuidv4(), order: true, }, 
                         [
                             schema.node('list_head', { id: uuidv4() }, [
                                 schema.text('2')
@@ -89,7 +89,7 @@ export const doc = [
                             schema.node('list_body', { id: uuidv4() }, [
                                 schema.node(
                                     'list',
-                                    { id: uuidv4(), level: 2, start: 1 }, 
+                                    { id: uuidv4(), order: true, }, 
                                     [
                                         schema.node('list_head', { id: uuidv4() }, [
                                             schema.text('3')
