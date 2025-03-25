@@ -3,7 +3,7 @@ import { defineComponent, onMounted, onUnmounted, ref } from 'vue';
 import { message } from 'ant-design-vue';
 import { EditorState } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
-import { applyDevTools } from 'prosemirror-dev-toolkit'
+import { applyDevTools } from 'prosemirror-dev-toolkit';
 
 import { plugins } from './Editor/plugins';
 import { schema } from './Editor/plugins/schema';
@@ -18,6 +18,7 @@ import LikeSection from './Editor/components/LikeSection/index.vue';
 import { contextStore } from './Editor/context';
 import { docChanged$, docScroll$ } from './Editor/event';
 import { useAddEmptyBlock } from './Editor/hooks/useAddEmptyBlock';
+import { useClickEditorOutside } from './Editor/hooks/useClickEditorOutside';
 
 import { doc } from './doc';
 
@@ -35,6 +36,8 @@ export default defineComponent({
     let view: EditorView | null = null;
 
     const { editorDomRef } = useAddEmptyBlock();
+
+    useClickEditorOutside(editorDomRef);
 
     onMounted(() => {
       if (!editorRef.value) return;
