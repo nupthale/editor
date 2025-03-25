@@ -11,6 +11,7 @@ import { schema } from './Editor/plugins/schema';
 import FloatingMenu from './Editor/components/FloatingMenu/index.vue';
 import BubbleMenu from './Editor/components/BubbleMenu/index.vue';
 import Catalog from './Editor/components/Catalog/index.vue';
+import Comments from './Editor/components/Comments/index.vue';
 import MentionSelectPopopver from './Editor/components/MentionSelectPopover/index.vue';
 import LikeSection from './Editor/components/LikeSection/index.vue';
 
@@ -88,17 +89,22 @@ export default defineComponent({
 
         <div class="h-[278px] overflow-hidden bg-[auto_591px] bg-center" style={{ backgroundImage: `url(${headerImage})`}}>
         </div>
+        
+        <div class="relative">
+          {/* 左侧目录 */}
+          <Catalog />
 
-         {/* 左侧目录 */}
-         <Catalog />
-
-        <div class="flex">
-          <div class="w-[820px] pb-[72px] mx-auto" ref={editorDomRef}>
-              <div ref={editorRef} class="min-h-[580px] prose max-w-none" />
+          <div class="flex">
+            <div class="w-[820px] pb-[72px] mx-auto" ref={editorDomRef}>
+                <div ref={editorRef} class="min-h-[580px] prose max-w-none" />
+            </div>
           </div>
-        </div>
 
-        <LikeSection />
+          {/* 右侧评论 */}
+          <Comments />
+
+          <LikeSection />
+        </div>
 
         <FloatingMenu />
 

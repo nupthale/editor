@@ -48,8 +48,8 @@ export default defineComponent({
 
 <style scoped>
 .likeSection {
-    padding: 24px 0 30px;
-    margin: 0 auto 100px;
+    padding: 24px 0 130px;
+    margin: 0 auto 0;
 }
 
 .likeButton {
