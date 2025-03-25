@@ -2,7 +2,6 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { schema } from '../../../schema/index';
 import { decreaseIndent } from './indent';
-import { backspace } from './backspace';
 
 export const enter = (state, dispatch, view) => {
     const { $from } = state.selection;
@@ -20,13 +19,13 @@ export const enter = (state, dispatch, view) => {
 
     const listHeadNode = $from.node();
 
-    if (listHeadNode.textContent === '') {
+    if (listHeadNode.textContent === '' && $from.depth - 3 > 0) {
       // doc -> body -> list -> list_head， 所以depth是3
-      if ($from.depth - 3 === 0) {
+      // if ($from.depth - 3 === 0) {
        
-        backspace(state, dispatch, view);
-        return true;
-      }
+      //   backspace(state, dispatch, view);
+      //   return true;
+      // }
 
       return decreaseIndent(state, dispatch, view);
     }

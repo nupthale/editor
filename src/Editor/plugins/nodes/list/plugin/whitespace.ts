@@ -32,7 +32,6 @@ export const whitespace = (state, dispatch, view) => {
                 {
                     id: uuidv4(),
                 },
-                schema.text('\u200B'),
             )
         )
       );

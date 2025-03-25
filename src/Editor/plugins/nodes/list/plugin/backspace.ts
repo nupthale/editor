@@ -1,28 +1,51 @@
 
+import { v4 as uuidv4 } from 'uuid';
 import { Fragment } from 'prosemirror-model';
 import { TextSelection } from 'prosemirror-state';
 
 import { decreaseIndent } from './indent';
-import { getListBodyNodes, getRangeByPos, getPrevNodeRange, getDeepestContentEnd } from '../../../../shared';
+import { getListBodyNodes, getRangeByPos, getPrevNodeRange, getDeepestContentEnd, getRangeByNode } from '../../../../shared';
+import { schema } from '../../../schema/index';
 
 export const hideIndex = (state, dispatch, view) => {
   const { $from } = state.selection;
   const tr = state.tr;
 
   const listHeadNode = $from.node();
+  const listNode = $from.node($from.depth - 1);
 
-  // 当光标位于开始位置， 且有序号展示， 就先把序号隐藏掉
+  // 当光标位于开始位置
   if (
-    $from.parentOffset === 0 &&
-    listHeadNode?.attrs?.showIndex
+    $from.parentOffset === 0
   ) {
-    tr.setNodeMarkup($from.pos - 1, undefined, {
-      ...listHeadNode.attrs,
-      showIndex: false,
-    });
+    // 位于顶层， 且只有head， 没有list_body， 则直接转换为paragraph
+    if ($from.depth === 3 && listNode.childCount === 1) {
+      const leftNodeContent = $from.node().children;
+      const range = getRangeByNode(state, listNode);
 
-    dispatch?.(tr);
-    return true;
+      tr.replaceRangeWith(
+        range[0],
+        range[1],
+        schema.nodes.paragraph.create({
+          id: uuidv4(),
+        }, leftNodeContent),
+      );
+      
+      tr.setSelection(
+        TextSelection.create(tr.doc, range[0]),
+      );
+
+      dispatch?.(tr);
+      return true;
+    } else if (listHeadNode?.attrs?.showIndex) {
+      // 否则， 只是隐藏序号展示
+      tr.setNodeMarkup($from.pos - 1, undefined, {
+        ...listHeadNode.attrs,
+        showIndex: false,
+      });
+      dispatch?.(tr);
+      return true;
+    }
   }
 
   return false;
@@ -35,7 +58,7 @@ export const backspaceAtEdge = (state, dispatch, view) => {
   const listNode = $from.node($from.depth - 1);
   if (!listNode) return false;
   const listHeadNode = $from.node();
-
+  
   // 当序号已被隐藏了， 并且光标位于head开始位置， 就decreaseIndent
   if (
     !listHeadNode?.attrs?.showIndex &&
