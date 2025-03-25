@@ -102,5 +102,25 @@ export const doc = [
                 ]),
             ]
         ),
+
+        // table
+        schema.node('table', { id: uuidv4() }, [
+            schema.node('table_row', { id: uuidv4() }, [
+                schema.node('table_cell', { id: uuidv4() }, [
+                    schema.node('paragraph', { id: uuidv4() }, [schema.text('1')])
+                ]),
+                schema.node('table_cell', { id: uuidv4() }, [
+                    schema.node('paragraph', { id: uuidv4() }, [schema.text('2')])
+                ]),
+            ]),
+            schema.node('table_row', { id: uuidv4() }, [
+                schema.node('table_cell', { id: uuidv4() }, [
+                    schema.node('paragraph', { id: uuidv4() }, [schema.text('3')])  
+                ]),
+                schema.node('table_cell', { id: uuidv4() }, [
+                    schema.node('paragraph', { id: uuidv4() }, [schema.text('\u200B')])  
+                ])
+            ]),
+        ]),
     ]),
 ];

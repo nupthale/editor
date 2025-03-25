@@ -12,6 +12,7 @@ import { mention } from './nodes/mention/plugin';
 import { highlight } from './nodes/highlight/plugin';
 
 import { list } from './nodes/list/plugin/index';
+import { table } from './nodes/table/plugin/index';
 
 // 导入更多插件...
 
@@ -28,6 +29,7 @@ export function plugins(schema: Schema): Plugin[] {
     ...mention(schema),
     ...highlight(schema),
     ...list(),
+    ...table(),
 
     // 优先级最低
     ...keymapPlugin(),
