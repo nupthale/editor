@@ -124,6 +124,8 @@ export const backspace = (state, dispatch, view) => {
 
     if ($from.parent.type.name !== 'list_head') return false;
 
+    if ($from.start !== $from.end) return false;
+
     if (
       // 当内容为空， 且有序号展示， 就先把序号隐藏掉
       hideIndex(state, dispatch, view) ||

@@ -9,10 +9,9 @@ export const bubbleMenuPlugin = () => {
     return [
         new Plugin({
             key: bubbleMenuPluginKey,
-            
-            view(editorView: EditorView) {
-                return {
-                    update: (view, prevState) => {
+            props: {
+                handleDOMEvents: {
+                    mouseup: (view: EditorView, event) => {
                         const { state } = view;
                         const { selection } = state;
                         const { empty, from, to } = selection;
@@ -20,17 +19,26 @@ export const bubbleMenuPlugin = () => {
                         // 如果选区为空，隐藏菜单
                         if (empty || from === to) {
                             hidePopover$.next({ type: PopoverTypeEnum.BUBBLE_MENU });
-                            return;
+                            return false;
                         }
 
-                        // 先隐藏，再展示
-                        hidePopover$.next({ type: PopoverTypeEnum.BUBBLE_MENU });
+                         // 先隐藏，再展示
+                         hidePopover$.next({ type: PopoverTypeEnum.BUBBLE_MENU });
 
-                        // 触发显示气泡菜单
-                        showPopover$.next({
-                            type: PopoverTypeEnum.BUBBLE_MENU,
-                            range: [from, to],
-                        });
+                         // 触发显示气泡菜单
+                         showPopover$.next({
+                             type: PopoverTypeEnum.BUBBLE_MENU,
+                             range: [from, to],
+                         });
+
+                        return true;
+                    }
+                }
+            },
+            view(editorView: EditorView) {
+                return {
+                    update: (view, prevState) => {
+                        
                     }
                 };
             },
