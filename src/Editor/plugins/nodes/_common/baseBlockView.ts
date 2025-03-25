@@ -56,9 +56,9 @@ export class BaseBlockView implements NodeView {
 
   initEvt() {
     // 仅限第一级的block，绑定事件
-    if (this.depth !== 1) {
-      return;
-    };
+    // if (this.depth !== 1) {
+    //   return;
+    // };
   
     this.dom.addEventListener('mouseenter', this.mouseEnter);
 

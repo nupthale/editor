@@ -8,6 +8,7 @@ import { ListBodyView } from '../view/body';
 import { increaseIndent, decreaseIndent } from './indent';
 import { enter } from './enter';
 import { backspace } from './backspace';
+import { whitespace } from './whitespace';
 import { decorationPlugin } from './decoration';
 import { listOrderPlugin } from './order';
 
@@ -49,6 +50,9 @@ export const list = () => {
       },
       Backspace: (state, dispatch, view) => {
         return backspace(state, dispatch, view);
+      },
+      Space: (state, dispatch, view) => {
+        return whitespace(state, dispatch, view);
       }
     })
   ];
