@@ -17,6 +17,7 @@ export const whitespace = (state, dispatch, view) => {
     const paragraph = $from.node();
     const content = paragraph.textContent;
 
+    debugger;
     // content startWith 是数字. 就把当前paragarph 转换为 list
     if (/^\d+\.$/.test(content)) {
       const range = getRangeByPos($from);

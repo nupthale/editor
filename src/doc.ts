@@ -118,7 +118,7 @@ export const doc = [
                     schema.node('paragraph', { id: uuidv4() }, [schema.text('3')])  
                 ]),
                 schema.node('table_cell', { id: uuidv4() }, [
-                    schema.node('paragraph', { id: uuidv4() }, [schema.text('\u200B')])  
+                    schema.node('paragraph', { id: uuidv4() })  
                 ])
             ]),
         ]),

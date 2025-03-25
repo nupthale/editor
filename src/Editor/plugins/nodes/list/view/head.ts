@@ -47,10 +47,11 @@ export class ListHeadView implements NodeView {
 
       // 获取父节点（list）的属性
       const pos = this.getPos();
+
       if (pos !== undefined) {
           const parentNode = getParentNodeByPos(this.view, pos + 1);  // 获取父节点（list）
           const ordered = parentNode.attrs.ordered;
-          this.indexDOM.innerHTML = ordered ? this.getIndex() : '<div class="text-center" style="-webkit-transform: scale(1.375)">•</div>';
+          this.indexDOM.innerHTML = this.getIndex(ordered);
       } else {
           this.indexDOM.innerHTML = this.getIndex();
       }
@@ -98,13 +99,16 @@ export class ListHeadView implements NodeView {
       return parentNode.attrs.id;
     }
 
-    getIndex = () => {
+    getIndex = (ordered) => {
+      const dot = '<div class="text-center" style="-webkit-transform: scale(1.375)">•</div>';
+      if (!ordered) return dot;
+
       const id = this.getListId();
 
       const map = contextStore.getState().orderedListMap || {};
       const indexStr = map[id]?.join('.');
-    
-      return indexStr ? `${indexStr}.` : '';
+      
+      return indexStr ? `${indexStr}.` : dot;
     }
 
     subscribeEvts() {
