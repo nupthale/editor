@@ -7,20 +7,32 @@ export const tableSchema: Record<string, NodeSpec> = {
     isolating: true,
     attrs: {
       id: { default: '' },
+      colWidth: { default: [] },
     },
     parseDOM: [{
       tag: "table",
       getAttrs(dom) {
+        // query table下的colgroup， 解析拿到所有的宽度
+        const cols = (dom as HTMLElement).querySelector('colgroup')?.children;
+        const colWidth = [...(cols || [])].map(col => col.getAttribute('width'));
+
         return {
-          id: dom.getAttribute('data-id') || ''
+          id: dom.getAttribute('data-id') || '',
+          colWidth,
         };
       }
     }],
     toDOM(node) {
+      const colgroup = ["colgroup", node.attrs.colWidth?.map(width => 
+        ["col", { width }]
+      )];
+
       return ["table", {
         class: "doc-table",
         'data-id': node.attrs.id,
-      }, ["tbody", 0]];
+      }, 
+      colgroup,
+      ["tbody", 0]];
     }
   },
 
@@ -40,7 +52,6 @@ export const tableSchema: Record<string, NodeSpec> = {
     attrs: {
       colspan: { default: 1 },
       rowspan: { default: 1 },
-      colwidth: { default: null },
     },
     isolating: true,
     parseDOM: [{
@@ -49,7 +60,6 @@ export const tableSchema: Record<string, NodeSpec> = {
         return {
           colspan: dom.getAttribute("colSpan") || 1,
           rowspan: dom.getAttribute("rowSpan") || 1,
-          colwidth: dom.getAttribute("colWidth") || null
         };
       }
     }],
@@ -60,7 +70,6 @@ export const tableSchema: Record<string, NodeSpec> = {
       
       if (node.attrs.colSpan > 1) attrs.colspan = node.attrs.colSpan;
       if (node.attrs.rowSpan > 1) attrs.rowspan = node.attrs.rowSpan;
-      if (node.attrs.colWidth) attrs.colWidth = node.attrs.colWidth;
       
       return ["td", attrs, 0];
     }

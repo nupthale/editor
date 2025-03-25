@@ -104,7 +104,7 @@ export const doc = [
         ),
 
         // table
-        schema.node('table', { id: uuidv4() }, [
+        schema.node('table', { id: uuidv4(), colWidth: ['100', '100'] }, [
             schema.node('table_row', { id: uuidv4() }, [
                 schema.node('table_cell', { id: uuidv4() }, [
                     schema.node('paragraph', { id: uuidv4() }, [schema.text('1')])
