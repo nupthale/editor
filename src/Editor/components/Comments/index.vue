@@ -39,6 +39,8 @@ export default defineComponent({
     border-bottom: 1px solid #dee0e3;
     font-weight: 500;
     font-size: 14px;
+    background: #fff;
+    z-index: 1;
 }
 
 .doc-comments_body {
