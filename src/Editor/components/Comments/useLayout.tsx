@@ -140,7 +140,9 @@ export const useLayout = () => {
 
                 transformYMap.value = map;
 
-                layoutReady.value = true;
+                setTimeout(() => {
+                    layoutReady.value = true;
+                }, 300);
             })
         ).subscribe(),
     );

@@ -77,7 +77,7 @@ export default defineComponent({
     opacity: 1;
 
     cursor: pointer;
-    /* transition: transform .3s ease; */
+    transition: transform .2s ease;
 }
 
 .sider-comment.active {
