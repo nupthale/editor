@@ -3,7 +3,8 @@ import { defineComponent, ref, watch } from 'vue';
 import { useElementSize } from '@vueuse/core';
 import { User } from '@zsfe/zsui';
 
-import { updateCommentHeight$ } from './event';
+import { focusComment$, updateCommentHeight$ } from './event';
+import { useContextStore } from '../../context';
 
 export default defineComponent({
     props: {
@@ -17,6 +18,8 @@ export default defineComponent({
 
         const { height } = useElementSize(elRef);
 
+        const { state } = useContextStore();
+
         watch(height, (newHeight) => {
             updateCommentHeight$.next({
                 id: props.id!,
@@ -24,8 +27,20 @@ export default defineComponent({
             });
         });
 
+        const handleCommentClick = () => {
+            focusComment$.next({
+                refId: props.refId!,
+                id: props.id,
+            });
+        };
+
         return () => (
-            <div class={['sider-comment', props.active ? 'active' : '']} ref={elRef} style={{ transform: `translate3d(0, ${props.top || 0}px, 0)`}}>
+            <div 
+                class={['sider-comment', props.active ? 'active' : '']} 
+                ref={elRef} 
+                style={{ transform: `translate3d(0, ${props.top || 0}px, 0)`}}
+                onClick={handleCommentClick}
+            >
                 <div class="sider-comment_head">
                     <div class="sider-comment_headTitle truncate">
                         标题1标题1标题1标题1标题1标题1标题1标题1标题1标题1
@@ -61,7 +76,8 @@ export default defineComponent({
     border: 1px solid #dee0e3;
     opacity: 1;
 
-    transition: transform .3s ease;
+    cursor: pointer;
+    /* transition: transform .3s ease; */
 }
 
 .sider-comment.active {

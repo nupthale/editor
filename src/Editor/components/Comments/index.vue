@@ -3,6 +3,7 @@ import { defineComponent, watch } from 'vue';
 
 import CommentPanel from './CommentPanel.vue';
 import { useLayout } from './useLayout';
+import { useFocusComment } from './useFocusComment';
 import { useDocCommentClick } from './useDocCommentClick';
 import { layoutComments$ } from './event';
 import { useContextStore } from '../../context';
@@ -11,7 +12,8 @@ export default defineComponent({
     setup() {
         const { state } = useContextStore();
 
-        const { transformYMap } = useLayout();
+        const { transformYMap, docCommentRefMap, layoutReady } = useLayout();
+        const { offsetY } = useFocusComment(docCommentRefMap, transformYMap);
 
         useDocCommentClick();
 
@@ -27,16 +29,16 @@ export default defineComponent({
                     评论
                 </div>
 
-                <div class="doc-comments_body">
+                <div class={['doc-comments_body', layoutReady.value ? 'opacity-1' : 'opacity-0']}>
                     {
-                        Object.keys(state.value?.comments).map((refId, refIndex) => (
-                            state.value.comments[refId].map((commentId, index) => (
-                                <CommentPanel 
+                        Object.keys(state.value?.comments).map((refId) => (
+                            state.value.comments[refId].map((commentId) => (
+                                <CommentPanel
                                     active={state.value?.activeCommentId === commentId}
                                     key={commentId} 
                                     id={commentId} 
                                     refId={refId} 
-                                    top={transformYMap.value?.[commentId]} 
+                                    top={transformYMap.value?.[commentId] - offsetY.value} 
                                 />
                             ))
                         ))

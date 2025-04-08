@@ -4,7 +4,7 @@ import { tap, switchMap, map, debounceTime } from 'rxjs';
 
 import { docChanged$ } from '../../event';
 import { contextStore, useContextStore } from '../../context';
-import { layoutComments$, updateCommentHeight$, focusComment$ } from './event';
+import { layoutComments$, updateCommentHeight$ } from './event';
 
 /**
  * context comments:
@@ -47,24 +47,15 @@ const MARGIN = 22;
 type RefType = { refId: string, refTop: number, comments: string[], baseTop?: number };
 
 export const useLayout = () => {
+    const layoutReady = ref(false);
+
     const commentsHeightMap = ref<Record<string, number>>({});
     const siderCommentRefMap = ref<Record<string, RefType>>({});
     const docCommentRefMap = ref<Record<string, RefType>>({});
 
     const { state } = useContextStore();
 
-    const offsetY = ref(0);
-
-    const transformYMapOrigin = ref<Record<string, number>>({});
-
-    const transformYMap = computed(() => {
-        const map = {};
-        Object.keys(transformYMapOrigin.value).forEach(key => {
-            map[key] = transformYMapOrigin.value[key] - offsetY.value;
-        });
-
-        return map;
-    });
+    const transformYMap = ref<Record<string, number>>({});
 
     useSubscription(
         docChanged$.pipe(
@@ -73,22 +64,6 @@ export const useLayout = () => {
                 layoutComments$.next();
             }),
         ).subscribe()
-    );
-
-    useSubscription(
-        focusComment$.pipe(
-            tap(({ refId }) => {
-                // 找到refId的第一个comment
-                const ref = docCommentRefMap.value[refId];
-                const commentIds = ref.comments;
-                const firstCommentId = commentIds[0];
-
-                if (!firstCommentId) return;
-
-                state.value?.setActiveCommentId(firstCommentId);
-                offsetY.value = transformYMapOrigin.value[firstCommentId] - (ref?.refTop || 0);
-            })
-        ).subscribe(),
     );
 
     useSubscription(
@@ -163,12 +138,17 @@ export const useLayout = () => {
                     })
                 });
 
-                transformYMapOrigin.value = map;
+                transformYMap.value = map;
+
+                layoutReady.value = true;
             })
         ).subscribe(),
     );
 
     return {
+        layoutReady,
         transformYMap,
+        docCommentRefMap,
+        siderCommentRefMap,
     };
 }
