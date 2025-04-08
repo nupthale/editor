@@ -20,7 +20,7 @@ import { docChanged$, docScroll$ } from './Editor/event';
 import { useAddEmptyBlock } from './Editor/hooks/useAddEmptyBlock';
 import { useClickEditorOutside } from './Editor/hooks/useClickEditorOutside';
 
-import { doc } from './doc';
+import { doc, comments } from './doc';
 
 import './Editor/theme/index.less';
 import headerImage from './header.png';
@@ -73,6 +73,7 @@ export default defineComponent({
       });
 
       contextStore.getState().setEditorView(view);
+      contextStore.getState().setComments(comments);
 
       // 初始化
       docChanged$.next();

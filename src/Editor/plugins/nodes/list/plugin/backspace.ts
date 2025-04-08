@@ -1,5 +1,5 @@
 
-import { v4 as uuidv4 } from 'uuid';
+import { nanoid } from 'nanoid';
 import { Fragment } from 'prosemirror-model';
 import { TextSelection } from 'prosemirror-state';
 
@@ -27,7 +27,7 @@ export const hideIndex = (state, dispatch, view) => {
         range[0],
         range[1],
         schema.nodes.paragraph.create({
-          id: uuidv4(),
+          id: nanoid(8),
         }, leftNodeContent),
       );
       

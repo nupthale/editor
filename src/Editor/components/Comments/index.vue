@@ -1,10 +1,22 @@
 <script lang="tsx">
-import { defineComponent, ref, computed } from 'vue';
+import { defineComponent, watch } from 'vue';
 
 import CommentPanel from './CommentPanel.vue';
+import { useLayout, layoutComments$ } from './useLayout';
+import { useContextStore } from '../../context';
 
 export default defineComponent({
     setup() {
+        const { state } = useContextStore();
+
+        const { transformYMap } = useLayout();
+
+        watch(() => state.value?.comments, () => {
+            setTimeout(() => {
+                layoutComments$.next();
+            }, 0);
+        });
+
         return () => (
             <div class="doc-comments">
                 <div class="doc-comments_title">
@@ -12,7 +24,13 @@ export default defineComponent({
                 </div>
 
                 <div class="doc-comments_body">
-                    <CommentPanel />
+                    {
+                        Object.keys(state.value?.comments).map((refId) => (
+                            state.value.comments[refId].map((commentId) => (
+                                <CommentPanel key={commentId} id={commentId} refId={refId} top={transformYMap.value?.[commentId]} />
+                            ))
+                        ))
+                    }
                 </div>
             </div>
         );

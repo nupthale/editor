@@ -1,4 +1,4 @@
-import { v4 as uuidv4 } from 'uuid';
+import { nanoid } from 'nanoid';
 import { NodeSpec, DOMOutputSpec, Attrs, Fragment, Mark } from 'prosemirror-model';
 
 export const highlightSchema: Record<string, NodeSpec> = {
@@ -18,12 +18,12 @@ export const highlightSchema: Record<string, NodeSpec> = {
         }, 0]
       },
       customCreate: (schema, attrs?: Attrs | null, content?: Fragment | Node | readonly Node[] | null, marks?: readonly Mark[]) => {
-        const paragraph = schema.nodes.paragraph.create({ id: uuidv4() }, []);
+        const paragraph = schema.nodes.paragraph.create({ id: nanoid(8) }, []);
 
         return schema.nodes.highlight.create(
           { 
             ...attrs,
-            id: attrs?.id ? attrs.id : uuidv4(),
+            id: attrs?.id ? attrs.id : nanoid(8),
           },
           (content as Node[])?.length ? content : (content as Fragment)?.size ? [content] : [paragraph],
           marks,

@@ -4,6 +4,7 @@ import { marks as basicMarks } from 'prosemirror-schema-basic';
 
 import { color } from '../marks/color';
 import { background } from '../marks/background';
+import { comment } from '../marks/comment';
 
 export const marks: Record<string, MarkSpec> = {
   // 使用基础标记
@@ -37,4 +38,5 @@ export const marks: Record<string, MarkSpec> = {
   // 添加更多自定义标记...
   color,
   background,
+  comment,
 }; 

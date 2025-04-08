@@ -1,5 +1,5 @@
 import { ref } from 'vue';
-import { v4 as uuidv4 } from 'uuid';
+import { nanoid } from 'nanoid';
 import { useEventListener } from '@vueuse/core';
 import { Selection } from 'prosemirror-state';
 
@@ -39,7 +39,7 @@ export const useAddEmptyBlock = () => {
             tr.insert(
                 docSize - 1,
                 schema.nodes.paragraph.create({
-                  id: uuidv4(),
+                  id: nanoid(8),
                 })
             );
         }

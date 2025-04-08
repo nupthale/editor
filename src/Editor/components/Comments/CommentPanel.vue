@@ -1,14 +1,48 @@
 <script lang="tsx">
-import { defineComponent } from 'vue';
+import { defineComponent, ref, watch } from 'vue';
+import { useElementSize } from '@vueuse/core';
+import { User } from '@zsfe/zsui';
+
+import { updateCommentHeight$ } from './useLayout';
 
 export default defineComponent({
-    setup() {
+    props: {
+        id: String,
+        refId: String,
+        top: Number,
+    },
+    setup(props) {
+        const elRef = ref<HTMLElement>();
+
+        const { height } = useElementSize(elRef);
+
+        watch(height, (newHeight) => {
+            updateCommentHeight$.next({
+                id: props.id!,
+                height: newHeight,
+            });
+        });
+
         return () => (
-            <div class="doc-comment">
+            <div class="doc-comment" ref={elRef} style={{ transform: `translate3d(0, ${props.top || 0}px, 0)`}}>
                 <div class="doc-comment_head">
                     <div class="doc-comment_headTitle truncate">
                         标题1标题1标题1标题1标题1标题1标题1标题1标题1标题1
                     </div>
+                </div>
+                <div class="doc-comment_body">
+                    <div class="doc-comment-item flex items-start">
+                        <User class="mt-1.5" showText={false} username="李贺" size="large" />
+                        <div class="ml-3">
+                            <div class="text-xs">李贺 <span class="lightText">5分钟前</span></div>
+                            <div class="mt-1 text-sm break-all">
+                                123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="doc-comment_foot">
+
                 </div>
             </div>
         );
@@ -20,12 +54,12 @@ export default defineComponent({
 .doc-comment {
     position: absolute;
     width: 270px;
+    top: 0;
     line-height: 1.5;
     border-radius: 6px;
     border: 1px solid #dee0e3;
     box-shadow: 0 8px 16px #1f23291a;
 
-    transform: translate3d(0px, 174.25px, 0px);
     opacity: 1;
 }
 
@@ -61,5 +95,13 @@ export default defineComponent({
     font-size: 12px;
     color: #646a73;
     line-height: 20px;
+}
+
+.doc-comment-item {
+    padding: 6px 12px;
+}
+
+.doc-comment_foot {
+    min-height: 20px;
 }
 </style>

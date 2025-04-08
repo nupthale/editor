@@ -9,9 +9,13 @@ export const contextStore = createStore<{
     popovers: Record<PopoverTypeEnum, boolean>,
     hasPopoverVisible: boolean,
     orderedListMap: Record<string, number[]>,
+    comments: Record<string, string[]>,
     setEditorView: (view: EditorView) => void,
     setPopoverVisible: (type: PopoverTypeEnum, visible: boolean) => void,
-    setOrderedListMap: (map: Record<string, number[]>) => void,
+    setOrderedListMap: (map: Record<string, number[]>) => void, 
+    setComments: (comments: Record<string, string[]>) => void,
+    addComment: (refId: string, commentId: string) => void,
+    deleteComment: (commentId: string) => void,
 }>((set, get) => ({
     editorView: null,
     popovers: {
@@ -19,6 +23,7 @@ export const contextStore = createStore<{
         [PopoverTypeEnum.BUBBLE_MENU]: false,
     },
     orderedListMap: {},
+    comments: {},
     get hasPopoverVisible() {
         return Object.values(get().popovers).some(visible => visible);
     },
@@ -34,7 +39,31 @@ export const contextStore = createStore<{
         return {
             orderedListMap: map,
         };
-    })
+    }),
+    setComments: (comments: Record<string, string[]>) => set(() => {
+        return {
+            comments,
+        };
+    }),
+    addComment: (refId, commentId) => set((state) => {
+        const comments = state.comments || {};
+        comments[refId] = comments[refId] || [];
+        comments[refId].push(commentId);
+
+        return {
+            comments,
+        };
+    }),
+    deleteComment: (commentId) => set((state) => {
+        const comments = state.comments || {};
+        for (const refId in comments) {
+            comments[refId] = comments[refId].filter(id => id !== commentId);
+        }
+
+        return {
+            comments,
+        };
+    }),
 }))
 
 export function useContextStore() {

@@ -4,7 +4,7 @@ import { toggleMark } from 'prosemirror-commands';
 import { MarkType } from 'prosemirror-model';
 import { tap, filter } from 'rxjs';
 import { useSubscription } from '@vueuse/rxjs';
-import { Bold, Italic, Strikethrough, Underline, Palette } from 'lucide';
+import { Bold, Italic, Strikethrough, Underline, Palette, MessageSquareText } from 'lucide';
 import { Tooltip, Popover as AntdPopover } from 'ant-design-vue';
 
 import Popover from '../Popover/index.vue';
@@ -18,6 +18,7 @@ import { PopoverTypeEnum } from '../../interface';
 import ColorPalette from '../ColorPalette/index.vue';
 import { useMarks } from './useMarks';
 import { useColor } from './useColor';
+import { useComment } from './useComment';
 
 export default defineComponent({
     setup() {
@@ -25,6 +26,8 @@ export default defineComponent({
         const { updateMarks, marksRef } = useMarks();
 
         const { updateTextColor, updateBackgroundColor } = useColor();
+
+        const { handleComment } = useComment();
 
         useSubscription(
             showPopover$.pipe(
@@ -71,7 +74,7 @@ export default defineComponent({
                     </li>
 
                     <li class={['menuItem']} onClick={() => handleAction(schema.marks.underline)}>
-                        <AntdPopover trigger="hover">
+                        <AntdPopover trigger="hover" >
                             {{
                                 default: () => (
                                     <div>
@@ -87,6 +90,13 @@ export default defineComponent({
                             }}
                         </AntdPopover>
                     </li>
+
+                    <li class={['menuItem']} onClick={() => handleComment()}>
+                        <Tooltip title="评论">
+                            <LucideIcon icon={MessageSquareText} width={18}></LucideIcon>
+                        </Tooltip>
+                    </li>
+
                 </ul>
             );
         }

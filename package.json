@@ -31,7 +31,7 @@
     "prosemirror-transform": "^1.7.3",
     "prosemirror-view": "^1.31.7",
     "rxjs": "^7.8.2",
-    "uuid": "^11.1.0",
+    "nanoid": "^5.1.5",
     "vue": "^3.3.4",
     "zustand": "^5.0.3"
   },

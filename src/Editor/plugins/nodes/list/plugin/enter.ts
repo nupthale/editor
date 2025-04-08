@@ -1,4 +1,4 @@
-import { v4 as uuidv4 } from 'uuid';
+import { nanoid } from 'nanoid';
 
 import { schema } from '../../../schema/index';
 import { decreaseIndent } from './indent';
@@ -34,7 +34,7 @@ export const enter = (state, dispatch, view) => {
         type: schema.nodes.list,
         attrs: {
             level: listNode.attrs.level,
-            id: uuidv4(),
+            id: nanoid(8),
             parentId: listNode.attrs.parentId,
         },
     }]).scrollIntoView();

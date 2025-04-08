@@ -1,4 +1,4 @@
-import { v4 as uuidv4 } from 'uuid';
+import { nanoid } from 'nanoid';
 
 import { schema } from '../../../schema/index';
 import { getRangeByPos } from '../../../../shared/index';
@@ -27,11 +27,11 @@ export const whitespace = (state, dispatch, view) => {
         range[1], 
         schema.nodes.list.create(
             {
-                id: uuidv4(),
+                id: nanoid(8),
             },
             schema.nodes.list_head.create(
                 {
-                    id: uuidv4(),
+                    id: nanoid(8),
                 },
             )
         )

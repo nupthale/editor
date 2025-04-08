@@ -5,7 +5,7 @@ export const color: MarkSpec = {
       color: { default: '#1f2329' }
     },
     parseDOM: [{
-      style: 'span',
+      style: 'color',
       getAttrs: (value) => {
         return { color: value }
       }

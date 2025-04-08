@@ -29,6 +29,9 @@ dependencies:
   lucide:
     specifier: ^0.477.0
     version: 0.477.0
+  nanoid:
+    specifier: ^5.1.5
+    version: 5.1.5
   prosemirror-commands:
     specifier: ^1.5.2
     version: 1.7.0
@@ -68,9 +71,6 @@ dependencies:
   rxjs:
     specifier: ^7.8.2
     version: 7.8.2
-  uuid:
-    specifier: ^11.1.0
-    version: 11.1.0
   vue:
     specifier: ^3.3.4
     version: 3.5.13(typescript@5.7.3)
@@ -2316,6 +2316,12 @@ packages:
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
 
+  /nanoid@5.1.5:
+    resolution: {integrity: sha512-Ir/+ZpE9fDsNH0hQ3C68uyThDXzYcim2EqcZ8zn8Chtt1iylPT9xXJB0kPCnqzgcEGikO9RxSrh63MsmVCU7Fw==}
+    engines: {node: ^18 || >=20}
+    hasBin: true
+    dev: false
+
   /nanopop@2.4.2:
     resolution: {integrity: sha512-NzOgmMQ+elxxHeIha+OG/Pv3Oc3p4RU2aBhwWwAqDpXrdTbtRylbRLQztLy8dMMwfl6pclznBdfUhccEn9ZIzw==}
     dev: false
@@ -3110,11 +3116,6 @@ packages:
     resolution: {integrity: sha512-0Pm9hTQ3se5ll1XihRic3FDIku70C+iHUdT/W926rSgHV5QgXsYbKZN8MSC3tJtSkhuROzvsQjAaFENRXr+19A==}
     dependencies:
       inherits: 2.0.3
-    dev: false
-
-  /uuid@11.1.0:
-    resolution: {integrity: sha512-0/A9rDy9P7cJ+8w1c9WD9V//9Wj15Ce2MPz8Ri6032usz+NfePxx5AcN3bN+r6ZL6jEo066/yNYB3tn4pQEx+A==}
-    hasBin: true
     dev: false
 
   /vite@4.5.9(less@4.2.2):
