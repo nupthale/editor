@@ -25,10 +25,19 @@ export default defineComponent({
         });
 
         const handleCommentClick = () => {
-            focusComment$.next({
-                refId: props.refId!,
-                id: props.id,
+            const refDom = document.querySelector(`[data-comment-id="${props.refId}"]`) as HTMLElement;
+            if (!refDom) return;
+
+            refDom.scrollIntoView({
+                block: 'center',
             });
+
+            setTimeout(() => {
+                focusComment$.next({
+                    refId: props.refId!,
+                    id: props.id,
+                });
+            }, 100);
         };
 
         return () => (
