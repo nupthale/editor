@@ -2,7 +2,9 @@
 import { defineComponent, watch } from 'vue';
 
 import CommentPanel from './CommentPanel.vue';
-import { useLayout, layoutComments$ } from './useLayout';
+import { useLayout } from './useLayout';
+import { useDocCommentClick } from './useDocCommentClick';
+import { layoutComments$ } from './event';
 import { useContextStore } from '../../context';
 
 export default defineComponent({
@@ -10,6 +12,8 @@ export default defineComponent({
         const { state } = useContextStore();
 
         const { transformYMap } = useLayout();
+
+        useDocCommentClick();
 
         watch(() => state.value?.comments, () => {
             setTimeout(() => {
@@ -25,9 +29,15 @@ export default defineComponent({
 
                 <div class="doc-comments_body">
                     {
-                        Object.keys(state.value?.comments).map((refId) => (
-                            state.value.comments[refId].map((commentId) => (
-                                <CommentPanel key={commentId} id={commentId} refId={refId} top={transformYMap.value?.[commentId]} />
+                        Object.keys(state.value?.comments).map((refId, refIndex) => (
+                            state.value.comments[refId].map((commentId, index) => (
+                                <CommentPanel 
+                                    active={refIndex + index === 0}
+                                    key={commentId} 
+                                    id={commentId} 
+                                    refId={refId} 
+                                    top={transformYMap.value?.[commentId]} 
+                                />
                             ))
                         ))
                     }
@@ -44,6 +54,7 @@ export default defineComponent({
     top: 0;
     right: 0;
     min-height: 100%;
+    overflow: hidden;
 
     width: 294px;
     padding: 0px 0 96px;
@@ -53,7 +64,7 @@ export default defineComponent({
 .doc-comments_title {
     padding: 8px 12px;
     position: sticky;
-    top: 64px;
+    top: 0;
     border-bottom: 1px solid #dee0e3;
     font-weight: 500;
     font-size: 14px;
