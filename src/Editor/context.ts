@@ -10,10 +10,12 @@ export const contextStore = createStore<{
     hasPopoverVisible: boolean,
     orderedListMap: Record<string, number[]>,
     comments: Record<string, string[]>,
+    activeCommentId: string,
     setEditorView: (view: EditorView) => void,
     setPopoverVisible: (type: PopoverTypeEnum, visible: boolean) => void,
     setOrderedListMap: (map: Record<string, number[]>) => void, 
     setComments: (comments: Record<string, string[]>) => void,
+    setActiveCommentId: (commentId: string) => void,
     addComment: (refId: string, commentId: string) => void,
     deleteComment: (commentId: string) => void,
 }>((set, get) => ({
@@ -24,6 +26,7 @@ export const contextStore = createStore<{
     },
     orderedListMap: {},
     comments: {},
+    activeCommentId: '',
     get hasPopoverVisible() {
         return Object.values(get().popovers).some(visible => visible);
     },
@@ -43,6 +46,11 @@ export const contextStore = createStore<{
     setComments: (comments: Record<string, string[]>) => set(() => {
         return {
             comments,
+        };
+    }),
+    setActiveCommentId: (activeCommentId) => set(() => {
+        return {
+            activeCommentId,
         };
     }),
     addComment: (refId, commentId) => set((state) => {

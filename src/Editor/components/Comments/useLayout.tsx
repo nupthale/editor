@@ -3,7 +3,7 @@ import { useSubscription } from '@vueuse/rxjs';
 import { tap, switchMap, map, debounceTime } from 'rxjs';
 
 import { docChanged$ } from '../../event';
-import { useContextStore } from '../../context';
+import { contextStore, useContextStore } from '../../context';
 import { layoutComments$, updateCommentHeight$, focusComment$ } from './event';
 
 /**
@@ -85,6 +85,7 @@ export const useLayout = () => {
 
                 if (!firstCommentId) return;
 
+                state.value?.setActiveCommentId(firstCommentId);
                 offsetY.value = transformYMapOrigin.value[firstCommentId] - (ref?.refTop || 0);
             })
         ).subscribe(),

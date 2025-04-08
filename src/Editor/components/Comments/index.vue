@@ -32,7 +32,7 @@ export default defineComponent({
                         Object.keys(state.value?.comments).map((refId, refIndex) => (
                             state.value.comments[refId].map((commentId, index) => (
                                 <CommentPanel 
-                                    active={refIndex + index === 0}
+                                    active={state.value?.activeCommentId === commentId}
                                     key={commentId} 
                                     id={commentId} 
                                     refId={refId} 
