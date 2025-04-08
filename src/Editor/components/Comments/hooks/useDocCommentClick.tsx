@@ -1,7 +1,6 @@
 import { onMounted, onUnmounted } from 'vue';
 
-import { contextStore } from '../../context';
-import { focusComment$ } from './event';
+import { focusComment$ } from '../event';
 
 export const useDocCommentClick = () => {
     const handleClick = (event: MouseEvent) => {
@@ -14,8 +13,6 @@ export const useDocCommentClick = () => {
             focusComment$.next({
                 refId,
             });
-
-            
         }
     }
     

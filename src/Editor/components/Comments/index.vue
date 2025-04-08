@@ -2,9 +2,10 @@
 import { defineComponent, watch } from 'vue';
 
 import CommentPanel from './CommentPanel.vue';
-import { useLayout } from './useLayout';
-import { useFocusComment } from './useFocusComment';
-import { useDocCommentClick } from './useDocCommentClick';
+import { useLayout } from './hooks/useLayout';
+import { useFocusComment } from './hooks/useFocusComment';
+import { useDocCommentClick } from './hooks/useDocCommentClick';
+import { useScroll } from './hooks/useScroll';
 import { layoutComments$ } from './event';
 import { useContextStore } from '../../context';
 
@@ -13,9 +14,11 @@ export default defineComponent({
         const { state } = useContextStore();
 
         const { transformYMap, docCommentRefMap, layoutReady } = useLayout();
-        const { offsetY } = useFocusComment(docCommentRefMap, transformYMap);
+        const { offsetY, updateOffsetY } = useFocusComment(docCommentRefMap, transformYMap);
 
         useDocCommentClick();
+
+        useScroll(offsetY, updateOffsetY);
 
         watch(() => state.value?.comments, () => {
             setTimeout(() => {

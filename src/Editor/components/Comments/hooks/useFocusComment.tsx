@@ -1,12 +1,16 @@
 import { ref } from 'vue';
 import { useSubscription } from '@vueuse/rxjs';
 import { tap } from 'rxjs';
-import { focusComment$ } from './event';
-import { useContextStore, contextStore } from '../../context';
+import { focusComment$ } from '../event';
+import { useContextStore, contextStore } from '../../../context';
 export const useFocusComment = (docCommentRefMap, transformYMap) => {
     const { state } = useContextStore();
 
     const offsetY = ref(0);
+
+    const updateOffsetY = (val) => {
+        offsetY.value = val;
+    }
 
     useSubscription(
         focusComment$.pipe(
@@ -60,6 +64,7 @@ export const useFocusComment = (docCommentRefMap, transformYMap) => {
 
     return {
         offsetY,
+        updateOffsetY,
     };
 
 }

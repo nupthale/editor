@@ -4,7 +4,6 @@ import { useElementSize } from '@vueuse/core';
 import { User } from '@zsfe/zsui';
 
 import { focusComment$, updateCommentHeight$ } from './event';
-import { useContextStore } from '../../context';
 
 export default defineComponent({
     props: {
@@ -17,8 +16,6 @@ export default defineComponent({
         const elRef = ref<HTMLElement>();
 
         const { height } = useElementSize(elRef);
-
-        const { state } = useContextStore();
 
         watch(height, (newHeight) => {
             updateCommentHeight$.next({

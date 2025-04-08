@@ -2,9 +2,9 @@ import { ref, computed } from 'vue';
 import { useSubscription } from '@vueuse/rxjs';
 import { tap, switchMap, map, debounceTime } from 'rxjs';
 
-import { docChanged$ } from '../../event';
-import { contextStore, useContextStore } from '../../context';
-import { layoutComments$, updateCommentHeight$ } from './event';
+import { docChanged$ } from '../../../event';
+import { contextStore, useContextStore } from '../../../context';
+import { layoutComments$, updateCommentHeight$ } from '../event';
 
 /**
  * context comments:
@@ -82,15 +82,14 @@ export const useLayout = () => {
 
                 const array: RefType[] = [];
                 Object.keys(comments).forEach((refId) => {
-                    const refDom = document.querySelector(`[data-comment-id="${refId}"]`);
+                    const refDom = document.querySelector(`[data-comment-id="${refId}"]`) as HTMLElement;
                     if (!refDom) return;
                     
-                    const { top } = refDom.getBoundingClientRect();
-                    const pageHeadHeight = 278 + 64;
+                    const refTop = refDom.offsetTop;
 
                     array.push({
                         refId,
-                        refTop: top - pageHeadHeight,
+                        refTop,
                         comments: comments[refId],
                     });
                 });
@@ -139,11 +138,14 @@ export const useLayout = () => {
                 });
 
                 transformYMap.value = map;
-
-                setTimeout(() => {
-                    layoutReady.value = true;
-                }, 300);
-            })
+            }),
+            tap(() => {
+                if (!layoutReady.value) {
+                    setTimeout(() => {
+                        layoutReady.value = true;
+                    }, 300);
+                }
+            }),
         ).subscribe(),
     );
 

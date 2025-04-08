@@ -88,7 +88,7 @@ export default defineComponent({
     });
 
     return () => (
-      <div class="w-full h-full overflow-auto" onScroll={() => docScroll$.next()}>
+      <div class="w-full h-full overflow-auto" onScroll={(e) => docScroll$.next({ e })}>
         <div class="sticky top-0 h-[64px] border-b-[1px] border-[#dee0e3] border-solid bg-white z-10"></div>
 
         <div class="h-[278px] overflow-hidden bg-[auto_591px] bg-center" style={{ backgroundImage: `url(${headerImage})`}}>

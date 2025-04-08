@@ -1,12 +1,11 @@
 import { Subject } from 'rxjs';
-import { Selection } from 'prosemirror-state';
 
 import { BaseBlockView } from './plugins/nodes/_common/baseBlockView';
 
 import { PopoverTypeEnum } from './interface';
 
 // doc scroll
-export const docScroll$ = new Subject<void>();
+export const docScroll$ = new Subject<{ e: Event }>();
 
 // floating menu
 export const blockMouseEnter$ = new Subject<{
