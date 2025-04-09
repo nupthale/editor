@@ -3,7 +3,7 @@ import { useSubscription } from '@vueuse/rxjs';
 import { tap, switchMap, map, debounceTime } from 'rxjs';
 
 import { docChanged$ } from '../../../event';
-import { contextStore, useContextStore } from '../../../context';
+import { useCommentStore } from '../../../store/comment';
 import { layoutComments$, updateCommentHeight$ } from '../event';
 
 /**
@@ -48,12 +48,13 @@ type RefType = { refId: string, refTop: number, comments: string[], baseTop?: nu
 
 export const useLayout = () => {
     const layoutReady = ref(false);
+    const totalHeight = ref(0); // 所有的comment的高度和
 
     const commentsHeightMap = ref<Record<string, number>>({});
     const siderCommentRefMap = ref<Record<string, RefType>>({});
     const docCommentRefMap = ref<Record<string, RefType>>({});
 
-    const { state } = useContextStore();
+    const { state } = useCommentStore();
 
     const transformYMap = ref<Record<string, number>>({});
 
@@ -70,18 +71,19 @@ export const useLayout = () => {
         updateCommentHeight$.pipe(
             tap(({ id, height }) => {
                 commentsHeightMap.value[id] = height;
+
+                layoutComments$.next();
             }),
         ).subscribe(),
     );
 
     useSubscription(
         layoutComments$.pipe(
-            debounceTime(300),
             switchMap(async () => {
-                const comments = state.value.comments || {};
+                const docComments = state.value.docComments || {};
 
                 const array: RefType[] = [];
-                Object.keys(comments).forEach((refId) => {
+                Object.keys(docComments).forEach((refId) => {
                     const refDom = document.querySelector(`[data-comment-id="${refId}"]`) as HTMLElement;
                     if (!refDom) return;
                     
@@ -90,7 +92,7 @@ export const useLayout = () => {
                     array.push({
                         refId,
                         refTop,
-                        comments: comments[refId],
+                        comments: docComments[refId],
                     });
                 });
 
@@ -121,6 +123,7 @@ export const useLayout = () => {
             map((ordered) => {
                 // 计算每个comment的transformY
                 const map: Record<string, number> = {};
+                let lastCommentId: string | null = null;
                 ordered.forEach((item) => {
                     docCommentRefMap.value[item.refId] = item;
 
@@ -131,6 +134,7 @@ export const useLayout = () => {
 
                         siderCommentRefMap.value[commentId] = item;
 
+                        lastCommentId = commentId;
                         map[commentId] = 
                             (item.baseTop || 0) + 
                             (index === 0 ? 0 : prevHeight + index * MARGIN);
@@ -138,6 +142,7 @@ export const useLayout = () => {
                 });
 
                 transformYMap.value = map;
+                totalHeight.value = lastCommentId ? map[lastCommentId] + (commentsHeightMap.value[lastCommentId] || 0) + MARGIN : 0;
             }),
             tap(() => {
                 if (!layoutReady.value) {
@@ -150,6 +155,7 @@ export const useLayout = () => {
     );
 
     return {
+        totalHeight,
         layoutReady,
         transformYMap,
         docCommentRefMap,

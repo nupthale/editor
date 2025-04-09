@@ -1,7 +1,7 @@
 import { Plugin, PluginKey } from 'prosemirror-state';
 import { Node } from 'prosemirror-model';
 
-import { contextStore } from '../../../../context';
+import { contextStore } from '../../../../store/context';
 
 export const listOrderKey = new PluginKey('list-order');
 

@@ -3,7 +3,7 @@ import { defineComponent, ref, computed } from 'vue';
 import { switchMap, debounceTime } from 'rxjs';
 import { useSubscription } from '@vueuse/rxjs';
 
-import { contextStore } from '../../context';
+import { contextStore } from '../../store/context';
 import { docChanged$ } from '../../event';
 
 import { getText } from './util';

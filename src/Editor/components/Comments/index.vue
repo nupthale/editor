@@ -3,24 +3,24 @@ import { defineComponent, watch } from 'vue';
 
 import CommentPanel from './CommentPanel.vue';
 import { useLayout } from './hooks/useLayout';
-import { useFocusComment } from './hooks/useFocusComment';
+import { useActiveComment } from './hooks/useActiveComment';
 import { useDocCommentClick } from './hooks/useDocCommentClick';
 import { useScroll } from './hooks/useScroll';
 import { layoutComments$ } from './event';
-import { useContextStore } from '../../context';
+import { useCommentStore } from '../../store/comment';
 
 export default defineComponent({
     setup() {
-        const { state } = useContextStore();
+        const { state } = useCommentStore();
 
-        const { transformYMap, docCommentRefMap, layoutReady } = useLayout();
-        const { offsetY, updateOffsetY } = useFocusComment(docCommentRefMap, transformYMap);
+        const { transformYMap, docCommentRefMap, totalHeight, layoutReady } = useLayout();
+        const { offsetY, updateOffsetY } = useActiveComment(docCommentRefMap, transformYMap);
 
         useDocCommentClick();
 
         useScroll(offsetY, updateOffsetY);
 
-        watch(() => state.value?.comments, () => {
+        watch(() => state.value?.docComments, () => {
             setTimeout(() => {
                 layoutComments$.next();
             }, 0);
@@ -32,12 +32,17 @@ export default defineComponent({
                     评论
                 </div>
 
-                <div class={['doc-comments_body', layoutReady.value ? 'opacity-1' : 'opacity-0']}>
+                <div 
+                    class={['doc-comments_body', layoutReady.value ? 'opacity-1' : 'opacity-0']}
+                    style={{
+                        minHeight: `${totalHeight.value}px`,
+                    }}
+                >
                     {
-                        Object.keys(state.value?.comments).map((refId) => (
-                            state.value.comments[refId].map((commentId) => (
+                        Object.keys(state.value?.docComments).map((refId) => (
+                            state.value.docComments[refId].map((commentId) => (
                                 <CommentPanel
-                                    active={state.value?.activeCommentId === commentId}
+                                    active={state.value?.activeDocCommentId === commentId}
                                     key={commentId} 
                                     id={commentId} 
                                     refId={refId} 

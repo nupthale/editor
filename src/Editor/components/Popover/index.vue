@@ -6,7 +6,7 @@ import { useSubscription,  } from '@vueuse/rxjs';
 import domAlign from 'dom-align';
 import { showPopover$, hidePopover$, docScroll$ } from '../../event';
 import { PopoverTypeEnum } from '../../interface';
-import { useContextStore } from '../../context';
+import { useContextStore } from '../../store/context';
 
 export default defineComponent({
     props: {

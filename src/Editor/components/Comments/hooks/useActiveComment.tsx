@@ -1,30 +1,22 @@
 import { ref } from 'vue';
 import { useSubscription } from '@vueuse/rxjs';
 import { tap } from 'rxjs';
-import { focusComment$ } from '../event';
-import { useContextStore, contextStore } from '../../../context';
-export const useFocusComment = (docCommentRefMap, transformYMap) => {
-    const { state } = useContextStore();
+import { activeComment$ } from '../event';
+import { contextStore } from '../../../store/context';
+import { useCommentStore } from '../../../store/comment';
+
+export const useActiveComment = (docCommentRefMap, transformYMap) => {
+
+    const { state: commentState } = useCommentStore();
 
     const offsetY = ref(0);
 
     const updateOffsetY = (val) => {
-        offsetY.value = val;
+        offsetY.value = Math.max(val, 0);
     }
 
     useSubscription(
-        focusComment$.pipe(
-            tap(({ refId, id }) => {
-                // 找到refId的第一个comment
-                const ref = docCommentRefMap.value[refId];
-                const commentIds = ref.comments;
-                const commentId = id ? id : commentIds[0];
-
-                if (!commentId) return;
-
-                state.value?.setActiveCommentId(commentId);
-                offsetY.value = transformYMap.value[commentId] - (ref?.refTop || 0);
-            }),
+        activeComment$.pipe(
             tap(({ refId }) => {
                 // 更新commentMark 为active
                 const editorView = contextStore.getState().editorView;
@@ -58,6 +50,16 @@ export const useFocusComment = (docCommentRefMap, transformYMap) => {
                 });
 
                 dispatch?.(tr);
+            }),
+            tap(({ refId, id }) => {
+                // 找到refId的第一个comment
+                const ref = docCommentRefMap.value[refId];
+                const commentIds = ref.comments;
+                const commentId = id ? id : commentIds[0];
+
+                if (!commentId) return;    
+                commentState.value?.setActiveDocCommentId(commentId);
+                offsetY.value = transformYMap.value[commentId] - (ref?.refTop || 0);
             }),
         ).subscribe(),
     );

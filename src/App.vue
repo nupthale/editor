@@ -15,12 +15,13 @@ import Comments from './Editor/components/Comments/index.vue';
 import MentionSelectPopopver from './Editor/components/MentionSelectPopover/index.vue';
 import LikeSection from './Editor/components/LikeSection/index.vue';
 
-import { contextStore } from './Editor/context';
+import { contextStore } from './Editor/store/context';
+import { commentStore } from './Editor/store/comment';
 import { docChanged$, docScroll$ } from './Editor/event';
 import { useAddEmptyBlock } from './Editor/hooks/useAddEmptyBlock';
 import { useClickEditorOutside } from './Editor/hooks/useClickEditorOutside';
 
-import { doc, comments } from './doc';
+import { doc, docComments, commentInfoMap } from './doc';
 
 import './Editor/theme/index.less';
 import headerImage from './header.png';
@@ -73,7 +74,8 @@ export default defineComponent({
       });
 
       contextStore.getState().setEditorView(view);
-      contextStore.getState().setComments(comments);
+      commentStore.getState().setDocComments(docComments);
+      commentStore.getState().setCommentInfoMap(commentInfoMap);
 
       // 初始化
       docChanged$.next();

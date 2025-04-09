@@ -1,7 +1,7 @@
 import { Node } from 'prosemirror-model';
 import { EditorView, NodeView, ViewMutationRecord } from 'prosemirror-view';
 
-import { contextStore } from '../../../../context';
+import { contextStore } from '../../../../store/context';
 import { getParentNodeByPos } from '../../../../shared';
 
 export class ListHeadView implements NodeView {

@@ -2,7 +2,7 @@ import { Ref } from 'vue';
 import { TextSelection } from 'prosemirror-state';
 import { BaseBlockView } from '../../plugins/nodes/_common/baseBlockView';
 
-import { contextStore } from '../../context';
+import { contextStore } from '../../store/context';
 import { blockMouseLeave$ } from '../../event';
 
 

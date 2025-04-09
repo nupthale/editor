@@ -2,7 +2,7 @@
 import { ref, watchEffect, Ref } from 'vue';
 import { useEventListener } from '@vueuse/core';
 
-import { useContextStore } from '../../context';
+import { useContextStore } from '../../store/context';
 import { PopoverTypeEnum } from '../../interface';
 
 export const useNavigate = (

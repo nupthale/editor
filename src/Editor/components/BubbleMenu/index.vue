@@ -11,7 +11,7 @@ import Popover from '../Popover/index.vue';
 import { schema } from '../../plugins/schema';
 import LucideIcon from '../LucideIcon/index.vue';
 
-import { contextStore } from '../../context';
+import { contextStore } from '../../store/context';
 import { showPopover$ } from '../../event';
 import { PopoverTypeEnum } from '../../interface';
 

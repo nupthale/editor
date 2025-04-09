@@ -1,7 +1,7 @@
 import { ref } from 'vue';
 
 import { schema } from '../../plugins/schema';
-import { contextStore } from '../../context';
+import { contextStore } from '../../store/context';
 export const useMarks = () => {
     const marksRef = ref<string[]>([]);
 

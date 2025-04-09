@@ -1,5 +1,5 @@
 import { schema } from '../../plugins/schema';
-import { contextStore } from '../../context';
+import { contextStore } from '../../store/context';
 
 export const useColor = () => {
     const updateTextColor = (color: string) => {

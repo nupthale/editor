@@ -1,7 +1,11 @@
 import { nanoid } from 'nanoid';
+import { of, tap, delay } from 'rxjs';
 
-import { contextStore } from '../../context';
+import { contextStore } from '../../store/context';
+import { commentStore } from '../../store/comment';
 import { schema } from '../../plugins/schema';
+import { activeComment$, focusCommentInput$, removeCommentTransition$ } from '../Comments/event';
+
 
 export const useComment = () => {
   const handleComment = () => {
@@ -10,8 +14,10 @@ export const useComment = () => {
 
     if (!editorView || !selection) return;
 
+    const refId = nanoid(8);
+
     const commentMark = schema.marks.comment.create({
-        id: nanoid(8),
+        id: refId,
         active: true,
     });
 
@@ -22,6 +28,22 @@ export const useComment = () => {
     dispatch(
         state.tr.addMark(from, to, commentMark)
     );
+
+    const commentId = nanoid(8);
+
+    removeCommentTransition$.next();
+    commentStore.getState().addDocComment(refId, commentId);
+    
+    setTimeout(() => {
+        of({
+          refId,
+          id: commentId,
+        }).pipe(
+            tap((data) => activeComment$.next(data)),
+            delay(100),
+            tap(() => focusCommentInput$.next({ id: commentId })),
+        ).subscribe();
+    }, 100);
   };
 
   return {

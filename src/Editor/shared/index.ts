@@ -101,7 +101,6 @@ export const getDeepestContentEnd = ($pos: ResolvedPos) => {
          }
      }
      
-     debugger;
      // 返回找到的最深层节点的内容结束位置
      return currentPos.end(depth);
 }
@@ -114,4 +113,17 @@ export const getParentNodeByPos = (view: EditorView, pos: number, depthOffset = 
     const $pos = view.state.doc.resolve(pos);
         
     return getParentNode($pos, depthOffset);  // 获取父节点（list）
+}
+
+export const isElementVisible = (element: Element) => {
+    if (!element) return false;
+
+    const rect = element.getBoundingClientRect();
+    
+    return (
+        rect.top >= 0 &&
+        rect.left >= 0 &&
+        rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+        rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+    );
 }

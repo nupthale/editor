@@ -3,7 +3,7 @@ import { nanoid } from 'nanoid';
 import { useEventListener } from '@vueuse/core';
 import { Selection } from 'prosemirror-state';
 
-import { contextStore } from '../context';
+import { contextStore } from '../store/context';
 import { schema } from '../plugins/schema/index';
 
 export const useAddEmptyBlock = () => {

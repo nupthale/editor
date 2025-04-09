@@ -7,7 +7,7 @@ import { User } from '@zsfe/zsui';
 import Popover from '../Popover/index.vue';
 
 import { schema } from '../../plugins/schema/index';
-import { contextStore } from '../../context';
+import { contextStore } from '../../store/context';
 import { MentionTypeEnum, PopoverTypeEnum } from '../../interface';
 import { hidePopover$ } from '../../event';
 import { useNavigate } from './useNavigate';

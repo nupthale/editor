@@ -3,7 +3,7 @@ import { Plugin, PluginKey } from 'prosemirror-state';
 import { MentionView } from './view';
 
 import { showPopover$, hidePopover$ } from '../../../event';
-import { contextStore } from '../../../context';
+import { contextStore } from '../../../store/context';
 import { PopoverTypeEnum } from '../../../interface';
 
 export function mention(schema: Schema): Plugin[] {

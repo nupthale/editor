@@ -12,3 +12,14 @@ export type MentionParam = {
   name: string;
   id: string;
 }
+
+export type CommentInfoType = {
+  refDoc: string;
+  id: string;
+  comments: {
+    id: string;
+    user: string;
+    content: string;
+    createTime: number;
+  }[];
+}

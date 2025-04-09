@@ -1,9 +1,22 @@
 <script lang="tsx">
-import { defineComponent, ref, watch } from 'vue';
+import { defineComponent, ref, watch, computed } from 'vue';
+import { Input, Button } from 'ant-design-vue';
+import { filter, tap } from 'rxjs';
+import { useSubscription } from '@vueuse/rxjs';
 import { useElementSize } from '@vueuse/core';
 import { User } from '@zsfe/zsui';
 
-import { focusComment$, updateCommentHeight$ } from './event';
+import { 
+    activeComment$, 
+    updateCommentHeight$, 
+    focusCommentInput$, 
+    addCommentTransition$, 
+    removeCommentTransition$,
+} from './event';
+
+import { useCommentStore } from '../../store/comment';
+import { CommentInfoType } from '../../interface';
+import { isElementVisible } from '../../shared';
 
 export default defineComponent({
     props: {
@@ -13,9 +26,19 @@ export default defineComponent({
         active: Boolean,
     },
     setup(props) {
+        const inputVal = ref<string | undefined>();
         const elRef = ref<HTMLElement>();
+        const inputRef = ref<HTMLElement>();
+
+        const noTransition = ref(false);
 
         const { height } = useElementSize(elRef);
+
+        const { state: commentState } = useCommentStore();
+
+        const commentInfo = computed(() => {
+            return commentState.value?.commentInfoMap?.[props.id!] as CommentInfoType || {};
+        });
 
         watch(height, (newHeight) => {
             updateCommentHeight$.next({
@@ -24,47 +47,99 @@ export default defineComponent({
             });
         });
 
+        useSubscription(
+            focusCommentInput$.pipe(
+                filter(({ id }) => id === props.id && !!inputRef.value),
+                tap(() => {
+                    inputRef.value?.focus();
+                }),
+            ).subscribe(),
+        );
+
+        useSubscription(
+            addCommentTransition$.pipe(
+                tap(() => noTransition.value = false),
+            ).subscribe()
+        );
+
+        useSubscription(
+            removeCommentTransition$.pipe(
+                tap(() => noTransition.value = true),
+            ).subscribe()
+        );
+
         const handleCommentClick = () => {
             const refDom = document.querySelector(`[data-comment-id="${props.refId}"]`) as HTMLElement;
             if (!refDom) return;
 
-            refDom.scrollIntoView({
-                block: 'center',
-            });
+            if (!isElementVisible(refDom)) {
+                refDom.scrollIntoView({
+                    block: 'center',
+                });
+            }
+            
+            addCommentTransition$.next();
 
             setTimeout(() => {
-                focusComment$.next({
+                activeComment$.next({
                     refId: props.refId!,
                     id: props.id,
                 });
-            }, 100);
+            }, 300);
         };
 
         return () => (
             <div 
-                class={['sider-comment', props.active ? 'active' : '']} 
+                class={['sider-comment', props.active ? 'active' : '', noTransition.value ? 'noTransition' : '']} 
                 ref={elRef} 
                 style={{ transform: `translate3d(0, ${props.top || 0}px, 0)`}}
                 onClick={handleCommentClick}
             >
                 <div class="sider-comment_head">
                     <div class="sider-comment_headTitle truncate">
-                        标题1标题1标题1标题1标题1标题1标题1标题1标题1标题1
+                        {commentInfo.value?.refDoc || '-'}
                     </div>
                 </div>
                 <div class="sider-comment_body">
-                    <div class="sider-comment-item flex items-start">
-                        <User class="mt-1.5" showText={false} username="李贺" size="large" />
-                        <div class="ml-3">
-                            <div class="text-xs">李贺 <span class="lightText">5分钟前</span></div>
-                            <div class="mt-1 text-sm break-all">
-                                123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123
+                    {
+                        commentInfo.value?.comments?.map((comment) => (
+                            <div key={comment.id} class="sider-comment-item flex items-start">
+                                <User class="mt-1.5" showText={false} username={comment.user} size="large" />
+                                <div class="ml-3">
+                                    <div class="text-xs">{comment.user} <span class="lightText">{comment.createTime}</span></div>
+                                    <div class="mt-1 text-sm break-all">
+                                        {comment.content || '-'}
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
+                        ))
+                    }
                 </div>
                 <div class="sider-comment_foot">
+                    {
+                        (props.active || inputVal.value?.length) ? (
+                            <div>
+                                <Input.TextArea
+                                    ref={inputRef}
+                                    autoSize={{ minRows: 1 }}
+                                    placeholder="输入评论"
+                                    value={inputVal.value}
+                                    onChange={(e) => {
+                                        inputVal.value = e.target.value;
+                                    }}
+                                />
 
+                                {
+                                    inputVal.value?.length? (
+                                        <div class="flex items-center justify-end mt-3">
+                                            <Button class="sider-commentBtn" size="small">取消</Button>
+                                            <Button type="primary" size="small" class="sider-commentBtn ml-2">发送</Button>
+                                        </div>
+                                    ) : ''
+                                }
+                            </div>
+                        ) : ''
+                    }
                 </div>
             </div>
         );
@@ -84,6 +159,10 @@ export default defineComponent({
 
     cursor: pointer;
     transition: transform .2s ease;
+}
+
+.sider-comment.noTransition {
+    transition: none!important;
 }
 
 .sider-comment.active {
@@ -130,9 +209,19 @@ export default defineComponent({
 
 .sider-comment-item {
     padding: 6px 12px;
+    min-height: 55px;
 }
 
 .sider-comment_foot {
-    min-height: 20px;
+    padding: 10px 12px 16px;
+}
+
+.sider-commentBtn {
+    min-width: 48px;
+    line-height: 20px;
+    height: 28px;
+    padding: 3px 7px;
+    font-size: 12px;
+    border-radius: 6px;
 }
 </style>
