@@ -1,5 +1,5 @@
 <script lang="tsx">
-import { defineComponent, watch } from 'vue';
+import { defineComponent, watch, computed } from 'vue';
 
 import CommentPanel from './CommentPanel.vue';
 import { useLayout } from './hooks/useLayout';
@@ -26,10 +26,20 @@ export default defineComponent({
             }, 0);
         });
 
+        const commentsCount = computed(() => {
+            let count = 0;
+
+            Object.keys(state.value?.docComments).map((refId) => (
+                count += state.value.docComments[refId]?.length || 0
+            ));
+
+            return count;
+        });
+
         return () => (
             <div class="doc-comments">
                 <div class="doc-comments_title">
-                    评论
+                    评论（{ commentsCount.value }）
                 </div>
 
                 <div 
