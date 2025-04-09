@@ -1,6 +1,7 @@
 <script lang="tsx">
 import { defineComponent, ref, watch, computed } from 'vue';
 import { Input, Button } from 'ant-design-vue';
+import { nanoid } from 'nanoid';
 import { filter, tap } from 'rxjs';
 import { useSubscription } from '@vueuse/rxjs';
 import { useElementSize } from '@vueuse/core';
@@ -88,6 +89,22 @@ export default defineComponent({
             }, 300);
         };
 
+        const handleCancel = () => {
+            inputVal.value = '';
+            commentState.value?.setActiveDocCommentId(null);
+        }
+
+        const handleSend = () => {
+            if (!props.id || !inputVal.value?.length) {
+                return;
+            }
+
+            commentState.value?.addCommentInfo(props.id, inputVal.value);
+
+            inputVal.value = '';
+            inputRef.value?.focus();
+        }
+
         return () => (
             <div 
                 class={['sider-comment', props.active ? 'active' : '', noTransition.value ? 'noTransition' : '']} 
@@ -127,13 +144,17 @@ export default defineComponent({
                                     onChange={(e) => {
                                         inputVal.value = e.target.value;
                                     }}
+                                    onPressEnter={(e) => {
+                                        e.preventDefault();
+                                        handleSend();
+                                    }}
                                 />
 
                                 {
                                     inputVal.value?.length? (
-                                        <div class="flex items-center justify-end mt-3">
-                                            <Button class="sider-commentBtn" size="small">取消</Button>
-                                            <Button type="primary" size="small" class="sider-commentBtn ml-2">发送</Button>
+                                        <div class="flex items-center justify-end mt-3" onClick={e => e.stopPropagation()}>
+                                            <Button class="sider-commentBtn" size="small" onClick={handleCancel}>取消</Button>
+                                            <Button type="primary" size="small" class="sider-commentBtn ml-2" onClick={handleSend}>发送</Button>
                                         </div>
                                     ) : ''
                                 }

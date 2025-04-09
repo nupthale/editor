@@ -181,3 +181,16 @@ export const commentInfoMap = {
         ],
     },
 };
+
+export const mockUsers = [
+    { id: '1', username: '王凯' },
+    { id: '2', username: '张雨晴' },
+    { id: '3', username: '李思琪' },
+    { id: '4', username: '刘天成' },
+    { id: '5', username: '陈明宇' },
+    { id: '6', username: '赵子涵' },
+    { id: '7', username: '吴思远' },
+    { id: '8', username: '林晓峰' },
+    { id: '9', username: '黄子韬' },
+    { id: '10', username: '周雨欣' },
+];

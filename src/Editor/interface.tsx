@@ -20,6 +20,6 @@ export type CommentInfoType = {
     id: string;
     user: string;
     content: string;
-    createTime: number;
+    createTime: string;
   }[];
 }
