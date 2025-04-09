@@ -24,7 +24,7 @@ import { useClickEditorOutside } from './Editor/hooks/useClickEditorOutside';
 import { doc, docComments, commentInfoMap } from './doc';
 
 import './Editor/theme/index.less';
-import headerImage from './header.png';
+import headerImage from './header.jpeg';
 
 message.config({
   maxCount: 1,
