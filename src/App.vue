@@ -50,7 +50,7 @@ export default defineComponent({
       const state = EditorState.create({
         schema,
         plugins: plugins(schema),
-        doc: schema.node('doc', null, doc)
+        // doc: schema.node('doc', null, doc)
       });
 
       // 创建 EditorView
