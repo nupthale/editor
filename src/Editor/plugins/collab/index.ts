@@ -1,5 +1,6 @@
 import * as Y from 'yjs';
 import { WebrtcProvider } from 'y-webrtc';
+// import { WebsocketProvider } from 'y-websocket';
 import { ySyncPlugin, yCursorPlugin, yUndoPlugin, prosemirrorToYXmlFragment } from 'y-prosemirror';
 
 import { schema } from '../schema/index';
@@ -12,10 +13,20 @@ const initialDoc = schema.node('doc', null, doc);
 const namespace = 'prosemirror';
 const ydoc = new Y.Doc();
 const provider = new WebrtcProvider('prosemirror-editor-room', ydoc, {
-  signaling: ['wss://signaling.yjs.dev', 'wss://y-webrtc-signaling-eu.herokuapp.com'],
+  signaling: [
+    'wss://y-webrtc-signaling-us.herokuapp.com',
+    'wss://y-webrtc-signaling-eu.herokuapp.com',
+    'wss://signaling.yjs.dev',
+  ],
   maxConns: 20,
   filterBcConns: true
 });
+
+// const provider = new WebsocketProvider(
+//   'wss://demos.yjs.dev',
+//   'prosemirror-editor-room-hale-dicm1l',
+//   ydoc
+// );
 const sharedDoc = ydoc.getXmlFragment(namespace);
 
 
@@ -37,7 +48,8 @@ provider.on('status', ({ connected }) => {
   if (connected && sharedDoc.length === 0) {
     try {
       console.log('开始初始化协同文档...');
-      prosemirrorToYXmlFragment(initialDoc, sharedDoc);
+      // 第一次空的时候， 可以初始化到服务器， 后端服务器有了， 就不需要本地初始化了
+      // prosemirrorToYXmlFragment(initialDoc, sharedDoc);
     } catch (err) {
       console.error('初始化文档失败:', err);
     }

@@ -92,7 +92,12 @@ export default defineComponent({
     left: 20px;
     height: 0px;
     max-width: 495px;
-    width: fit-content;
+}
+
+@media screen and (max-width: 1600px)  {
+    .doc-catalog-wrap {
+        max-width: 250px;
+    }
 }
 
 .doc-catalog-container {
