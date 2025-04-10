@@ -5,17 +5,19 @@ export const titleSchema: Record<string, NodeSpec> = {
       content: "text*",
       defining: true,
       attrs: {
+        id: { default: "" },
         placeholder: { default: "请输入标题" }
       },
       parseDOM: [{ 
         tag: "h1", 
-        attrs: { 
+        attrs: {
           class: "doc-title",
           "data-placeholder": "请输入标题"
         } 
       }],
       toDOM(node): DOMOutputSpec { 
         return ["h1", { 
+          'data-id': node.attrs.id,
           class: "doc-title", 
           "data-placeholder": node.attrs.placeholder
         }, 0] 

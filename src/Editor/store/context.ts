@@ -6,14 +6,17 @@ import { PopoverTypeEnum } from '../interface';
 
 export const contextStore = createStore<{
     editorView: EditorView | null,
+    scrollEl: HTMLElement | null,
     popovers: Record<PopoverTypeEnum, boolean>,
     hasPopoverVisible: boolean,
     orderedListMap: Record<string, number[]>,
     setEditorView: (view: EditorView) => void,
+    setScrollEl: (el: HTMLElement | null) => void,
     setPopoverVisible: (type: PopoverTypeEnum, visible: boolean) => void,
     setOrderedListMap: (map: Record<string, number[]>) => void, 
 }>((set, get) => ({
     editorView: null,
+    scrollEl: null,
     popovers: {
         [PopoverTypeEnum.MENTION]: false,
         [PopoverTypeEnum.BUBBLE_MENU]: false,
@@ -24,6 +27,7 @@ export const contextStore = createStore<{
     },
     
     setEditorView: (view: EditorView | null) => set({ editorView: view }),
+    setScrollEl: (el: HTMLElement | null) => set({ scrollEl: el }),
     setPopoverVisible: (type: PopoverTypeEnum, visible: boolean) => set((state) => ({
         popovers: {
             ...state.popovers,

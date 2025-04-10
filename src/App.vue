@@ -20,6 +20,7 @@ import { commentStore } from './Editor/store/comment';
 import { docChanged$, docScroll$ } from './Editor/event';
 import { useAddEmptyBlock } from './Editor/hooks/useAddEmptyBlock';
 import { useClickEditorOutside } from './Editor/hooks/useClickEditorOutside';
+import { useDocScrollTo } from './Editor/hooks/useDocScrollTo';  
 
 import { doc, docComments, commentInfoMap } from './doc';
 
@@ -34,11 +35,13 @@ export default defineComponent({
   name: 'App',
   setup() {
     const editorRef = ref<HTMLElement | null>(null);
+    const scrollEl = ref<HTMLElement | null>(null);
     let view: EditorView | null = null;
 
     const { editorDomRef } = useAddEmptyBlock();
 
     useClickEditorOutside(editorDomRef);
+    useDocScrollTo();
 
     onMounted(() => {
       if (!editorRef.value) return;
@@ -76,6 +79,7 @@ export default defineComponent({
       });
 
       contextStore.getState().setEditorView(view);
+      contextStore.getState().setScrollEl(scrollEl.value);
       commentStore.getState().setDocComments(docComments);
       commentStore.getState().setCommentInfoMap(commentInfoMap);
 
@@ -92,7 +96,7 @@ export default defineComponent({
     });
 
     return () => (
-      <div class="w-full h-full overflow-auto" onScroll={(e) => docScroll$.next({ e })}>
+      <div class="w-full h-full overflow-auto" ref={scrollEl} onScroll={(e) => docScroll$.next({ e })}>
         <div class="sticky top-0 h-[64px] border-b-[1px] border-[#dee0e3] border-solid bg-white z-10"></div>
 
         <div class="h-[278px] overflow-hidden bg-[auto_591px] bg-center" style={{ backgroundImage: `url(${headerImage})`}}>

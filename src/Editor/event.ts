@@ -7,6 +7,10 @@ import { PopoverTypeEnum } from './interface';
 // doc scroll
 export const docScroll$ = new Subject<{ e: Event }>();
 
+export const docScrollTo$ = new Subject<{
+  el: HTMLElement | null,
+}>();
+
 // floating menu
 export const blockMouseEnter$ = new Subject<{
   nodeView: BaseBlockView,

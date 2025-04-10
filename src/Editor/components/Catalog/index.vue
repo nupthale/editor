@@ -4,8 +4,9 @@ import { switchMap, debounceTime } from 'rxjs';
 import { useSubscription } from '@vueuse/rxjs';
 
 import { contextStore } from '../../store/context';
-import { docChanged$ } from '../../event';
+import { docChanged$, docScrollTo$  } from '../../event';
 
+import { useActive } from './useActive';
 import { getText } from './util';
 import Tree from './Tree.vue';
 
@@ -19,11 +20,21 @@ export default defineComponent({
             return docJsonRef.value?.doc?.content?.[0]?.content?.[0]?.text;
         })
 
+        const titleRef = computed(() => {
+            if (!docJsonRef.value) return {};
+
+            const body = docJsonRef.value?.doc?.content?.[0];
+
+            return {
+                id: body.attrs.id,
+            };
+        });
+        
         const headingsRef = computed(() => {
             if (!docJsonRef.value) return [];
 
             const body = docJsonRef.value?.doc?.content?.[1];
-            
+        
             const headings = body.content.filter(item => item.type === 'heading');
 
             return headings.map(item => ({
@@ -32,6 +43,8 @@ export default defineComponent({
                 text: getText(item.content),
             }));
         });
+
+        const { activeIdRef } = useActive(titleRef, headingsRef);
 
         useSubscription(
             docChanged$.pipe(
@@ -43,11 +56,21 @@ export default defineComponent({
             ).subscribe()
         );
 
+        const handleTitleClick = () => {
+            docScrollTo$.next({
+                el: document.querySelector(`[data-id="${titleRef.value?.id}"]`) as HTMLElement,
+            });
+        }
+
         return () => headingsRef.value?.length ? (
             <div class="doc-catalog-wrap">
                 <div class="doc-catalog-container w-fit h-fit">
-                    <div class="font-medium text-[15px] mb-2 text-[#1456f0]">{docTitle.value}</div>
-                    <Tree headings={headingsRef.value} />
+                    <div 
+                        class={['heading', 'font-medium', 'text-[15px]', 'mb-2', 'cursor-pointer', activeIdRef.value === titleRef.value?.id ? 'active' : '']} 
+                        onClick={handleTitleClick}>
+                        {docTitle.value}
+                    </div>
+                    <Tree headings={headingsRef.value} activeId={activeIdRef.value} />
                 </div>
             </div>
         ) : '';
@@ -56,6 +79,10 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.heading.active {
+    color: #1456f0;
+}
+
 .doc-catalog-wrap {
     position: sticky;
     top: 32px;

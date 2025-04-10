@@ -21,6 +21,7 @@ export class TitleView implements NodeView {
     // 创建容器元素
     this.dom = document.createElement('div');
     this.dom.className = 'doc-title-container';
+    this.dom.setAttribute('data-id', node.attrs.id);
 
     // 创建标题元素
     const titleElement = document.createElement('h1');

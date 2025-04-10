@@ -4,7 +4,7 @@ import { schema } from './Editor/plugins/schema';
 import { MentionTypeEnum } from './Editor/interface';
 
 export const doc = [
-    schema.node('title', null, [schema.text('👨👩合同操作手册大全👧👦')]),
+    schema.node('title', { id: nanoid(8) }, [schema.text('👨👩合同操作手册大全👧👦')]),
     schema.node('body', null, [
         schema.node('paragraph', { id: nanoid(8) }, [
                 schema.text('欢迎使用合同管理系统！', [

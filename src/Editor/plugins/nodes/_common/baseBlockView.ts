@@ -42,6 +42,8 @@ export class BaseBlockView implements NodeView {
 
     this.dom = document.createElement('div');
     this.dom.classList.add('doc-block');
+
+    this.dom.setAttribute('data-id', this.node.attrs.id);
   }
 
   mouseEnter = () => {
