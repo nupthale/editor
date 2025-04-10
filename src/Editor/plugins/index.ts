@@ -14,6 +14,8 @@ import { highlight } from './nodes/highlight/plugin';
 import { list } from './nodes/list/plugin/index';
 import { table } from './nodes/table/plugin/index';
 
+import { collab } from './collab/index';
+
 // 导入更多插件...
 
 // 集中注册所有插件
@@ -33,5 +35,7 @@ export function plugins(schema: Schema): Plugin[] {
 
     // 优先级最低
     ...keymapPlugin(),
+
+    ...collab,
   ];
 }

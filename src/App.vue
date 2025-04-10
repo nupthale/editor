@@ -54,6 +54,8 @@ export default defineComponent({
       view = new EditorView(editorRef.value, {
         state,
         dispatchTransaction(transaction) {
+          if (!view) return; 
+
           // 监听文档变化
           const newState = view!.state.apply(transaction);
           view!.updateState(newState);
