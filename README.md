@@ -1,4 +1,4 @@
-# Contract Editor
+# Editor
 ![image](./shot.png)
 
 基于 ProseMirror 的富文本编辑器，模仿飞书文档实现的合同编辑器。
