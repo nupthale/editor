@@ -13,7 +13,7 @@ export const listSchema: Record<string, NodeSpec> = {
         class: "doc-list-head",
       },
     }],
-    toDOM(node) {
+    toDOM() {
       return ["div", {
         class: "doc-list-head",
       }, 0];
@@ -28,7 +28,7 @@ export const listSchema: Record<string, NodeSpec> = {
         class: "doc-list-body",
       },
     }],
-    toDOM(node) {
+    toDOM() {
       return ["div", {
         class: "doc-list-body",
       }, 0];
@@ -45,7 +45,7 @@ export const listSchema: Record<string, NodeSpec> = {
       tag: "div.doc-list",
       priority: 52,  // 提高优先级
     }],
-    toDOM(node) {
+    toDOM() {
       return ["div", {
         class: "doc-list",
       }, 0];

@@ -4,7 +4,7 @@ import { schema } from '../../../schema/index';
 import { getRangeByPos } from '../../../../shared/index';
 
 // 如果前面是数字. 就把当前paragarph 转换为 list
-export const whitespace = (state, dispatch, view) => {
+export const whitespace = (state, dispatch, _view) => {
     const { $from } = state.selection;
     const tr = state.tr;
 

@@ -2,7 +2,7 @@ import { Schema } from 'prosemirror-model';
 import { Plugin, PluginKey } from 'prosemirror-state';
 import { HeadingView } from './view';
 
-export function heading(schema: Schema): Plugin[] {
+export function heading(_schema: Schema): Plugin[] {
   return [
     new Plugin({
       key: new PluginKey('heading'),

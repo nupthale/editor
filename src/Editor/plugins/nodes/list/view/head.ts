@@ -99,7 +99,7 @@ export class ListHeadView implements NodeView {
       return parentNode.attrs.id;
     }
 
-    getIndex = (ordered) => {
+    getIndex = (ordered = false) => {
       const dot = '<div class="text-center" style="-webkit-transform: scale(1.375)">•</div>';
       if (!ordered) return dot;
 

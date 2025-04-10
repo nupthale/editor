@@ -111,7 +111,7 @@ export const increaseIndent = (state, dispatch, view) => {
 }
 
 // 找到上一层的list， 从上一层的list的body里移到上一层list后面
-export const decreaseIndent = (state, dispatch, view) => {
+export const decreaseIndent = (state, dispatch, _view) => {
     const listNode = getListNode(state);
 
     if (!listNode) return false;

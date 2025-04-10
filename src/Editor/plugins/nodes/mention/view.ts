@@ -46,7 +46,7 @@ export class MentionView implements NodeView {
     return true;
   }
 
-  ignoreMutation(record: ViewMutationRecord): boolean {
+  ignoreMutation(_record: ViewMutationRecord): boolean {
     return true;
   }
 

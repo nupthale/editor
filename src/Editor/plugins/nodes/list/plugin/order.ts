@@ -37,7 +37,7 @@ function processListNode(node) {
 
 export const getLists = (node) => {
     const lists: ListTreeType[] = [];
-    node.children?.forEach((node, index) => {
+    node.children?.forEach((node) => {
         if (node.type.name === 'list' && node.attrs.ordered) {
             // 找到第一个有序列表
            const orderList = processListNode(node);
@@ -95,7 +95,7 @@ const updateOrderedListIndex = () => {
 
 export const listOrderPlugin = new Plugin({
     key: listOrderKey,
-    view: (editorView) => {
+    view: (_editorView) => {
         return {
             update(view, prevState) {
                 if (view.state.doc === prevState.doc) {

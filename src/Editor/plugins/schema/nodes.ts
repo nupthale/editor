@@ -1,5 +1,4 @@
 
-import { nodes as basicNodes } from 'prosemirror-schema-basic';
 import { NodeSpec, DOMOutputSpec } from 'prosemirror-model';
 
 import { titleSchema } from '../nodes/title/schema';
@@ -26,7 +25,7 @@ export const nodes: Record<string, NodeSpec> = {
         class: "doc-body",
       } 
     }],
-    toDOM(node): DOMOutputSpec { 
+    toDOM(): DOMOutputSpec { 
       return ["div", { 
         class: "doc-body",
       }, 0] 

@@ -12,7 +12,7 @@ export const highlightSchema: Record<string, NodeSpec> = {
         tag: "div.doc-highlight", 
         priority: 51,  // 提高优先级
       }],
-      toDOM(node): DOMOutputSpec {
+      toDOM(): DOMOutputSpec {
         return ["div", {
           class: "doc-highlight",
         }, 0]

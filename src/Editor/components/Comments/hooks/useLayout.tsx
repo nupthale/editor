@@ -1,4 +1,4 @@
-import { ref, computed } from 'vue';
+import { ref } from 'vue';
 import { useSubscription } from '@vueuse/rxjs';
 import { tap, switchMap, map, debounceTime } from 'rxjs';
 

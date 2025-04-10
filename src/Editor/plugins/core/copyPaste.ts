@@ -35,9 +35,9 @@ export const copyPastePlugin = () => {
             },
             // paste的时候 ， 需要判断， 如果是在空paragraph里paste的， 就把paragraph节点替换为当前节点
             // 如果不是空的， 需要判断， 如果是文本， 就把文本插入， 如果不是文本，就插入一个块。
-            handlePaste: (view, event, slice) => {
+            handlePaste: (view, _event, slice) => {
                 const { state, dispatch } = view;
-                const { selection, schema } = state;
+                const { selection } = state;
 
                 // 检查当前节点是否为空的 paragraph
                 const $from = selection.$from;

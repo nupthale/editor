@@ -7,7 +7,7 @@ import { decreaseIndent } from './indent';
 import { getListBodyNodes, getRangeByPos, getPrevNodeRange, getDeepestContentEnd, getRangeByNode } from '../../../../shared';
 import { schema } from '../../../schema/index';
 
-export const hideIndex = (state, dispatch, view) => {
+export const hideIndex = (state, dispatch, _view) => {
   const { $from } = state.selection;
   const tr = state.tr;
 

@@ -11,11 +11,11 @@ export const bubbleMenuPlugin = () => {
             key: bubbleMenuPluginKey,
             props: {
                 handleDOMEvents: {
-                    mousedown: (view: EditorView, event) => {
+                    mousedown: (_view: EditorView, _event) => {
                         // 先隐藏
                         hidePopover$.next({ type: PopoverTypeEnum.BUBBLE_MENU });
                     },
-                    mouseup: (view: EditorView, event) => {
+                    mouseup: (view: EditorView, _event) => {
                         const { state } = view;
                         const { selection } = state;
                         const { empty, from, to } = selection;
@@ -38,13 +38,6 @@ export const bubbleMenuPlugin = () => {
                         return true;
                     }
                 }
-            },
-            view(editorView: EditorView) {
-                return {
-                    update: (view, prevState) => {
-                        
-                    }
-                };
             },
         })
     ];

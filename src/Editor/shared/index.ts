@@ -1,4 +1,4 @@
-import { Node, ResolvedPos, Fragment } from 'prosemirror-model';
+import { Node, ResolvedPos } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
 
 export const getRangeByNode = (state, node: Node) => {

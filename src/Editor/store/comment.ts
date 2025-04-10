@@ -18,7 +18,7 @@ export const commentStore = createStore<{
     setActiveDocCommentId: (commentId: string | null) => void,
     addDocComment: (refId: string, commentId: string) => void,
     deleteDocComment: (commentId: string) => void,
-}>((set, get) => ({
+}>((set) => ({
     docComments: {},
     activeDocCommentId: null,
     commentInfoMap: {},

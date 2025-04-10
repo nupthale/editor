@@ -1,6 +1,6 @@
 import { ref, watchEffect, Ref } from 'vue';
 import { useSubscription } from '@vueuse/rxjs';
-import { tap, debounceTime, filter } from 'rxjs';
+import { tap, filter } from 'rxjs';
 
 import { docScroll$ } from '../../event'; 
 import { manualSetActiveId$ } from './event'; 

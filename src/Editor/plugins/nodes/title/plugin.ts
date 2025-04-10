@@ -2,7 +2,7 @@ import { Schema } from 'prosemirror-model';
 import { Plugin, PluginKey } from 'prosemirror-state';
 import { TitleView } from './view';
 
-export function title(schema: Schema): Plugin[] {
+export function title(_schema: Schema): Plugin[] {
   return [
     new Plugin({
       key: new PluginKey('title'),

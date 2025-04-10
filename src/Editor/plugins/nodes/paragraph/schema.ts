@@ -14,7 +14,7 @@ export const paragraphSchema: Record<string, NodeSpec> = {
           class: "doc-paragraph",
         } 
       }],
-      toDOM(node): DOMOutputSpec {
+      toDOM(): DOMOutputSpec {
         return ["p", {
           class: "doc-paragraph",
         }, 0]

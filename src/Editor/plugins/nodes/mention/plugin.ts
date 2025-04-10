@@ -6,7 +6,7 @@ import { showPopover$, hidePopover$ } from '../../../event';
 import { contextStore } from '../../../store/context';
 import { PopoverTypeEnum } from '../../../interface';
 
-export function mention(schema: Schema): Plugin[] {
+export function mention(_schema: Schema): Plugin[] {
   return [
     new Plugin({
       key: new PluginKey('mention'),
