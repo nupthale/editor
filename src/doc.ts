@@ -3,6 +3,8 @@ import { nanoid } from 'nanoid';
 import { schema } from './Editor/plugins/schema';
 import { MentionTypeEnum } from './Editor/interface';
 
+export const LOCAL_MODE = true;
+
 export const doc = [
     schema.node('title', { id: nanoid(8) }, [schema.text('👨👩合同操作手册大全👧👦')]),
     schema.node('body', null, [

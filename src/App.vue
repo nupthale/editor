@@ -22,7 +22,7 @@ import { useAddEmptyBlock } from './Editor/hooks/useAddEmptyBlock';
 import { useClickEditorOutside } from './Editor/hooks/useClickEditorOutside';
 import { useDocScrollTo } from './Editor/hooks/useDocScrollTo';  
 
-import { doc, docComments, commentInfoMap } from './doc';
+import { doc, docComments, commentInfoMap, LOCAL_MODE } from './doc';
 
 import './Editor/theme/index.less';
 import headerImage from './header.jpeg';
@@ -50,7 +50,7 @@ export default defineComponent({
       const state = EditorState.create({
         schema,
         plugins: plugins(schema),
-        // doc: schema.node('doc', null, doc)
+        doc: LOCAL_MODE ? schema.node('doc', null, doc) : undefined
       });
 
       // 创建 EditorView

@@ -4,7 +4,7 @@ import { WebrtcProvider } from 'y-webrtc';
 import { ySyncPlugin, yCursorPlugin, yUndoPlugin, prosemirrorToYXmlFragment } from 'y-prosemirror';
 
 import { schema } from '../schema/index';
-import { doc } from '../../../doc';
+import { doc, LOCAL_MODE } from '../../../doc';
 
 // 创建初始文档
 const initialDoc = schema.node('doc', null, doc);
@@ -61,7 +61,7 @@ sharedDoc.observe(event => {
   console.log('文档变化:', event);
 });
 
-export const collab = [
+export const collab = LOCAL_MODE ? [] : [
   ySyncPlugin(sharedDoc),
   yCursorPlugin(provider.awareness),
   yUndoPlugin(),
