@@ -6,6 +6,7 @@ import { useSubscription } from '@vueuse/rxjs';
 import { contextStore } from '../../store/context';
 import { docChanged$, docScrollTo$  } from '../../event';
 
+import { manualSetActiveId$ } from './event';
 import { useActive } from './useActive';
 import { getText } from './util';
 import Tree from './Tree.vue';
@@ -60,6 +61,8 @@ export default defineComponent({
             docScrollTo$.next({
                 el: document.querySelector(`[data-id="${titleRef.value?.id}"]`) as HTMLElement,
             });
+
+            manualSetActiveId$.next(titleRef.value?.id);
         }
 
         return () => headingsRef.value?.length ? (

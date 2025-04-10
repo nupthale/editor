@@ -3,6 +3,7 @@ import { defineComponent, toRef, computed, PropType } from 'vue';
 
 import { docScrollTo$ } from '../../event';
 import { InputNode, toTree } from './util';
+import { manualSetActiveId$ } from './event';
 
 export default defineComponent({
     props: {
@@ -21,6 +22,8 @@ export default defineComponent({
             docScrollTo$.next({
                 el: document.querySelector(`[data-id="${item.id}"]`) as HTMLElement,
             });
+
+            manualSetActiveId$.next(item?.id);
         };                          
         
         return () => (
