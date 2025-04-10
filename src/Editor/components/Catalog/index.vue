@@ -92,6 +92,7 @@ export default defineComponent({
     left: 20px;
     height: 0px;
     max-width: 495px;
+    width: fit-content;
 }
 
 .doc-catalog-container {

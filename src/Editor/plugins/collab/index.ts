@@ -11,8 +11,13 @@ const initialDoc = schema.node('doc', null, doc);
 // y-prosemirror 内部默认使用 'prosemirror' 作为命名空间， 不能随便改
 const namespace = 'prosemirror';
 const ydoc = new Y.Doc();
-const provider = new WebrtcProvider('prosemirror-hale-sixoamf', ydoc);
+const provider = new WebrtcProvider('prosemirror-editor-room', ydoc, {
+  signaling: ['wss://signaling.yjs.dev', 'wss://y-webrtc-signaling-eu.herokuapp.com'],
+  maxConns: 20,
+  filterBcConns: true
+});
 const sharedDoc = ydoc.getXmlFragment(namespace);
+
 
 // 添加初始化逻辑
 provider.on('status', ({ connected }) => {
