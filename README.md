@@ -46,4 +46,3 @@ pnpm dev
 # 构建生产版本
 pnpm build
 ```
-![image](./shot.png)
