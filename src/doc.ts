@@ -3,7 +3,7 @@ import { nanoid } from 'nanoid';
 import { schema } from './Editor/plugins/schema';
 import { MentionTypeEnum } from './Editor/interface';
 
-export const LOCAL_MODE = true;
+export const LOCAL_MODE = false;
 
 export const doc = [
     schema.node('title', { id: nanoid(8) }, [schema.text('👨👩合同操作手册大全👧👦')]),
@@ -203,14 +203,58 @@ export const commentInfoMap = {
 };
 
 export const mockUsers = [
-    { id: '1', username: '王凯' },
-    { id: '2', username: '张雨晴' },
-    { id: '3', username: '李思琪' },
-    { id: '4', username: '刘天成' },
-    { id: '5', username: '陈明宇' },
-    { id: '6', username: '赵子涵' },
-    { id: '7', username: '吴思远' },
-    { id: '8', username: '林晓峰' },
-    { id: '9', username: '黄子韬' },
-    { id: '10', username: '周雨欣' },
+    { id: '1', name: '王凯' },
+    { id: '2', name: '张雨晴' },
+    { id: '3', name: '李思琪' },
+    { id: '4', name: '刘天成' },
+    { id: '5', name: '陈明宇' },
+    { id: '6', name: '赵子涵' },
+    { id: '7', name: '吴思远' },
+    { id: '8', name: '林晓峰' },
+    { id: '9', name: '黄子韬' },
+    { id: '10', name: '周雨欣' },
+    { id: '11', name: '郑智薇' },
+    { id: '12', name: '孙语嫣' },
+    { id: '13', name: '杨光' },
+    { id: '14', name: '朱天宇' },
+    { id: '15', name: '胡晓明' },
+    { id: '16', name: '高雨桐' },
+    { id: '17', name: '徐子轩' },
+    { id: '18', name: '马云飞' },
+    { id: '19', name: '谢雨欣' },
+    { id: '20', name: '韩雪' },
+    { id: '21', name: '冯思远' },
+    { id: '22', name: '董明珠' },
+    { id: '23', name: '魏子涵' },
+    { id: '24', name: '沈梦琪' },
+    { id: '25', name: '邓超' },
+    { id: '26', name: '江雨晴' },
+    { id: '27', name: '范思哲' },
+    { id: '28', name: '金子轩' },
+    { id: '29', name: '唐嫣' },
+    { id: '30', name: '梁朝伟' },
+    { id: '31', name: '钱学森' },
+    { id: '32', name: '秦思琪' },
+    { id: '33', name: '崔永元' },
+    { id: '34', name: '邹雨桐' },
+    { id: '35', name: '孟子义' },
+    { id: '36', name: '彭于晏' },
+    { id: '37', name: '潘玮柏' },
+    { id: '38', name: '贾乃亮' },
+    { id: '39', name: '褚时健' },
+    { id: '40', name: '窦骁' },
+    { id: '41', name: '蒋雨霖' },
+    { id: '42', name: '严子墨' },
+    { id: '43', name: '项思远' }
 ];
+
+// 从mockUsers里随机取一个用户
+let user = mockUsers[Math.floor(Math.random() * mockUsers.length)];
+const localUser = localStorage.getItem('user');
+if (localUser) {
+    user = JSON.parse(localUser);
+} else {
+    localStorage.setItem('user', JSON.stringify(user))
+}
+
+export const mockUser = user;

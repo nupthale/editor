@@ -23,3 +23,9 @@ export type CommentInfoType = {
     createTime: string;
   }[];
 }
+
+
+export interface UserType {
+  name: string;
+  id: string;
+}

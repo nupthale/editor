@@ -4,6 +4,7 @@ import { message } from 'ant-design-vue';
 import { EditorState } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { applyDevTools } from 'prosemirror-dev-toolkit';
+import { useMediaQuery } from '@vueuse/core';
 
 import { plugins } from './Editor/plugins';
 import { schema } from './Editor/plugins/schema';
@@ -17,15 +18,17 @@ import LikeSection from './Editor/components/LikeSection/index.vue';
 
 import { contextStore } from './Editor/store/context';
 import { commentStore } from './Editor/store/comment';
+import { userStore } from './Editor/store/user';
 import { docChanged$, docScroll$ } from './Editor/event';
 import { useAddEmptyBlock } from './Editor/hooks/useAddEmptyBlock';
 import { useClickEditorOutside } from './Editor/hooks/useClickEditorOutside';
 import { useDocScrollTo } from './Editor/hooks/useDocScrollTo';  
 
-import { doc, docComments, commentInfoMap, LOCAL_MODE } from './doc';
+import Header from './Page/Header.vue';
+
+import { doc, docComments, commentInfoMap, LOCAL_MODE, mockUser } from './doc';
 
 import './Editor/theme/index.less';
-import headerImage from './header.jpeg';
 
 message.config({
   maxCount: 1,
@@ -37,6 +40,8 @@ export default defineComponent({
     const editorRef = ref<HTMLElement | null>(null);
     const scrollEl = ref<HTMLElement | null>(null);
     let view: EditorView | null = null;
+
+    const isSmallScreen = useMediaQuery('(max-width: 1600px)')
 
     const { editorDomRef } = useAddEmptyBlock();
 
@@ -80,8 +85,11 @@ export default defineComponent({
 
       contextStore.getState().setEditorView(view);
       contextStore.getState().setScrollEl(scrollEl.value);
+
       commentStore.getState().setDocComments(docComments);
       commentStore.getState().setCommentInfoMap(commentInfoMap);
+      
+      userStore.getState().setUser(mockUser);
 
       // 初始化
       docChanged$.next();
@@ -97,14 +105,13 @@ export default defineComponent({
 
     return () => (
       <div class="w-full h-full overflow-auto" ref={scrollEl} onScroll={(e) => docScroll$.next({ e })}>
-        <div class="sticky top-0 h-[64px] border-b-[1px] border-[#dee0e3] border-solid bg-white z-10"></div>
-
-        <div class="h-[278px] overflow-hidden bg-[auto_591px] bg-center" style={{ backgroundImage: `url(${headerImage})`}}>
-        </div>
+        <Header />
         
         <div class="relative">
           {/* 左侧目录 */}
-          <Catalog />
+          {
+            !isSmallScreen ? (<Catalog />) : ''
+          }
 
           <div class="flex">
             <div class="w-[820px] pb-[72px] mx-auto" ref={editorDomRef}>
@@ -113,7 +120,9 @@ export default defineComponent({
           </div>
 
           {/* 右侧评论 */}
-          <Comments />
+          {
+            !isSmallScreen ? (<Comments />) : ''
+          }
 
           <LikeSection />
         </div>

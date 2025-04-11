@@ -1,6 +1,6 @@
 import * as Y from 'yjs';
-import { WebrtcProvider } from 'y-webrtc';
-// import { WebsocketProvider } from 'y-websocket';
+// import { WebrtcProvider } from 'y-webrtc';
+import { WebsocketProvider } from 'y-websocket';
 import { ySyncPlugin, yCursorPlugin, yUndoPlugin, prosemirrorToYXmlFragment } from 'y-prosemirror';
 
 import { schema } from '../schema/index';
@@ -12,27 +12,31 @@ const initialDoc = schema.node('doc', null, doc);
 // y-prosemirror 内部默认使用 'prosemirror' 作为命名空间， 不能随便改
 const namespace = 'prosemirror';
 const ydoc = new Y.Doc();
-const provider = new WebrtcProvider('prosemirror-editor-room', ydoc, {
-  signaling: [
-    'wss://y-webrtc-signaling-us.herokuapp.com',
-    'wss://y-webrtc-signaling-eu.herokuapp.com',
-    'wss://signaling.yjs.dev',
-  ],
-  maxConns: 20,
-  filterBcConns: true
-});
+// export const provider = new WebrtcProvider('prosemirror-editor-room', ydoc, {
+//   signaling: [
+//     'ws://localhost:3000',
+//     // 'wss://y-webrtc-signaling-us.herokuapp.com',
+//     // 'wss://y-webrtc-signaling-eu.herokuapp.com',
+//     // 'wss://signaling.yjs.dev',
+//     // 'wss://y-webrtc-signaling.fly.dev',
+//     // 'wss://signaling.hocuspocus.dev',
+//     // 'wss://y-webrtc-signaling-global.herokuapp.com',
+//   ],
+//   maxConns: 20,
+//   filterBcConns: true
+// });
 
-// const provider = new WebsocketProvider(
-//   'wss://demos.yjs.dev',
-//   'prosemirror-editor-room-hale-dicm1l',
-//   ydoc
-// );
+export const provider = new WebsocketProvider(
+  'ws://localhost:3000',
+  'prosemirror-editor-room-hale-dicm1l',
+  ydoc
+);
 const sharedDoc = ydoc.getXmlFragment(namespace);
 
 
 // 添加初始化逻辑
-provider.on('status', ({ connected }) => {
-  console.log('WebRTC 连接状态:', connected, '文档长度:', sharedDoc.length);
+provider.on('status', ({ status }) => {
+  console.log('WebRTC 连接状态:', status, '文档长度:', sharedDoc.length);
   
   /**
    * 在协同编辑中， sharedDoc 在以下情况下会是空的：
@@ -45,9 +49,9 @@ provider.on('status', ({ connected }) => {
    * 3. 当服务器上保存了这个房间的历史数据，并且在连接时已经同步到了本地
    * 简单来说， sharedDoc.length === 0 检查的是当前协同文档是否为空，如果为空则需要初始化，如果不为空则说明已经有内容了，不需要再初始化。
    */
-  if (connected && sharedDoc.length === 0) {
+  if (status === 'connected' && sharedDoc.length === 0) {
     try {
-      console.log('开始初始化协同文档...');
+      console.log('开始初始化协同文档...', prosemirrorToYXmlFragment, initialDoc);
       // 第一次空的时候， 可以初始化到服务器， 后端服务器有了， 就不需要本地初始化了
       // prosemirrorToYXmlFragment(initialDoc, sharedDoc);
     } catch (err) {
@@ -65,4 +69,4 @@ export const collab = LOCAL_MODE ? [] : [
   ySyncPlugin(sharedDoc),
   yCursorPlugin(provider.awareness),
   yUndoPlugin(),
-]
+];
