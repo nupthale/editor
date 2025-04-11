@@ -4,7 +4,7 @@ import { nanoid } from 'nanoid';
 import dayjs from 'dayjs';
 
 import { syncToRemote as syncCommentToRemote } from '../plugins/collab/comment';
-import { mockUsers, commentInfoMap, docComments, LOCAL_MODE, mockUser } from '../../doc';
+import { commentInfoMap, docComments, LOCAL_MODE, mockUser } from '../../doc';
 import { CommentInfoType } from '../interface';
 
 export const commentStore = createStore<{

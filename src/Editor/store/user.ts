@@ -9,7 +9,7 @@ export const userStore = createStore<{
     setUser: (user: UserType) => void,
     onlineUsers: UserType[],
     setOnlineUsers: (users: UserType[]) => void,
-}>((set, get) => ({
+}>((set) => ({
     user: null,
     onlineUsers: [],
     setUser: (user: UserType) => {

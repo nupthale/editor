@@ -1,6 +1,6 @@
 import { ydoc, provider } from './core';
 import { commentStore } from '../../store/comment';
-import { CommentInfoType } from '../../interface';
+
 
 // 创建专门的评论数据结构
 const commentsDoc = ydoc.getMap('comments');
