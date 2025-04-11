@@ -18,7 +18,8 @@ export const ydoc = new Y.Doc();
 
 export const provider = new WebsocketProvider(
   // 'ws://localhost:3000',
-  'wss://editor-lh7.pages.dev:3000',
+  // 'wss://editor-lh7.pages.dev:3000',
+  'wss://editor-server.hale1211.workers.dev',
   'prosemirror-editor-room-hale-dicm1l',
   ydoc
 );
