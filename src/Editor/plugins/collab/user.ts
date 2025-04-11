@@ -4,7 +4,7 @@ import { LOCAL_MODE } from '../../../doc';
 import { UserType } from '../../interface';
 
 import { userStore } from '../../store/user';
-import { provider } from './index';
+import { provider } from './core';
 
 import { nameToColor } from '../../shared/color';
 

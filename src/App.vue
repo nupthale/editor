@@ -110,7 +110,7 @@ export default defineComponent({
         <div class="relative">
           {/* 左侧目录 */}
           {
-            !isSmallScreen ? (<Catalog />) : ''
+            !isSmallScreen.value ? (<Catalog />) : ''
           }
 
           <div class="flex">
@@ -121,7 +121,7 @@ export default defineComponent({
 
           {/* 右侧评论 */}
           {
-            !isSmallScreen ? (<Comments />) : ''
+            !isSmallScreen.value ? (<Comments />) : ''
           }
 
           <LikeSection />
