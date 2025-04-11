@@ -4,6 +4,8 @@ import { LOCAL_MODE } from '../../../doc';
 import { sharedDoc } from './doc';
 import { provider } from './core';
 
+import './comment';
+
 export * from './core';
 
 export const collab = LOCAL_MODE ? [] : [

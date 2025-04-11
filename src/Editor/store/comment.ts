@@ -3,7 +3,8 @@ import { createStore } from 'zustand/vanilla';
 import { nanoid } from 'nanoid';
 import dayjs from 'dayjs';
 
-import { mockUsers } from '../../doc';
+import { syncToRemote as syncCommentToRemote } from '../plugins/collab/comment';
+import { mockUsers, commentInfoMap, docComments, LOCAL_MODE, mockUser } from '../../doc';
 import { CommentInfoType } from '../interface';
 
 export const commentStore = createStore<{
@@ -13,27 +14,22 @@ export const commentStore = createStore<{
     // 右侧评论具体信息
     commentInfoMap: Record<string, CommentInfoType>,
     addCommentInfo: (id: string, content: string) => void,
-    setCommentInfoMap: (infoMap: Record<string, CommentInfoType>) => void,
-    setDocComments: (comments: Record<string, string[]>) => void,
+    setComment: (comments: Record<string, string[]>, infoMap: Record<string, CommentInfoType>) => void,
     setActiveDocCommentId: (commentId: string | null) => void,
     addDocComment: (refId: string, commentId: string) => void,
     deleteDocComment: (commentId: string) => void,
 }>((set) => ({
-    docComments: {},
+    docComments: LOCAL_MODE ? docComments : {},
     activeDocCommentId: null,
-    commentInfoMap: {},
-    setDocComments: (docComments: Record<string, string[]> = {}) => set(() => {
-        return {
-            docComments,
-        };
-    }),
+    commentInfoMap: LOCAL_MODE ? commentInfoMap : {},
     setActiveDocCommentId: (activeDocCommentId) => set(() => {
         return {
             activeDocCommentId,
         };
     }),
-    setCommentInfoMap: (commentInfoMap: Record<string, CommentInfoType> = {}) => set(() => {
+    setComment: (docComments: Record<string, string[]> = {}, commentInfoMap: Record<string, CommentInfoType> = {}) => set(() => {       
         return {
+            docComments,
             commentInfoMap,
         };
     }),
@@ -43,7 +39,7 @@ export const commentStore = createStore<{
         comments.push({
             id: nanoid(8),
             content,
-            user: mockUsers[Math.floor(Math.random() * mockUsers.length)].username,
+            user: mockUser.name,
             createTime: dayjs().format('YYYY-MM-DD'),
         });
 
@@ -51,6 +47,10 @@ export const commentStore = createStore<{
             ...(map[id]),
             comments,
         };
+
+        if (!LOCAL_MODE) {
+            syncCommentToRemote(state.docComments, map);
+        }
 
         return {
             commentInfoMap: map,
@@ -60,6 +60,11 @@ export const commentStore = createStore<{
         const map = { ...state.commentInfoMap}
 
         map[id] = info;
+
+        if (!LOCAL_MODE) {
+            syncCommentToRemote(state.docComments, map);
+        }
+
         return {
             commentInfoMap: map,
         };
@@ -69,6 +74,10 @@ export const commentStore = createStore<{
         docComments[refId] = docComments[refId] || [];
         docComments[refId].push(commentId);
 
+        if (!LOCAL_MODE) {
+            syncCommentToRemote(docComments, state.commentInfoMap);
+        }
+
         return {
             docComments,
         };
@@ -77,6 +86,10 @@ export const commentStore = createStore<{
         const docComments = { ... state.docComments };
         for (const refId in docComments) {
             docComments[refId] = docComments[refId].filter(id => id !== commentId);
+        }
+
+        if (!LOCAL_MODE) {
+            syncCommentToRemote(docComments, state.commentInfoMap);
         }
 
         return {

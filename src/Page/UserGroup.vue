@@ -31,7 +31,7 @@ export default defineComponent({
                                     </div>
                                 ),
                                 default: () => (
-                                    <User username={user.name} showText={false} size="large"></User>
+                                    <User username={user.name} showText={false}></User>
                                 )
                             }}
                             
@@ -93,7 +93,7 @@ export default defineComponent({
 
 .userList :deep(.ant-avatar-string) {
     line-height: 21px!important;
-    /* transform: scale(0.58) translateX(-50%)!important; */
+    transform: scale(0.58) translateX(-50%)!important;
 }
 
 .more {

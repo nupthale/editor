@@ -85,9 +85,6 @@ export default defineComponent({
 
       contextStore.getState().setEditorView(view);
       contextStore.getState().setScrollEl(scrollEl.value);
-
-      commentStore.getState().setDocComments(docComments);
-      commentStore.getState().setCommentInfoMap(commentInfoMap);
       
       userStore.getState().setUser(mockUser);
 
