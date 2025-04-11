@@ -50,6 +50,7 @@ export const useLayout = () => {
     const layoutReady = ref(false);
     const totalHeight = ref(0); // 所有的comment的高度和
 
+    const filteredDocCommentsRef = ref<Record<string, string[]>>({}); // 过滤后的docComments， 只包含当前文档的commentInfo
     const commentsHeightMap = ref<Record<string, number>>({});
     const siderCommentRefMap = ref<Record<string, RefType>>({});
     const docCommentRefMap = ref<Record<string, RefType>>({});
@@ -82,11 +83,14 @@ export const useLayout = () => {
             switchMap(async () => {
                 const docComments = state.value.docComments || {};
 
+                const filteredDocComments = {};
                 const array: RefType[] = [];
                 Object.keys(docComments).forEach((refId) => {
                     const refDom = document.querySelector(`[data-comment-id="${refId}"]`) as HTMLElement;
                     if (!refDom) return;
                     
+                    filteredDocComments[refId] = docComments[refId]; // 只包含当前文档的commentInfo， 用于计算layout， 不用于渲染， 所以不放在stat
+
                     const refTop = refDom.offsetTop;
 
                     array.push({
@@ -96,6 +100,7 @@ export const useLayout = () => {
                     });
                 });
 
+                filteredDocCommentsRef.value = filteredDocComments;
                 return array;
             }),
             map((unordered) => {
@@ -155,6 +160,7 @@ export const useLayout = () => {
     );
 
     return {
+        filteredDocCommentsRef,
         totalHeight,
         layoutReady,
         transformYMap,

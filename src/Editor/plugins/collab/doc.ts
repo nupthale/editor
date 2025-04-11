@@ -44,3 +44,7 @@ provider.on('status', ({ status }) => {
 sharedDoc.observe(event => {
   console.log('文档变化:', event);
 });
+
+// setTimeout(() => {
+// prosemirrorToYXmlFragment(initialDoc, sharedDoc);
+// }, 300);

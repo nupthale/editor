@@ -13,7 +13,7 @@ export default defineComponent({
     setup() {
         const { state } = useCommentStore();
 
-        const { transformYMap, docCommentRefMap, totalHeight, layoutReady } = useLayout();
+        const { transformYMap, docCommentRefMap, totalHeight, layoutReady, filteredDocCommentsRef } = useLayout();
         const { offsetY, updateOffsetY } = useActiveComment(docCommentRefMap, transformYMap);
 
         useDocCommentClick();
@@ -26,12 +26,14 @@ export default defineComponent({
             }, 0);
         });
 
-        const commentsCount = computed(() => {
+        const filteredCommentsCount = computed(() => {
             let count = 0;
 
-            Object.keys(state.value?.docComments).map((refId) => (
-                count += state.value.docComments[refId]?.length || 0
-            ));
+            Object.keys(state.value?.docComments).map((refId) => {
+                if (filteredDocCommentsRef.value[refId]) {
+                    count += state.value.docComments[refId]?.length || 0
+                }
+            });
 
             return count;
         });
@@ -39,7 +41,7 @@ export default defineComponent({
         return () => (
             <div class="doc-comments">
                 <div class="doc-comments_title">
-                    评论（{ commentsCount.value }）
+                    评论（{ filteredCommentsCount.value }）
                 </div>
 
                 <div 
@@ -50,7 +52,7 @@ export default defineComponent({
                 >
                     {
                         Object.keys(state.value?.docComments).map((refId) => (
-                            state.value.docComments[refId].map((commentId) => (
+                            filteredDocCommentsRef.value[refId] ? (state.value.docComments[refId].map((commentId) => (
                                 <CommentPanel
                                     active={state.value?.activeDocCommentId === commentId}
                                     key={commentId} 
@@ -58,7 +60,7 @@ export default defineComponent({
                                     refId={refId} 
                                     top={transformYMap.value?.[commentId] - offsetY.value} 
                                 />
-                            ))
+                            ))) : ''
                         ))
                     }
                 </div>

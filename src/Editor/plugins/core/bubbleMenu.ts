@@ -26,6 +26,13 @@ export const bubbleMenuPlugin = () => {
                             return false;
                         }
 
+                        // 如果在title节点内， 则隐藏菜单
+                        const node = state.doc.resolve(from).node();
+                        if (node.type.name === 'title') {
+                            hidePopover$.next({ type: PopoverTypeEnum.BUBBLE_MENU });
+                            return false;
+                        }
+
                          // 先隐藏，再展示
                          hidePopover$.next({ type: PopoverTypeEnum.BUBBLE_MENU });
 
