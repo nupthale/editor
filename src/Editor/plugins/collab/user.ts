@@ -40,6 +40,6 @@ export const setCollabUser = (user: UserType) => {
     provider.awareness.setLocalStateField('user', {
       name: user.name,
       id: user.id,
-      color: nameToColor(user.name, 0.8),
+      color: nameToColor(user.name, 0.92),
     });
 };
