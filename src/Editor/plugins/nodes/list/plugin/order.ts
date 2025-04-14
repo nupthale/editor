@@ -1,7 +1,9 @@
 import { Plugin, PluginKey } from 'prosemirror-state';
 import { Node } from 'prosemirror-model';
 
+import { listStore } from '../../../../store/list';
 import { contextStore } from '../../../../store/context';
+import { ListTypeEnum } from '../interface';
 
 export const listOrderKey = new PluginKey('list-order');
 
@@ -17,7 +19,7 @@ export type IndexMapType = {
 // 递归处理list节点
 function processListNode(node) {
     // 如果是有序列表节点，保留它
-    if (node.type.name !== 'list' || !node.attrs.ordered) {
+    if (node.type.name !== 'list' || node.attrs.type !== ListTypeEnum.ORDERED) {
         return null;
     }
 
@@ -38,7 +40,7 @@ function processListNode(node) {
 export const getLists = (node) => {
     const lists: ListTreeType[] = [];
     node.children?.forEach((node) => {
-        if (node.type.name === 'list' && node.attrs.ordered) {
+        if (node.type.name === 'list' && node.attrs.type === ListTypeEnum.ORDERED) {
             // 找到第一个有序列表
            const orderList = processListNode(node);
 
@@ -71,8 +73,6 @@ export const processBodyNodes = (body: Node) => {
     const indexMap: IndexMapType = {};
     const lists = getLists(body.lastChild);
     appendIndex(lists, [], indexMap);
-
-   
 }
 
 
@@ -88,9 +88,12 @@ const updateOrderedListIndex = () => {
 
     const indexMap: IndexMapType = {};
     const lists = getLists(doc.lastChild);
-    appendIndex(lists, [], indexMap);
+    if (lists.length) {
+        appendIndex(lists, [], indexMap);
 
-    contextStore.getState().setOrderedListMap(indexMap);
+        listStore.getState().setOrderedListMap(indexMap);
+        listStore.getState().setOrderedListMapInit(true);
+    }
 }
 
 export const listOrderPlugin = new Plugin({
@@ -98,7 +101,9 @@ export const listOrderPlugin = new Plugin({
     view: (_editorView) => {
         return {
             update(view, prevState) {
-                if (view.state.doc === prevState.doc) {
+                const orderedListMapInit = listStore.getState().orderedListMapInit;
+
+                if (view.state.doc === prevState.doc && orderedListMapInit) {
                     // 文档未发生变化
                     return;
                 }

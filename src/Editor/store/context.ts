@@ -9,11 +9,9 @@ export const contextStore = createStore<{
     scrollEl: HTMLElement | null,
     popovers: Record<PopoverTypeEnum, boolean>,
     hasPopoverVisible: boolean,
-    orderedListMap: Record<string, number[]>,
     setEditorView: (view: EditorView) => void,
     setScrollEl: (el: HTMLElement | null) => void,
     setPopoverVisible: (type: PopoverTypeEnum, visible: boolean) => void,
-    setOrderedListMap: (map: Record<string, number[]>) => void, 
 }>((set, get) => ({
     editorView: null,
     scrollEl: null,
@@ -21,7 +19,6 @@ export const contextStore = createStore<{
         [PopoverTypeEnum.MENTION]: false,
         [PopoverTypeEnum.BUBBLE_MENU]: false,
     },
-    orderedListMap: {},
     get hasPopoverVisible() {
         return Object.values(get().popovers).some(visible => visible);
     },
@@ -34,11 +31,6 @@ export const contextStore = createStore<{
             [type]: visible,
         }
     })),
-    setOrderedListMap: (map: Record<string, number[]>) => set(() => {
-        return {
-            orderedListMap: map,
-        };
-    }),
 }))
 
 export function useContextStore() {

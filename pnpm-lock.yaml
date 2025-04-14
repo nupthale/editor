@@ -35,6 +35,9 @@ dependencies:
   nanoid:
     specifier: ^5.1.5
     version: 5.1.5
+  number-to-letter:
+    specifier: ^1.0.1
+    version: 1.0.1
   prosemirror-commands:
     specifier: ^1.5.2
     version: 1.7.0
@@ -71,6 +74,9 @@ dependencies:
   prosemirror-view:
     specifier: ^1.31.7
     version: 1.38.0
+  roman-numerals:
+    specifier: ^0.3.2
+    version: 0.3.2
   rxjs:
     specifier: ^7.8.2
     version: 7.8.2
@@ -2413,6 +2419,10 @@ packages:
     engines: {node: '>=0.10.0'}
     dev: true
 
+  /number-to-letter@1.0.1:
+    resolution: {integrity: sha512-QTcmT+ylKMaaEQtAz+7azasEsHLQR4L2dfzBWVx/2UVWq5dCMmmRM0FLULvpF6t+bw/PMIc1Uxx8scImulvaSQ==}
+    dev: false
+
   /object-assign@4.1.1:
     resolution: {integrity: sha512-rJgTQnkUnH1sFw8yT6VSU3zD3sWmu6sZhIseY8VX+GRu3P6F7Fu+JNDoXfklElbLJSnc3FUQHVe4cU5hj+BcUg==}
     engines: {node: '>=0.10.0'}
@@ -2846,6 +2856,10 @@ packages:
     optionalDependencies:
       fsevents: 2.3.3
     dev: true
+
+  /roman-numerals@0.3.2:
+    resolution: {integrity: sha512-aTmaKtxczT3K4ZhtJDauOZ6LY3e1xNDf2SBn7aRY/ErAtCCuVYuwNQbPuh+SWTjGmbg9p5Nlt8sJbQNkto8uyg==}
+    dev: false
 
   /rope-sequence@1.3.4:
     resolution: {integrity: sha512-UT5EDe2cu2E/6O4igUr5PSFs23nvvukicWHx6GnOPlHAiiYbzNuCRQCuiUdHJQcqKalLKlrYJnjY0ySGsXNQXQ==}

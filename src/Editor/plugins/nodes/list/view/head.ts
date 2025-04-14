@@ -1,13 +1,16 @@
 import { Node } from 'prosemirror-model';
 import { EditorView, NodeView, ViewMutationRecord } from 'prosemirror-view';
 
-import { contextStore } from '../../../../store/context';
+import { listStore } from '../../../../store/list';
 import { getParentNodeByPos } from '../../../../shared';
+
+import { getOrderedIndex } from '../util';
+import { ListTypeEnum } from '../interface';
 
 export class ListHeadView implements NodeView {
     dom: HTMLElement;
     contentDOM: HTMLElement | null = null;
-    indexDOM: HTMLElement;
+    pseudoDOM: HTMLElement;
 
     listeners: Function[] = [];
 
@@ -19,41 +22,36 @@ export class ListHeadView implements NodeView {
         const wrapDOM = document.createElement('div');
         wrapDOM.classList.add('flex-1', 'flex', 'items-start');
 
-        this.indexDOM = document.createElement('div');
-        this.indexDOM.classList.add('doc-list-index');
-        this.indexDOM.contentEditable = 'false';
+        this.pseudoDOM = document.createElement('div');
+        this.pseudoDOM.classList.add('doc-list-pseudo');
+        this.pseudoDOM.contentEditable = 'false';
 
         const contentDOM = document.createElement('div');
         contentDOM.classList.add('doc-list-content');
 
-        wrapDOM.appendChild(this.indexDOM);
+        wrapDOM.appendChild(this.pseudoDOM);
         wrapDOM.appendChild(contentDOM);
 
         this.contentDOM = contentDOM;
 
         this.dom.appendChild(wrapDOM);
 
-        this.updateIndexDOM(node);
+        this.updatePseudoDOM(node);
 
         this.subscribeEvts();
     }
 
-    updateIndexDOM(node) {
-      if (node.attrs.showIndex) {
-        this.indexDOM.style.display = 'block';
-      } else {
-        this.indexDOM.style.display = 'none';
-      }
+    updatePseudoDOM(node) {
 
       // 获取父节点（list）的属性
       const pos = this.getPos();
 
       if (pos !== undefined) {
           const parentNode = getParentNodeByPos(this.view, pos + 1);  // 获取父节点（list）
-          const ordered = parentNode.attrs.ordered;
-          this.indexDOM.innerHTML = this.getIndex(ordered);
+          const type = parentNode.attrs.type;
+          this.pseudoDOM.innerHTML = this.getPseudo(type);
       } else {
-          this.indexDOM.innerHTML = this.getIndex();
+          this.pseudoDOM.innerHTML = this.getPseudo();
       }
     }
 
@@ -64,7 +62,7 @@ export class ListHeadView implements NodeView {
           node.attrs.showIndex !== this.node.attrs.showIndex ||
           node.attrs.ordered
         ) {
-          this.updateIndexDOM(node);
+          this.updatePseudoDOM(node);
         }
       
         // 更新节点引用
@@ -99,21 +97,24 @@ export class ListHeadView implements NodeView {
       return parentNode.attrs.id;
     }
 
-    getIndex = (ordered = false) => {
+    getPseudo = (type: ListTypeEnum = ListTypeEnum.BULLET) => {
       const dot = '<div class="text-center" style="-webkit-transform: scale(1.375)">•</div>';
-      if (!ordered) return dot;
 
-      const id = this.getListId();
+      if (type === ListTypeEnum.ORDERED) {
+        const id = this.getListId();
 
-      const map = contextStore.getState().orderedListMap || {};
-      const indexStr = map[id]?.join('.');
-      
-      return indexStr ? `${indexStr}.` : dot;
+        const map = listStore.getState().orderedListMap || {};
+        const indexStr = getOrderedIndex(map[id]);
+        
+        return indexStr ? `${indexStr}.` : dot;
+      }
+
+      return dot;
     }
 
     subscribeEvts() {
       // 订阅 orderedListMap 变化
-      const listener = contextStore.subscribe((state, prevState) => {
+      const listener = listStore.subscribe((state, prevState) => {
           const pos = this.getPos();
 
           if (pos === undefined || state.orderedListMap === prevState.orderedListMap) return;
@@ -125,7 +126,7 @@ export class ListHeadView implements NodeView {
           if (
             newIndexes?.join('-') !== prevIndexes?.join('-')
           ) {
-            this.updateIndexDOM(this.node);
+            this.updatePseudoDOM(this.node);
           }
       });
 
