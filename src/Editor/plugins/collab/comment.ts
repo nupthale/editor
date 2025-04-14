@@ -1,6 +1,7 @@
 import { ydoc, provider } from './core';
 import { commentStore } from '../../store/comment';
 
+import { LOCAL_MODE } from '../../../doc';
 
 // 创建专门的评论数据结构
 const commentsDoc = ydoc.getMap('comments');
@@ -19,26 +20,34 @@ export const initComments = (initialDocComments: any, initialCommentInfoMap: any
 
 // 从 yjs 同步到 store
 const syncToLocal = () => {
-  const json = commentsDoc.toJSON();
-  commentStore.getState().setComment(
-    json.docComments || {}, 
-    json.commentInfoMap || {}
-  );
+    if (LOCAL_MODE) {
+        return;
+    }
+
+    const json = commentsDoc.toJSON();
+    commentStore.getState().setComment(
+        json.docComments || {}, 
+        json.commentInfoMap || {}
+    );
 };
 
 // 从 store 同步到 yjs
 export const syncToRemote = (docComments, commentInfoMap) => {
-  commentsDoc.set('docComments', docComments);
-  commentsDoc.set('commentInfoMap', commentInfoMap);
+    if (LOCAL_MODE) {
+        return;
+    }
+
+    commentsDoc.set('docComments', docComments);
+    commentsDoc.set('commentInfoMap', commentInfoMap);
 };
 
 // 监听远程变化
 commentsDoc.observe(() => {
-  syncToLocal();
+    syncToLocal();
 });
 
 // 在 provider 连接成功时同步一次
-provider.on('sync', (synced: boolean) => {
+provider?.on('sync', (synced: boolean) => {
   if (synced) {
     syncToLocal();
   }

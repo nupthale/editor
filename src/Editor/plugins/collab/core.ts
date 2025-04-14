@@ -1,6 +1,8 @@
 import * as Y from 'yjs';
 import { WebsocketProvider } from 'y-websocket';
 
+import { LOCAL_MODE } from '../../../doc';
+
 export const ydoc = new Y.Doc();
 // export const provider = new WebrtcProvider('prosemirror-editor-room', ydoc, {
 //   signaling: [
@@ -16,7 +18,7 @@ export const ydoc = new Y.Doc();
 //   filterBcConns: true
 // });
 
-export const provider = new WebsocketProvider(
+export const provider = LOCAL_MODE ? null : new WebsocketProvider(
   // 'ws://localhost:3000',
   // 'wss://editor-lh7.pages.dev:3000',
   'wss://editor-server.hale1211.workers.dev',

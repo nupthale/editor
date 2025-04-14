@@ -10,6 +10,6 @@ export * from './core';
 
 export const collab = LOCAL_MODE ? [] : [
   ySyncPlugin(sharedDoc),
-  yCursorPlugin(provider.awareness),
+  yCursorPlugin(provider?.awareness!),
   yUndoPlugin(),
 ];

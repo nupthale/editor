@@ -14,14 +14,14 @@ export const getOnlineUsers = () => {
       return [];
     }
   
-    const states = Array.from(provider.awareness.getStates().values());
+    const states = Array.from(provider?.awareness.getStates().values()!);
     return states
       .filter(state => state.user)
       .map(state => state.user);
 };
 
 // 监听用户状态变化
-provider.awareness.on('change', () => {
+provider?.awareness.on('change', () => {
     const users = getOnlineUsers();
     console.log('在线用户列表:', users);
 
@@ -37,7 +37,7 @@ export const setCollabUser = (user: UserType) => {
 
     console.info('#nameToColor(user.name)', nameToColor(user.name));
 
-    provider.awareness.setLocalStateField('user', {
+    provider?.awareness.setLocalStateField('user', {
       name: user.name,
       id: user.id,
       color: nameToColor(user.name, 0.92),

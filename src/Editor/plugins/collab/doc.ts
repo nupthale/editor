@@ -15,7 +15,7 @@ export const sharedDoc = ydoc.getXmlFragment(namespace);
 
 
 // 添加初始化逻辑
-provider.on('status', ({ status }) => {
+provider?.on('status', ({ status }) => {
   console.log('WebRTC 连接状态:', status, '文档长度:', sharedDoc.length);
   
   /**
