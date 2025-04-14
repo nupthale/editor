@@ -2,6 +2,7 @@ import { nanoid } from 'nanoid';
 
 import { schema } from '../../../schema/index';
 import { decreaseIndent } from './indent';
+import { ListTypeEnum } from '../interface';
 
 export const enter = (state, dispatch, view) => {
     const { $from } = state.selection;
@@ -36,6 +37,7 @@ export const enter = (state, dispatch, view) => {
             level: listNode.attrs.level,
             id: nanoid(8),
             parentId: listNode.attrs.parentId,
+            type: listNode.attrs.type as ListTypeEnum,
         },
     }]).scrollIntoView();
 
