@@ -9,13 +9,13 @@ export const whitespace = (state, dispatch, _view) => {
     const tr = state.tr;
 
     if (
-      $from.parent.type.name !== 'paragraph'
+      $from.parent.type.name !== 'textBlock'
     ) {
       return false;
     }
 
-    const paragraph = $from.node();
-    const content = paragraph.textContent;
+    const textBlock = $from.node();
+    const content = textBlock.textContent;
 
     // content startWith 是数字. 就把当前paragarph 转换为 list
     if (/^\d+\.$/.test(content)) {

@@ -1,7 +1,7 @@
 import { Node } from 'prosemirror-model';
 import { EditorView, NodeView } from 'prosemirror-view';
 
-export class ParagraphBodyView implements NodeView {
+export class TextBlockBodyView implements NodeView {
     dom: HTMLElement;
     contentDOM: HTMLElement | null = null;
 
@@ -9,7 +9,7 @@ export class ParagraphBodyView implements NodeView {
 
         // 创建有序列表元素
         this.dom = document.createElement('div');
-        this.dom.classList.add('doc-paragraph-body');
+        this.dom.classList.add('doc-textBlock-body');
         
         this.contentDOM = this.dom;
     }

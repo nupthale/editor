@@ -32,15 +32,17 @@ export const useAddEmptyBlock = () => {
         // 获取 body 节点的最后一个子节点
         const lastNode = state.doc.lastChild?.lastChild;
         if (
-            lastNode?.type !== schema.nodes.paragraph ||
+            lastNode?.type !== schema.nodes.textBlock ||
             lastNode?.content.size !== 0
         ) {
             // 在当前位置插入空段落
             tr.insert(
                 docSize - 1,
-                schema.nodes.paragraph.create({
+                schema.nodes.textBlock.create({
                   id: nanoid(8),
-                })
+                }, [
+                  schema.nodes.textBlock_head.create({}, [])
+                ])
             );
         }
 

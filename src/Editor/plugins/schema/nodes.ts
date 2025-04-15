@@ -2,7 +2,7 @@
 import { NodeSpec, DOMOutputSpec } from 'prosemirror-model';
 
 import { titleSchema } from '../nodes/title/schema';
-import { paragraphSchema } from '../nodes/paragraph/schema';
+import { textBlockSchema } from '../nodes/text/schema';
 import { headingSchema } from '../nodes/heading/schema';
 import { mentionSchema } from '../nodes/mention/schema';
 import { highlightSchema } from '../nodes/highlight/schema';
@@ -38,8 +38,17 @@ export const nodes: Record<string, NodeSpec> = {
   text: {
     group: 'inline'
   },
+  
+  // 添加硬换行节点定义
+  hardBreak: {
+    inline: true,
+    group: "inline",
+    selectable: false,
+    parseDOM: [{tag: "br"}],
+    toDOM() { return ["br"] }
+  },
 
-  ...paragraphSchema,
+  ...textBlockSchema,
   ...headingSchema,
   ...mentionSchema,
   ...highlightSchema,

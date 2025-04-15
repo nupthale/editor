@@ -1,14 +1,14 @@
 import { Node } from 'prosemirror-model';
 import { EditorView, NodeView, ViewMutationRecord } from 'prosemirror-view';
 
-export class ParagraphHeadView implements NodeView {
+export class TextBlockHeadView implements NodeView {
     dom: HTMLElement;
     contentDOM: HTMLElement | null = null;
 
     constructor(public node: Node, public view: EditorView, public getPos: () => number | undefined) {
         // 创建有序列表元素
         this.dom = document.createElement('div');
-        this.dom.classList.add('doc-paragraph-head');
+        this.dom.classList.add('doc-textBlock-head');
         
 
         this.contentDOM = this.dom;

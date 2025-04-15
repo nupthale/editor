@@ -1,38 +1,38 @@
 import { NodeSpec, DOMOutputSpec } from 'prosemirror-model';
 
-export const paragraphSchema: Record<string, NodeSpec> = {
-    paragraph_head: {
+export const textBlockSchema: Record<string, NodeSpec> = {
+    textBlock_head: {
         content: "inline*",
         group: "block",
         parseDOM: [{
             tag: "div",
             attrs: {
-                class: "doc-paragraph-head",
+                class: "doc-textBlock-head",
             },
         }],
         toDOM() {
             return ["div", {
-                class: "doc-paragraph-head",
+                class: "doc-textBlock-head",
             }, 0];
         }
     },
-    paragraph_body: {
+    textBlock_body: {
         content: 'block*',
         group: 'block',
         parseDOM: [{
           tag: "div",
           attrs: {
-            class: "doc-paragraph-body",
+            class: "doc-textBlock-body",
           },
         }],
         toDOM() {
           return ["div", {
-            class: "doc-paragraph-body",
+            class: "doc-textBlock-body",
           }, 0];
         }
     },
-    paragraph: {
-      content: "paragraph_head paragraph_body?",
+    textBlock: {
+      content: "textBlock_head textBlock_body?",
       defining: true,
       group: 'block',
       attrs: {
@@ -41,14 +41,14 @@ export const paragraphSchema: Record<string, NodeSpec> = {
       parseDOM: [{ 
         tag: "div", 
         attrs: {
-          class: "doc-paragraph",
+          class: "doc-textBlock",
           id: (dom: any) => dom.getAttribute('data-id'),
         } 
       }],
       toDOM(node): DOMOutputSpec {
         return ["div", {
           'data-id': node.attrs.id,
-          class: "doc-paragraph",
+          class: "doc-textBlock",
         }, 0]
       },
     },

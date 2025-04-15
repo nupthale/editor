@@ -18,14 +18,14 @@ export const highlightSchema: Record<string, NodeSpec> = {
         }, 0]
       },
       customCreate: (schema, attrs?: Attrs | null, content?: Fragment | Node | readonly Node[] | null, marks?: readonly Mark[]) => {
-        const paragraph = schema.nodes.paragraph.create({ id: nanoid(8) }, []);
+        const textBlock = schema.nodes.textBlock.create({ id: nanoid(8) }, []);
 
         return schema.nodes.highlight.create(
           { 
             ...attrs,
             id: attrs?.id ? attrs.id : nanoid(8),
           },
-          (content as Node[])?.length ? content : (content as Fragment)?.size ? [content] : [paragraph],
+          (content as Node[])?.length ? content : (content as Fragment)?.size ? [content] : [textBlock],
           marks,
         );
       },

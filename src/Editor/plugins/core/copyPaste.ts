@@ -33,16 +33,16 @@ export const copyPastePlugin = () => {
 
                 return text;
             },
-            // paste的时候 ， 需要判断， 如果是在空paragraph里paste的， 就把paragraph节点替换为当前节点
+            // paste的时候 ， 需要判断， 如果是在空textBlock里paste的， 就把textBlock节点替换为当前节点
             // 如果不是空的， 需要判断， 如果是文本， 就把文本插入， 如果不是文本，就插入一个块。
             handlePaste: (view, _event, slice) => {
                 const { state, dispatch } = view;
                 const { selection } = state;
 
-                // 检查当前节点是否为空的 paragraph
+                // 检查当前节点是否为空的 textBlock
                 const $from = selection.$from;
                 const node = $from.node();
-                const nodeIsEmpty = node.type.name === 'paragraph' && node.content.size === 0;
+                const nodeIsEmpty = node.type.name === 'textBlock' && node.content.size === 0;
 
                 // title 和body不可替换， 所以要判断下$from.depth > 0
                 if (nodeIsEmpty && $from.depth > 0) {

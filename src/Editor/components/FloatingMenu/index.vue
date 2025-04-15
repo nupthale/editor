@@ -125,7 +125,7 @@ export default defineComponent({
             if (!nodeView) return '';
             const type = nodeView.node.type.name;
 
-            if (type === 'paragraph' && nodeView.isEmpty) {
+            if (type === 'textBlock' && nodeView.isEmpty) {
                 return (<EmptyMenu nodeView={crtNodeViewRef.value as BaseBlockView} />);
             }
 

@@ -23,7 +23,7 @@ export default defineComponent({
         return () => (
             <div class="w-[230px] p-2">
                 <Menu class="text-[#2b2f36] !border-none">
-                    <MenuItem key="1" class="!w-full !p-1 !m-0 !h-auto !min-h-auto !leading-none !rounded-[4px]" onClick={() => handleSelectType('paragraph')}>
+                    <MenuItem key="1" class="!w-full !p-1 !m-0 !h-auto !min-h-auto !leading-none !rounded-[4px]" onClick={() => handleSelectType('textBlock')}>
                         <div class="flex items-center">
                             <span class="mr-4 inline-flex items-center justify-center w-[24px] h-[24px]">
                                 <LucideIcon icon={Type} width={18}></LucideIcon>
