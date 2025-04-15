@@ -57,7 +57,9 @@ export const enter = (state, dispatch, _view) => {
     
     tr.insert(pos, newHeader);
     tr.insert(pos + newHeader.nodeSize, newTextBlock);
-    tr.setSelection(TextSelection.create(tr.doc, pos + headerNode.nodeSize - 1)).scrollIntoView();
+
+    const isAtEnd = $from.end() === $from.pos;
+    tr.setSelection(TextSelection.create(tr.doc, $from.after() + (isAtEnd ? 1 : 0))).scrollIntoView();
 
     dispatch?.(tr);
 
