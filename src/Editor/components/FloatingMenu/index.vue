@@ -132,12 +132,12 @@ export default defineComponent({
             return (<TextMenu nodeView={nodeView} />);
         }
 
-        return () => (
+        return () => visibleRef.value ? (
             <Teleport to={document.body}>
                 <Popover title="" placement="left" overlayClassName="actionDrag-popover" onOpenChange={() => cancelHide()}>
                     {{
                         default: () => (
-                            <div class="actionDrag flex items-center justify-between" ref={sourceRef} onMouseenter={handleMounseenter} onTransitionend={handleTransitionEnd}>
+                            <div class={['actionDrag', 'flex', 'items-center', 'justify-between']} ref={sourceRef} onMouseenter={handleMounseenter} onTransitionend={handleTransitionEnd}>
                                 <span class="inline-flex items-center justify-center w-[24px] h-[24px]">
                                     <LucideIcon icon={nodeIconRef.value} width={14} color="#336df4"></LucideIcon>
                                 </span>
@@ -149,7 +149,7 @@ export default defineComponent({
                 </Popover>
                 
             </Teleport>
-        );
+        ) : '';
     }
 });
 </script>

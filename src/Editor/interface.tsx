@@ -1,6 +1,7 @@
 export enum PopoverTypeEnum {
   MENTION = "mention",
   BUBBLE_MENU = 'bubble-menu',
+  FLOAT_MENU = 'float-menu',
 }
 
 export enum MentionTypeEnum {

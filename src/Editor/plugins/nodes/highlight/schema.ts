@@ -3,7 +3,7 @@ import { NodeSpec, DOMOutputSpec, Attrs, Fragment, Mark } from 'prosemirror-mode
 
 export const highlightSchema: Record<string, NodeSpec> = {
     highlight: {
-      content: "block+",
+      content: "block*",
       group: 'block',
       attrs: {
         id: { default: '' },
@@ -17,7 +17,7 @@ export const highlightSchema: Record<string, NodeSpec> = {
           class: "doc-highlight",
         }, 0]
       },
-      customUpdateNodeType: (schema, attrs?: Attrs | null, content?: Fragment | Node | readonly Node[] | null, marks?: readonly Mark[]) => {
+      customTargetNode: (schema, attrs?: Attrs | null, content?: Fragment | Node | readonly Node[] | null, marks?: readonly Mark[]) => {
         const textBlock = schema.nodes.textBlock.create({ id: nanoid(8) }, []);
 
         return schema.nodes.highlight.create(

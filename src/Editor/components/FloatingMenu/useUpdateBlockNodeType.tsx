@@ -1,15 +1,53 @@
 import { Ref } from 'vue';
-import { TextSelection } from 'prosemirror-state';
+import { nanoid } from 'nanoid';
+import { TextSelection, Transaction } from 'prosemirror-state';
+import { Attrs, Fragment } from 'prosemirror-model';
 import { BaseBlockView } from '../../plugins/nodes/_common/baseBlockView';
 
+import { getParentNode } from '../../shared';
 import { contextStore } from '../../store/context';
 import { blockMouseLeave$ } from '../../event';
 
+const updateHeadBodyNodeType = (schema, tr: Transaction, srcNodeView: BaseBlockView, attrs?: Attrs | null) => {
+    const { from } = srcNodeView.range;
+    const srcNode = srcNodeView.node;
+    const marks = srcNode.marks;
+
+    const blockNode = getParentNode(tr.doc.resolve(from), 0);
+    const head = srcNode;
+    const body = blockNode.children[1];
+
+    // 创建新的 heading 节点
+    const headingNode = schema.nodes.heading.create(
+        { ...attrs, id: nanoid(8) }, 
+        head.content, 
+        marks || []
+    );
+
+    const blockResolvedPos = tr.doc.resolve(from);
+    const start = blockResolvedPos.before();
+    const end = blockResolvedPos.after();
+
+    // 先删除原有内容
+    tr.deleteRange(start, end);
+    
+    // 插入 heading 和 body 内容
+    tr.insert(
+        start,
+        headingNode,
+    );
+
+    if (body?.content) {
+        tr.insert(
+            start + headingNode.nodeSize,
+            Fragment.from(body.content),
+        );
+    }
+};
 
 export const useUpdateBlockNodeType = (
     crtNodeViewRef: Ref<BaseBlockView | null>,
 ) => {
-
     const handleSelectType = (targetType: string, attrs?: Record<string, any>) => {
         const view = contextStore.getState().editorView;
         const state = view?.state;
@@ -19,7 +57,7 @@ export const useUpdateBlockNodeType = (
         
         const schema = state.schema;
         const targetTypeSchema = schema.nodes[targetType];
-        const { customUpdateNodeType, customStartOffset = 0 } = targetTypeSchema.spec;
+        const { customTargetNode, customStartOffset = 0 } = targetTypeSchema.spec;
 
         const tr = state.tr;
         const { from, to } = srcNodeView.range;
@@ -28,34 +66,43 @@ export const useUpdateBlockNodeType = (
             ...attrs, 
         }
 
-        if (customUpdateNodeType) {
-            customUpdateNodeType(schema, tr, srcNodeView, newAttrs);
-        } else {
-            const targetNode = targetTypeSchema.create(newAttrs, srcNodeView.node.content, srcNodeView.node.marks);
-
-            // 确保目标节点有效
-            if (!targetNode) {
-                console.error('Failed to create target node');
-                return;
+        try {
+            if (['list_head', 'textBlock_head'].includes(srcNodeView.node.type.name)) {
+                updateHeadBodyNodeType(schema, tr, srcNodeView, newAttrs);
+            } else {
+                const targetNode = customTargetNode ? 
+                    customTargetNode(schema, newAttrs, srcNodeView.node.content, srcNodeView.node.marks) : 
+                    targetTypeSchema.create(newAttrs, srcNodeView.node.content, srcNodeView.node.marks);
+    
+                   
+                // 确保目标节点有效
+                if (!targetNode) {
+                    console.error('Failed to create target node');
+                    return;
+                }
+    
+                tr.replaceRangeWith(
+                    from, 
+                    to, 
+                    targetNode,
+                );
+    
+                tr.setSelection(
+                    TextSelection.create(tr.doc, from + customStartOffset),
+                );
             }
-
-            tr.replaceRangeWith(
-                from, 
-                to, 
-                targetNode,
-            );
-
-            tr.setSelection(
-                TextSelection.create(tr.doc, from + customStartOffset),
-            );
+    
+            view.dispatch(tr);
+    
+            view.focus();
+        } catch(e) {
+            console.error(e);
         }
-
-        view.dispatch(tr);
-
-        view.focus();
 
         // 直接隐藏actionDrag, 要不然定位不准确
         blockMouseLeave$.next({ delay: 0 });
+
+        hidePopover$.next({});
     }
 
     return {

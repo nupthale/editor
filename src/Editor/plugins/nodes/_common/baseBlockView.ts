@@ -9,7 +9,6 @@ import './index.less';
 export class BaseBlockView implements NodeView {
   dom: HTMLElement;
   contentDOM: HTMLElement | null = null;
-  menuDom: HTMLElement | null = null;
 
   id: string = '';
 
@@ -45,8 +44,6 @@ export class BaseBlockView implements NodeView {
     this.dom.classList.add('doc-block');
 
     this.dom.setAttribute('data-id', this.node.attrs.id);
-
-    this.menuDom = this.dom;
   }
 
   mouseEnter = () => {
@@ -64,13 +61,9 @@ export class BaseBlockView implements NodeView {
     // if (this.depth !== 1) {
     //   return;
     // };
-  
-    if (!this.menuDom) {
-      return;
-    }
-    this.menuDom.addEventListener('mouseenter', this.mouseEnter);
+    this.dom.addEventListener('mouseenter', this.mouseEnter);
 
-    this.menuDom.addEventListener('mouseleave', this.mouseLeave);
+    this.dom.addEventListener('mouseleave', this.mouseLeave);
   }
 
   update(node: Node) {
@@ -95,10 +88,6 @@ export class BaseBlockView implements NodeView {
   }
 
   destroy() {
-    if (!this.menuDom) {
-      return;
-    }
-     
     this.dom.removeEventListener('mouseenter', this.mouseEnter);
     this.dom.removeEventListener('mouseleave', this.mouseLeave);
   }
