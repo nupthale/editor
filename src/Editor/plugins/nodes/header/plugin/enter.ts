@@ -18,6 +18,16 @@ export const enter = (state, dispatch, _view) => {
 
     if (!headerNode) return false;
 
+    // 如果在header起始位置, 在上方插入空textBlock
+    if ($from.parentOffset === 0) {
+      tr.insert($from.before(), schema.nodes.textBlock.create({ id: nanoid(8) }, [
+        schema.nodes.textBlock_head.create({}, [])
+      ]));
+
+      dispatch?.(tr);
+      return true;
+    }
+
     const preserveContent = headerNode.slice(
       0,
       $from.parentOffset,

@@ -48,14 +48,16 @@ export const nodes: Record<string, NodeSpec> = {
     toDOM() { return ['br'] }
   },
 
+  // 不允许光标进入内部
   emoji: {
     inline: true,
     group: 'inline',
+    selectable: false,
     content: 'text*',  // 允许包含文本内容
     parseDOM: [{tag: 'span.emoji'}],
-    toDOM() { return ['span', {
+    toDOM(node) { return ['span', {
       class: 'emoji',
-    }, 0]}
+    }, node.textContent]}
   },
 
   ...textBlockSchema,
