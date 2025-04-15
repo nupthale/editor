@@ -2,6 +2,7 @@ import { nanoid } from 'nanoid';
 
 import { schema } from '../../../schema/index';
 import { getRangeByPos } from '../../../../shared/index';
+import { ListTypeEnum } from '../interface';
 
 // 如果前面是数字. 就把当前paragarph 转换为 list
 export const whitespace = (state, dispatch, _view) => {
@@ -9,7 +10,7 @@ export const whitespace = (state, dispatch, _view) => {
     const tr = state.tr;
 
     if (
-      $from.parent.type.name !== 'textBlock'
+      $from.parent.type.name !== 'textBlock_head'
     ) {
       return false;
     }
@@ -27,6 +28,7 @@ export const whitespace = (state, dispatch, _view) => {
         schema.nodes.list.create(
             {
                 id: nanoid(8),
+                type: ListTypeEnum.ORDERED,
             },
             schema.nodes.list_head.create(
                 {
