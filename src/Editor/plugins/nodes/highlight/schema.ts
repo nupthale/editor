@@ -17,7 +17,7 @@ export const highlightSchema: Record<string, NodeSpec> = {
           class: "doc-highlight",
         }, 0]
       },
-      customCreate: (schema, attrs?: Attrs | null, content?: Fragment | Node | readonly Node[] | null, marks?: readonly Mark[]) => {
+      customUpdateNodeType: (schema, attrs?: Attrs | null, content?: Fragment | Node | readonly Node[] | null, marks?: readonly Mark[]) => {
         const textBlock = schema.nodes.textBlock.create({ id: nanoid(8) }, []);
 
         return schema.nodes.highlight.create(

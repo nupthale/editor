@@ -3,20 +3,20 @@ import { EditorView, NodeView, ViewMutationRecord } from 'prosemirror-view';
 
 import { listStore } from '../../../../store/list';
 import { getParentNodeByPos } from '../../../../shared';
+import { BaseBlockView } from '../../_common/baseBlockView';
 
 import { getOrderedIndex } from '../util';
 import { ListTypeEnum } from '../interface';
 
-export class ListHeadView implements NodeView {
-    dom: HTMLElement;
-    contentDOM: HTMLElement | null = null;
+export class ListHeadView extends BaseBlockView implements NodeView {
     pseudoDOM: HTMLElement;
 
     listeners: Function[] = [];
 
     constructor(public node: Node, public view: EditorView, public getPos: () => number | undefined) {
+        super(node, view, getPos);
+
         // 创建有序列表元素
-        this.dom = document.createElement('div');
         this.dom.classList.add('doc-list-head');
         
         const wrapDOM = document.createElement('div');
@@ -39,6 +39,8 @@ export class ListHeadView implements NodeView {
         this.updatePseudoDOM(node);
 
         this.subscribeEvts();
+
+        this.initFloatMenuEvt();
     }
 
     updatePseudoDOM(node) {

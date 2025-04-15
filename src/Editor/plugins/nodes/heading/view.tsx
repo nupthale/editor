@@ -38,7 +38,7 @@ export class HeadingView extends BaseBlockView implements NodeView {
     
     this.render();
 
-    this.initEvt();
+    this.initFloatMenuEvt();
   }
 
   render() {

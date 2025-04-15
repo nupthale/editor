@@ -37,7 +37,7 @@ export class HighlightView extends BaseBlockView implements NodeView {
     // 组装DOM结构
     this.dom.appendChild(container);
 
-    this.initEvt();
+    this.initFloatMenuEvt();
   }
 }
 

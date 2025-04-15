@@ -33,7 +33,7 @@ export class TableView extends BaseBlockView implements NodeView {
 
     this.dom.appendChild(container);
     
-    this.initEvt();
+    this.initFloatMenuEvt();
   }
 
   update(node: Node) {

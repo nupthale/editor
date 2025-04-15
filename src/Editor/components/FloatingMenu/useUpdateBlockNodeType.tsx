@@ -19,7 +19,7 @@ export const useUpdateBlockNodeType = (
         
         const schema = state.schema;
         const targetTypeSchema = schema.nodes[targetType];
-        const { customCreate, customStartOffset = 0 } = targetTypeSchema.spec;
+        const { customUpdateNodeType, customStartOffset = 0 } = targetTypeSchema.spec;
 
         const tr = state.tr;
         const { from, to } = srcNodeView.range;
@@ -28,25 +28,27 @@ export const useUpdateBlockNodeType = (
             ...attrs, 
         }
 
-        const targetNode = customCreate ? 
-            customCreate(schema, newAttrs, srcNodeView.node.content, srcNodeView.node.marks) : 
-            targetTypeSchema.create(newAttrs, srcNodeView.node.content, srcNodeView.node.marks);
-       
-        // 确保目标节点有效
-        if (!targetNode) {
-            console.error('Failed to create target node');
-            return;
+        if (customUpdateNodeType) {
+            customUpdateNodeType(schema, tr, srcNodeView, newAttrs);
+        } else {
+            const targetNode = targetTypeSchema.create(newAttrs, srcNodeView.node.content, srcNodeView.node.marks);
+
+            // 确保目标节点有效
+            if (!targetNode) {
+                console.error('Failed to create target node');
+                return;
+            }
+
+            tr.replaceRangeWith(
+                from, 
+                to, 
+                targetNode,
+            );
+
+            tr.setSelection(
+                TextSelection.create(tr.doc, from + customStartOffset),
+            );
         }
-
-        tr.replaceRangeWith(
-            from, 
-            to, 
-            targetNode,
-        );
-
-        tr.setSelection(
-            TextSelection.create(tr.doc, from + customStartOffset),
-        );
 
         view.dispatch(tr);
 

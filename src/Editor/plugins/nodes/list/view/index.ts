@@ -1,20 +1,18 @@
 import { Node } from 'prosemirror-model';
 import { EditorView, NodeView } from 'prosemirror-view';
 
-import { BaseBlockView } from '../../_common/baseBlockView';
-
 import '../index.less';
 
-export class ListView extends BaseBlockView implements NodeView {
+export class ListView implements NodeView {
+  dom: HTMLElement;
+  contentDOM: HTMLElement | null = null;
+  
   constructor(public node: Node, public view: EditorView, public getPos: () => number | undefined) {
-    super(node, view, getPos);
-
+    this.dom = document.createElement('div');
     this.dom.classList.add('doc-list');
     this.dom.classList.add(`doc-list-${node.attrs.type}`)
 
     this.contentDOM = this.dom;
-
-    this.initEvt();
   }
 
   update(node: Node) {

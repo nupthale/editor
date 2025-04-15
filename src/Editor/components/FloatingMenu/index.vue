@@ -132,7 +132,7 @@ export default defineComponent({
             return (<TextMenu nodeView={nodeView} />);
         }
 
-        return () => visibleRef.value ? (
+        return () => (
             <Teleport to={document.body}>
                 <Popover title="" placement="left" overlayClassName="actionDrag-popover" onOpenChange={() => cancelHide()}>
                     {{
@@ -149,14 +149,14 @@ export default defineComponent({
                 </Popover>
                 
             </Teleport>
-        ) : '';
+        );
     }
 });
 </script>
 
 <style>
 .actionDrag-popover .ant-popover-arrow {
-    display: none !important;;
+    display: none !important;
 }
 </style>
 

@@ -1,17 +1,18 @@
 import { Node } from 'prosemirror-model';
 import { EditorView, NodeView, ViewMutationRecord } from 'prosemirror-view';
 
-export class TextBlockHeadView implements NodeView {
-    dom: HTMLElement;
-    contentDOM: HTMLElement | null = null;
+import { BaseBlockView } from '../../_common/baseBlockView';
 
+export class TextBlockHeadView  extends BaseBlockView implements NodeView {
     constructor(public node: Node, public view: EditorView, public getPos: () => number | undefined) {
-        // 创建有序列表元素
-        this.dom = document.createElement('div');
-        this.dom.classList.add('doc-textBlock-head');
+        super(node, view, getPos);  
         
+        // 创建有序列表元素
+        this.dom.classList.add('doc-textBlock-head');
 
         this.contentDOM = this.dom;
+
+        this.initFloatMenuEvt();
     }
 
     update(node: Node) {
