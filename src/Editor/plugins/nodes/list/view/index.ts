@@ -10,6 +10,7 @@ export class ListView extends BaseBlockView implements NodeView {
     super(node, view, getPos);
 
     this.dom.classList.add('doc-list');
+    this.dom.classList.add(`doc-list-${node.attrs.type}`)
 
     this.contentDOM = this.dom;
 

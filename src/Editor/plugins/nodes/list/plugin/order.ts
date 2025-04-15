@@ -48,6 +48,14 @@ export const getLists = (node) => {
                 lists.push(orderList);
            }
         }
+
+        if (node.type.name === 'textBlock' && node.childCount === 2) {
+            const subLists = getLists(node.lastChild);
+
+            if (subLists.length) {
+                lists.push(...subLists);
+            }
+        }
     });
 
     return lists;

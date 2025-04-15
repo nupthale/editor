@@ -106,7 +106,7 @@ export class ListHeadView implements NodeView {
         const map = listStore.getState().orderedListMap || {};
         const indexStr = getOrderedIndex(map[id]);
         
-        return indexStr ? `${indexStr}.` : dot;
+        return indexStr ? `${indexStr}.` : '?';
       }
 
       return dot;
