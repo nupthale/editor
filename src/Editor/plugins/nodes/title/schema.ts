@@ -2,7 +2,7 @@ import { NodeSpec, DOMOutputSpec } from 'prosemirror-model';
 
 export const titleSchema: Record<string, NodeSpec> = {
     title: {
-      content: "text*",
+      content: "inline*",
       defining: true,
       attrs: {
         id: { default: "" },

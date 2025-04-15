@@ -37,13 +37,14 @@ export class BaseBlockView implements NodeView {
     return $pos.depth;  // doc -> body -> block (depth = 2)
   }
 
-  constructor(public node: Node, public view: EditorView, public getPos: () => number | undefined) {
-    this.id = node.attrs.id || '';
-
+  constructor(public node: Node, public view: EditorView, public getPos: () => number | undefined, public addId = true) {
     this.dom = document.createElement('div');
     this.dom.classList.add('doc-block');
 
-    this.dom.setAttribute('data-id', this.node.attrs.id);
+    if (addId) {
+      this.id = node.attrs.id || '';
+      this.dom.setAttribute('data-id', this.node.attrs.id);
+    }
   }
 
   mouseEnter = () => {

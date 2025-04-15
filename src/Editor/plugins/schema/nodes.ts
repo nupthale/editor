@@ -3,7 +3,7 @@ import { NodeSpec, DOMOutputSpec } from 'prosemirror-model';
 
 import { titleSchema } from '../nodes/title/schema';
 import { textBlockSchema } from '../nodes/text/schema';
-import { headingSchema } from '../nodes/heading/schema';
+import { headerSchema } from '../nodes/header/schema';
 import { mentionSchema } from '../nodes/mention/schema';
 import { highlightSchema } from '../nodes/highlight/schema';
 import { listSchema } from '../nodes/list/schema';
@@ -44,12 +44,22 @@ export const nodes: Record<string, NodeSpec> = {
     inline: true,
     group: "inline",
     selectable: false,
-    parseDOM: [{tag: "br"}],
-    toDOM() { return ["br"] }
+    parseDOM: [{tag: 'br'}],
+    toDOM() { return ['br'] }
+  },
+
+  emoji: {
+    inline: true,
+    group: 'inline',
+    content: 'text*',  // 允许包含文本内容
+    parseDOM: [{tag: 'span.emoji'}],
+    toDOM() { return ['span', {
+      class: 'emoji',
+    }, 0]}
   },
 
   ...textBlockSchema,
-  ...headingSchema,
+  ...headerSchema,
   ...mentionSchema,
   ...highlightSchema,
   ...listSchema,

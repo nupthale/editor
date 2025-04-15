@@ -1,8 +1,8 @@
 import { NodeSpec, DOMOutputSpec } from 'prosemirror-model';
 
 
-export const headingSchema: Record<string, NodeSpec> = {
-    heading: {
+export const headerSchema: Record<string, NodeSpec> = {
+    header: {
       content: "inline*",
       group: 'block',
       attrs: {
@@ -30,7 +30,7 @@ export const headingSchema: Record<string, NodeSpec> = {
       }],
       toDOM(node): DOMOutputSpec {
         return [`h${node.attrs.level}`, {
-          class: "doc-heading",
+          class: "doc-header",
         }, 0]
       },
     },

@@ -6,12 +6,16 @@ import '../index.less';
 export class ListView implements NodeView {
   dom: HTMLElement;
   contentDOM: HTMLElement | null = null;
+  id: string;
   
   constructor(public node: Node, public view: EditorView, public getPos: () => number | undefined) {
     this.dom = document.createElement('div');
     this.dom.classList.add('doc-list');
     this.dom.classList.add(`doc-list-${node.attrs.type}`)
 
+    this.dom.setAttribute('data-id', this.node.attrs.id);
+
+    this.id = node.attrs.id || '';
     this.contentDOM = this.dom;
   }
 

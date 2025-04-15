@@ -6,7 +6,7 @@ import { copyPastePlugin } from './core/copyPaste';
 import { bubbleMenuPlugin } from './core/bubbleMenu';
 import { title } from './nodes/title/plugin';
 import { textBlock } from './nodes/text/plugin';
-import { heading } from './nodes/heading/plugin';
+import { header } from './nodes/header/plugin/index';
 
 import { mention } from './nodes/mention/plugin';
 import { highlight } from './nodes/highlight/plugin';
@@ -26,7 +26,7 @@ export function plugins(schema: Schema): Plugin[] {
     ...bubbleMenuPlugin(),
     ...title(schema),
     ...textBlock(schema),
-    ...heading(schema),
+    ...header(schema),
     // 添加更多插件...
     ...mention(schema),
     ...highlight(schema),

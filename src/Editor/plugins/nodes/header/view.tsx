@@ -6,7 +6,7 @@ import { BaseBlockView } from '../_common/baseBlockView';
 import { blockMouseEnter$ } from '../../../event';
 import './index.less';
 
-export class HeadingView extends BaseBlockView implements NodeView {
+export class HeaderView extends BaseBlockView implements NodeView {
   level: number = 1;
 
   get icon() {
@@ -34,7 +34,7 @@ export class HeadingView extends BaseBlockView implements NodeView {
     this.level = node.attrs.level;
 
     // 创建容器元素
-    this.dom.classList.add('doc-heading');
+    this.dom.classList.add('doc-header');
     
     this.render();
 

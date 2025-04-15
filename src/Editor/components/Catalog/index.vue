@@ -31,21 +31,21 @@ export default defineComponent({
             };
         });
         
-        const headingsRef = computed(() => {
+        const headersRef = computed(() => {
             if (!docJsonRef.value) return [];
 
             const body = docJsonRef.value?.doc?.content?.[1];
         
-            const headings = body.content.filter(item => item.type === 'heading');
+            const headers = body.content.filter(item => item.type === 'header');
 
-            return headings.map(item => ({
+            return headers.map(item => ({
                 id: item.attrs.id,
                 level: item.attrs.level,
                 text: getText(item.content),
             }));
         });
 
-        const { activeIdRef } = useActive(titleRef, headingsRef);
+        const { activeIdRef } = useActive(titleRef, headersRef);
 
         useSubscription(
             docChanged$.pipe(
@@ -65,15 +65,15 @@ export default defineComponent({
             manualSetActiveId$.next(titleRef.value?.id);
         }
 
-        return () => headingsRef.value?.length ? (
+        return () => headersRef.value?.length ? (
             <div class="doc-catalog-wrap">
                 <div class="doc-catalog-container w-fit h-fit">
                     <div 
-                        class={['heading', 'font-medium', 'text-[15px]', 'mb-2', 'cursor-pointer', activeIdRef.value === titleRef.value?.id ? 'active' : '']} 
+                        class={['header', 'font-medium', 'text-[15px]', 'mb-2', 'cursor-pointer', activeIdRef.value === titleRef.value?.id ? 'active' : '']} 
                         onClick={handleTitleClick}>
                         {docTitle.value}
                     </div>
-                    <Tree headings={headingsRef.value} activeId={activeIdRef.value} />
+                    <Tree headers={headersRef.value} activeId={activeIdRef.value} />
                 </div>
             </div>
         ) : '';
@@ -82,7 +82,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.heading.active {
+.headers.active {
     color: #1456f0;
 }
 

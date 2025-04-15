@@ -23,7 +23,7 @@ export default defineComponent({
         return () => (
             <div class="w-[230px] p-2">
                 <Menu class="text-[#2b2f36] !border-none">
-                    <MenuItem key="2" class="!w-full !p-1 !m-0 !h-auto !min-h-auto !leading-none !rounded-[4px]" onClick={() => handleSelectType('heading', { level: 1 })}>
+                    <MenuItem key="2" class="!w-full !p-1 !m-0 !h-auto !min-h-auto !leading-none !rounded-[4px]" onClick={() => handleSelectType('header', { level: 1 })}>
                         <div class="flex items-center">
                             <span class="mr-4 inline-flex items-center justify-center w-[24px] h-[24px]">
                                 <LucideIcon icon={Heading1} width={20}></LucideIcon>
@@ -31,7 +31,7 @@ export default defineComponent({
                             一级标题
                         </div>
                     </MenuItem>
-                    <MenuItem key="3" class="!w-full !p-1 !m-0 !h-auto !min-h-auto !leading-none !rounded-[4px]" onClick={() => handleSelectType('heading', { level: 2 })}>
+                    <MenuItem key="3" class="!w-full !p-1 !m-0 !h-auto !min-h-auto !leading-none !rounded-[4px]" onClick={() => handleSelectType('header', { level: 2 })}>
                         <div class="flex items-center">
                             <span class="mr-4 inline-flex items-center justify-center w-[24px] h-[24px]">
                                 <LucideIcon icon={Heading2} width={20}></LucideIcon>
@@ -39,7 +39,7 @@ export default defineComponent({
                             二级标题
                         </div>
                     </MenuItem>
-                    <MenuItem key="4" class="!w-full !p-1 !m-0 !h-auto !min-h-auto !leading-none !rounded-[4px]" onClick={() => handleSelectType('heading', { level: 3 })}>
+                    <MenuItem key="4" class="!w-full !p-1 !m-0 !h-auto !min-h-auto !leading-none !rounded-[4px]" onClick={() => handleSelectType('header', { level: 3 })}>
                         <div class="flex items-center">
                             <span class="mr-4 inline-flex items-center justify-center w-[24px] h-[24px]">
                                 <LucideIcon icon={Heading3} width={20}></LucideIcon>

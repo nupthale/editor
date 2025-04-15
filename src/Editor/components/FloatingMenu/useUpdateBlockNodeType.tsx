@@ -17,8 +17,8 @@ const updateHeadBodyNodeType = (schema, tr: Transaction, srcNodeView: BaseBlockV
     const head = srcNode;
     const body = blockNode.children[1];
 
-    // 创建新的 heading 节点
-    const headingNode = schema.nodes.heading.create(
+    // 创建新的 header 节点
+    const headerNode = schema.nodes.header.create(
         { ...attrs, id: nanoid(8) }, 
         head.content, 
         marks || []
@@ -31,15 +31,15 @@ const updateHeadBodyNodeType = (schema, tr: Transaction, srcNodeView: BaseBlockV
     // 先删除原有内容
     tr.deleteRange(start, end);
     
-    // 插入 heading 和 body 内容
+    // 插入 header 和 body 内容
     tr.insert(
         start,
-        headingNode,
+        headerNode,
     );
 
     if (body?.content) {
         tr.insert(
-            start + headingNode.nodeSize,
+            start + headerNode.nodeSize,
             Fragment.from(body.content),
         );
     }
@@ -101,8 +101,6 @@ export const useUpdateBlockNodeType = (
 
         // 直接隐藏actionDrag, 要不然定位不准确
         blockMouseLeave$.next({ delay: 0 });
-
-        hidePopover$.next({});
     }
 
     return {

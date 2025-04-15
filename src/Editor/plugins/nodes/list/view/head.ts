@@ -14,7 +14,7 @@ export class ListHeadView extends BaseBlockView implements NodeView {
     listeners: Function[] = [];
 
     constructor(public node: Node, public view: EditorView, public getPos: () => number | undefined) {
-        super(node, view, getPos);
+        super(node, view, getPos, false);
 
         // 创建有序列表元素
         this.dom.classList.add('doc-list-head');

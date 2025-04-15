@@ -7,16 +7,16 @@ import { manualSetActiveId$ } from './event';
 
 export default defineComponent({
     props: {
-        headings: {
+        headers: {
             type: Array as PropType<InputNode[]>,
             default: () => [],
         },
         activeId: String,
     },
     setup(props) {
-        const headingsRef = toRef(props, 'headings');
+        const headersRef = toRef(props, 'headers');
 
-        const catalogsRef = computed(() => toTree(headingsRef.value));
+        const catalogsRef = computed(() => toTree(headersRef.value));
 
         const handleClick = (item: InputNode) => {
             docScrollTo$.next({
@@ -30,7 +30,7 @@ export default defineComponent({
             <div class="catalogTree">
                 {
                     catalogsRef.value.map((item) => (
-                        <div key={item.id} class={['heading', `level-${item.level}`, props.activeId === item.id ? 'active' : '']} style={{ paddingLeft: `${item.indent * 14}px` }} onClick={() => handleClick(item)}>
+                        <div key={item.id} class={['header', `level-${item.level}`, props.activeId === item.id ? 'active' : '']} style={{ paddingLeft: `${item.indent * 14}px` }} onClick={() => handleClick(item)}>
                             {item.text}
                         </div>
                     ))
@@ -52,7 +52,7 @@ export default defineComponent({
     font-weight: 500;
 }
 
-.heading {
+.header {
     cursor: pointer;
     padding-bottom: 8px;
     white-space: nowrap;
@@ -60,12 +60,12 @@ export default defineComponent({
     text-overflow: ellipsis;
 }
 
-.heading.active {
+.header.active {
     color: #1456f0;
     font-weight: 600;
 }
 
-.heading:hover {
+.header:hover {
     color: #1456f0;
 }
 </style>
