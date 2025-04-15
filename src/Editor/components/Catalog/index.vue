@@ -18,7 +18,7 @@ export default defineComponent({
         const docTitle = computed(() => {
             if (!docJsonRef.value) return '';
             
-            return docJsonRef.value?.doc?.content?.[0]?.content?.[0]?.text;
+            return getText(docJsonRef.value?.doc?.content?.[0]?.content);
         })
 
         const titleRef = computed(() => {

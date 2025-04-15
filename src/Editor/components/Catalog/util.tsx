@@ -1,6 +1,8 @@
 export const getText = (content) => {
     return content?.reduce((acc, crt) => {
-        if (crt.type === 'text') {
+        if (crt.type === 'emoji') {
+            return acc + crt.content?.[0]?.text;
+        } else if (crt.type === 'text') {
             return acc + crt.text;
         } else if (crt.type === 'mention') {
             return acc + `@${crt.attrs.name}`;
