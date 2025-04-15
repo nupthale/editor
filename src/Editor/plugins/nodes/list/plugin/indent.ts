@@ -87,19 +87,20 @@ export const increaseIndent = (state, dispatch, view) => {
         return true;
     }
 
+    // 计算当前光标相对于 listNode 开始位置的偏移量
+    const relativePos = $from.pos - currentListPos;
     if (prevListNode.childCount > 1) {
         // 已有 body，直接移动到 body 末尾
         const bodyPos = prevPos + prevListNode.nodeSize - 2;
-
+        
         tr.delete(currentListPos, currentListPos + listNode.nodeSize)
-          .insert(bodyPos, listNode);
+          .insert(bodyPos, listNode)
+          .setSelection(TextSelection.create(tr.doc, bodyPos + relativePos));
     } else {
         // 创建 body 并移动
         const newBody = schema.nodes.list_body.create(null, Fragment.from(listNode));
         const insertPos = prevPos + prevListNode.firstChild.nodeSize;
-        // 计算当前光标相对于 listNode 开始位置的偏移量
-        const relativePos = $from.pos - currentListPos;
-
+        
         tr.delete(currentListPos, currentListPos + listNode.nodeSize)
           .insert(insertPos, newBody)
           .setSelection(TextSelection.create(tr.doc, insertPos + relativePos + 2));
