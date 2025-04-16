@@ -30,3 +30,17 @@ export interface UserType {
   name: string;
   id: string;
 }
+
+export enum NodeViewEnum {
+  HEADER = 'header',
+  HIGHLIGHT = 'highlight',
+  LIST = 'list',
+  LIST_HEAD = 'list_head',
+  LIST_BODY = 'list_body',
+  MENTION = 'mention',
+  TABLE = 'table',
+  TEXT_BLOCK = 'textBlock',
+  TEXT_BLOCK_HEAD = 'textBlock_head',
+  TEXT_BLOCK_BODY = 'textBlock_body',
+  TITLE = 'title',
+}

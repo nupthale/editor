@@ -1,17 +1,14 @@
 import { Node } from 'prosemirror-model';
-import { EditorView, NodeView } from 'prosemirror-view';
-import { TextQuote } from 'lucide';
+import { EditorView } from 'prosemirror-view';
 
-import { BaseBlockView } from '../_common/baseBlockView';
+
+import { BaseBlockView, Convertible } from '../_common/baseBlockView';
+import { FloatMenuTrigger } from '../_common/floatMenuTrigger'
 
 import './index.less';
 
-export class HighlightView extends BaseBlockView implements NodeView {
-  contentDOM: HTMLElement;
-
-  get icon() {
-    return TextQuote;
-  }
+export class HighlightView extends BaseBlockView implements Convertible {
+  floatMenuTrigger: FloatMenuTrigger;
 
   constructor(public node: Node, public view: EditorView, public getPos: () => number | undefined) {
     super(node, view, getPos);
@@ -37,7 +34,15 @@ export class HighlightView extends BaseBlockView implements NodeView {
     // 组装DOM结构
     this.dom.appendChild(container);
 
-    this.initFloatMenuEvt();
+    this.floatMenuTrigger = new FloatMenuTrigger(this);
+  }
+
+  destroy() {
+    this.floatMenuTrigger.destroy();
+  }
+
+  convertTo(targetType: string, attrs?: Record<string, any>) {
+    console.info(targetType, attrs);
   }
 }
 

@@ -1,12 +1,15 @@
 import { Node } from 'prosemirror-model';
-import { EditorView, NodeView } from 'prosemirror-view';
+import { EditorView } from 'prosemirror-view';
 
-import { BaseBlockView } from '../../_common/baseBlockView';
+import { BaseBlockView, Convertible } from '../../_common/baseBlockView';
+import { FloatMenuTrigger } from '../../_common/floatMenuTrigger';
 
 import '../index.less';
 
-export class TableView extends BaseBlockView implements NodeView {
+export class TableView extends BaseBlockView implements Convertible {
   colgroup: HTMLElement;
+
+  floatMenuTrigger: FloatMenuTrigger;
   
   constructor(public node: Node, public view: EditorView, public getPos: () => number | undefined) {
     super(node, view, getPos);
@@ -33,15 +36,14 @@ export class TableView extends BaseBlockView implements NodeView {
 
     this.dom.appendChild(container);
     
-    this.initFloatMenuEvt();
+    this.floatMenuTrigger = new FloatMenuTrigger(this);
   }
 
-  update(node: Node) {
-    if (node.type !== this.node.type) return false;
-    
-    // 更新节点引用
-    this.node = node;
-    
-    return true;
+  destroy() {
+    this.floatMenuTrigger.destroy();
+  }
+
+  convertTo(targetType: string, attrs?: Record<string, any>) {
+     console.info('convertTo', targetType, attrs);
   }
 }

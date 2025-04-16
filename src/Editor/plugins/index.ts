@@ -5,7 +5,7 @@ import { history } from './core/history';
 import { copyPastePlugin } from './core/copyPaste';
 import { bubbleMenuPlugin } from './core/bubbleMenu';
 import { title } from './nodes/title/plugin';
-import { textBlock } from './nodes/text/plugin';
+import { textBlock } from './nodes/textBlock/plugin';
 import { header } from './nodes/header/plugin/index';
 
 import { mention } from './nodes/mention/plugin';

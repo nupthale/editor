@@ -2,7 +2,7 @@
 import { NodeSpec, DOMOutputSpec } from 'prosemirror-model';
 
 import { titleSchema } from '../nodes/title/schema';
-import { textBlockSchema } from '../nodes/text/schema';
+import { textBlockSchema } from '../nodes/textBlock/schema';
 import { headerSchema } from '../nodes/header/schema';
 import { mentionSchema } from '../nodes/mention/schema';
 import { highlightSchema } from '../nodes/highlight/schema';

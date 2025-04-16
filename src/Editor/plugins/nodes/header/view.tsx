@@ -1,32 +1,14 @@
 import { Node } from 'prosemirror-model';
-import { EditorView, NodeView } from 'prosemirror-view';
-import { Heading1, Heading2, Heading3, Heading4, Heading5, Heading6 } from 'lucide';
+import { EditorView } from 'prosemirror-view';
 
-import { BaseBlockView } from '../_common/baseBlockView';
-import { blockMouseEnter$ } from '../../../event';
+import { BaseBlockView, Convertible } from '../_common/baseBlockView';
+import { FloatMenuTrigger } from '../_common/floatMenuTrigger';
 import './index.less';
 
-export class HeaderView extends BaseBlockView implements NodeView {
+export class HeaderView extends BaseBlockView implements Convertible {
   level: number = 1;
 
-  get icon() {
-    switch (this.level) {
-      case 1:
-        return Heading1;
-      case 2:
-        return Heading2;  
-      case 3:
-        return Heading3;
-      case 4:
-        return Heading4;
-      case 5:
-        return Heading5;
-      case 6:
-        return Heading6;
-      default:
-        return Heading1;  
-    }
-  }
+  floatMenuTrigger: FloatMenuTrigger;
 
   constructor(public node: Node, public view: EditorView, public getPos: () => number | undefined) {
     super(node, view, getPos);
@@ -38,7 +20,7 @@ export class HeaderView extends BaseBlockView implements NodeView {
     
     this.render();
 
-    this.initFloatMenuEvt();
+    this.floatMenuTrigger = new FloatMenuTrigger(this, this.getMouseEnterProps);
   }
 
   render() {
@@ -70,18 +52,24 @@ export class HeaderView extends BaseBlockView implements NodeView {
     return true;
   }
 
-  mouseEnter = () => {
+  getMouseEnterProps = () => {
     const map = {
       1: 5,
       2: 2,
       3: 0,
     }
 
-   
-    blockMouseEnter$.next({
-      nodeView: this,
+    return {
       offsetY: map[this.level] || -1,
-    });
+    }
+  }
+
+  destroy() {
+    this.floatMenuTrigger.destroy();
+  }
+
+  convertTo(targetType: string, attrs?: Record<string, any>) {
+    console.info(targetType, attrs);
   }
 }
 

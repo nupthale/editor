@@ -3,18 +3,21 @@ import { EditorView, NodeView, ViewMutationRecord } from 'prosemirror-view';
 
 import { listStore } from '../../../../store/list';
 import { getParentNodeByPos } from '../../../../shared';
-import { BaseBlockView } from '../../_common/baseBlockView';
+import { FloatMenuTrigger } from '../../_common/floatMenuTrigger';
 
 import { getOrderedIndex } from '../util';
 import { ListTypeEnum } from '../interface';
+import { BaseBlockView } from '../../_common/baseBlockView';
 
-export class ListHeadView extends BaseBlockView implements NodeView {
+export class ListHeadView extends BaseBlockView {
     pseudoDOM: HTMLElement;
 
     listeners: Function[] = [];
 
+    floatMenuTrigger: FloatMenuTrigger;
+
     constructor(public node: Node, public view: EditorView, public getPos: () => number | undefined) {
-        super(node, view, getPos, false);
+        super(node, view, getPos);
 
         // 创建有序列表元素
         this.dom.classList.add('doc-list-head');
@@ -40,7 +43,7 @@ export class ListHeadView extends BaseBlockView implements NodeView {
 
         this.subscribeEvts();
 
-        this.initFloatMenuEvt();
+        this.floatMenuTrigger = new FloatMenuTrigger(this);
     }
 
     updatePseudoDOM(node) {
@@ -71,20 +74,6 @@ export class ListHeadView extends BaseBlockView implements NodeView {
         this.node = node;
 
         return true;
-    }
-
-    ignoreMutation(record: ViewMutationRecord): boolean {
-        const noneEditables = this.dom.querySelectorAll('[contentEditable=false]');
-    
-        if (noneEditables?.length) {
-          for (let i = 0; i < noneEditables.length; i++) {
-            if (noneEditables[i].contains(record.target) || record.target === noneEditables[i]) {
-              return true;
-            }
-          }
-        }
-        
-        return false;
     }
 
     selectNode() {
@@ -137,5 +126,6 @@ export class ListHeadView extends BaseBlockView implements NodeView {
 
     destroy() {
       this.listeners.forEach((fn) => fn());
+      this.floatMenuTrigger.destroy();
     }
 }

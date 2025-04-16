@@ -11,7 +11,8 @@ import LucideIcon from '../LucideIcon/index.vue';
 
 import TextMenu from './TextMenu/index.vue';
 import EmptyMenu from './EmptyMenu/index.vue';
-import { blockMouseEnter$, blockMouseLeave$ } from '../../event';
+import { blockMouseEnter$, blockMouseLeave$, docScroll$ } from '../../event';
+import { getNodeViewIcon } from '../../shared/icon';
 
 export default defineComponent({
     setup() {
@@ -29,11 +30,10 @@ export default defineComponent({
             if (nodeView?.isEmpty) {
                 return Plus;
             }
-
-            return crtNodeViewRef.value?.icon;
+            return getNodeViewIcon(nodeView);
         });
 
-        const hide = (delay: number = 1000) => {
+        const hide = (delay: number = 400) => {
             cancelTimerId.value = setTimeout(() => {
                 visibleRef.value = false;
             }, delay);
@@ -98,6 +98,14 @@ export default defineComponent({
             blockMouseLeave$.pipe(
                 switchMap(async ({ delay }) => {
                     hide(delay);
+                }),
+            ).subscribe(),
+        );
+
+        useSubscription(
+            docScroll$.pipe(
+                switchMap(async () => {
+                    hide(0);
                 }),
             ).subscribe(),
         );

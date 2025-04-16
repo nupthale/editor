@@ -1,20 +1,18 @@
 import { Node } from 'prosemirror-model';
 import { EditorView, NodeView, ViewMutationRecord } from 'prosemirror-view';
-import { Type } from 'lucide';
-
-import { blockMouseEnter$, blockMouseLeave$ } from '../../../event';
 
 import './index.less';
+import { getParentNode } from '../../../shared';
+
+export interface Convertible {
+  convertTo(targetType: string, attrs?: Record<string, any>): any;
+}
 
 export class BaseBlockView implements NodeView {
   dom: HTMLElement;
   contentDOM: HTMLElement | null = null;
 
   id: string = '';
-
-  get icon() {
-    return Type;
-  }
 
   get range() {
     const from = this.getPos() || 0;
@@ -37,34 +35,23 @@ export class BaseBlockView implements NodeView {
     return $pos.depth;  // doc -> body -> block (depth = 2)
   }
 
-  constructor(public node: Node, public view: EditorView, public getPos: () => number | undefined, public addId = true) {
-    this.dom = document.createElement('div');
+  get parentNode() {
+    const pos = this.getPos();
+    if (pos === undefined) return null;
+    
+    const $pos = this.view.state.doc.resolve(pos);
+
+    return getParentNode($pos, 1);
+  }
+
+  constructor(public node: Node, public view: EditorView, public getPos: () => number | undefined, tag: string = 'div') {
+    this.dom = document.createElement(tag);
     this.dom.classList.add('doc-block');
 
-    if (addId) {
+    if (node.attrs.id) {
       this.id = node.attrs.id || '';
       this.dom.setAttribute('data-id', this.node.attrs.id);
     }
-  }
-
-  mouseEnter = () => {
-    blockMouseEnter$.next({
-      nodeView: this,
-    });
-  }
-
-  mouseLeave = () => {
-    blockMouseLeave$.next({});
-  }
-
-  initFloatMenuEvt() {
-    // 仅限第一级的block，绑定事件
-    // if (this.depth !== 1) {
-    //   return;
-    // };
-    this.dom.addEventListener('mouseenter', this.mouseEnter);
-
-    this.dom.addEventListener('mouseleave', this.mouseLeave);
   }
 
   update(node: Node) {
@@ -86,11 +73,6 @@ export class BaseBlockView implements NodeView {
     }
     
     return false;
-  }
-
-  destroy() {
-    this.dom.removeEventListener('mouseenter', this.mouseEnter);
-    this.dom.removeEventListener('mouseleave', this.mouseLeave);
   }
 }
 

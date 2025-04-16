@@ -1,8 +1,7 @@
 import { Subject } from 'rxjs';
 
-import { BaseBlockView } from './plugins/nodes/_common/baseBlockView';
-
 import { PopoverTypeEnum } from './interface';
+import { BaseBlockView } from './plugins/nodes/_common/baseBlockView';
 
 // doc scroll
 export const docScroll$ = new Subject<{ e: Event }>();

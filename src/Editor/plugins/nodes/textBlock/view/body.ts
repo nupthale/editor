@@ -2,12 +2,12 @@ import { Node } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
 import { BaseBlockView } from '../../_common/baseBlockView';
 
-export class ListBodyView extends BaseBlockView {
+export class TextBlockBodyView extends BaseBlockView {
+
     constructor(public node: Node, public view: EditorView, public getPos: () => number | undefined) {
         super(node, view, getPos);
 
-        // 创建有序列表元素
-        this.dom.classList.add('doc-list-body');
+        this.dom.classList.add('doc-textBlock-body');
         
         this.contentDOM = this.dom;
     }
