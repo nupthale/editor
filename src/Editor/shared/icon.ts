@@ -6,13 +6,13 @@ import {
     Heading4, 
     Heading5, 
     Heading6,
-    TextQuote,
     List,
     ListOrdered,
     ListTodo,
     ListCollapse,
     Table,
     Ban,
+    InspectionPanel,
 } from 'lucide';
 
 import { ListTypeEnum } from '../plugins/nodes/list/interface';
@@ -46,7 +46,7 @@ export const getNodeViewIcon = (nodeView: BaseBlockView | null) => {
             return headingMap[node.attrs.level] || Heading1;
         
         case NodeViewEnum.HIGHLIGHT:
-            return TextQuote; 
+            return InspectionPanel; 
             
         case NodeViewEnum.LIST:
             return listMap[node.attrs.type] || List;

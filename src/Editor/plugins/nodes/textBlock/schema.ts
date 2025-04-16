@@ -4,30 +4,48 @@ export const textBlockSchema: Record<string, NodeSpec> = {
     textBlock_head: {
         content: "inline*",
         group: "block",
+        attrs: {
+            id: { default: '' },
+        },
         parseDOM: [{
             tag: "div",
             attrs: {
                 class: "doc-textBlock-head",
             },
+            getAttrs(dom) {
+                return {
+                    id: dom.getAttribute('data-id') || '',
+                };
+            }
         }],
-        toDOM() {
+        toDOM(node) {
             return ["div", {
                 class: "doc-textBlock-head",
+                'data-id': node.attrs.id,
             }, 0];
         }
     },
     textBlock_body: {
         content: 'block*',
         group: 'block',
+        attrs: {
+            id: { default: '' },
+        },
         parseDOM: [{
           tag: "div",
           attrs: {
             class: "doc-textBlock-body",
           },
+          getAttrs(dom) {
+            return {
+              id: dom.getAttribute('data-id') || '',
+            };
+          }
         }],
-        toDOM() {
+        toDOM(node) {
           return ["div", {
             class: "doc-textBlock-body",
+            'data-id': node.attrs.id,
           }, 0];
         }
     },

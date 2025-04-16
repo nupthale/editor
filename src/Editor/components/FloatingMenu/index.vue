@@ -1,6 +1,6 @@
 <script lang="tsx">
 import { defineComponent, Teleport, ref, watchEffect, nextTick, computed } from 'vue';
-import { switchMap, tap } from 'rxjs';
+import { switchMap, tap, filter } from 'rxjs';
 import { useSubscription } from '@vueuse/rxjs';
 import domAlign from 'dom-align';
 import { GripVertical, Plus } from 'lucide';
@@ -13,6 +13,7 @@ import TextMenu from './TextMenu/index.vue';
 import EmptyMenu from './EmptyMenu/index.vue';
 import { blockMouseEnter$, blockMouseLeave$, docScroll$ } from '../../event';
 import { getNodeViewIcon } from '../../shared/icon';
+import { isAncestor } from '../../shared/index';
 
 export default defineComponent({
     setup() {
@@ -21,7 +22,7 @@ export default defineComponent({
         const offsetYRef = ref(0);
         const crtNodeViewRef = ref<BaseBlockView | null>(null);
 
-        const cancelTimerId = ref<number | null>(null);
+        const cancelTimerIds = ref<number[]>([]);
         const sourceRef = ref<HTMLElement | null>(null);
 
         const nodeIconRef = computed(() => {
@@ -34,16 +35,21 @@ export default defineComponent({
         });
 
         const hide = (delay: number = 400) => {
-            cancelTimerId.value = setTimeout(() => {
+            const timerId = setTimeout(() => {
                 visibleRef.value = false;
             }, delay);
+
+            cancelTimerIds.value.push(timerId);
         }
 
         const cancelHide = () => {
-            if (!cancelTimerId.value) return;
+            if (!cancelTimerIds.value?.length) return;
 
-            clearTimeout(cancelTimerId.value);
-            cancelTimerId.value = null;
+            cancelTimerIds.value.forEach(timerId => {
+                clearTimeout(timerId);
+            });
+
+            cancelTimerIds.value = [];
         }
 
         const layout = (isInit = true) => {
@@ -70,6 +76,10 @@ export default defineComponent({
 
         useSubscription(
             blockMouseEnter$.pipe(
+                filter(({ nodeView }) => {
+                    // 如果新的nodeView， 是crtNodeView的祖先的话， 则不处理
+                    return !isAncestor(crtNodeViewRef.value?.node, nodeView.node);
+                }),
                 tap(({ nodeView, offsetY }) => {
                     crtNodeViewRef.value = nodeView;
 
@@ -180,6 +190,7 @@ export default defineComponent({
     background: #fff;
     border: 1px solid #dee0e3;
     user-select: none;
+    z-index: 1000;
 }
 
 .actionDrag:hover {

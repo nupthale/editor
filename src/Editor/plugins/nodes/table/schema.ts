@@ -39,11 +39,22 @@ export const tableSchema: Record<string, NodeSpec> = {
   table_row: {
     content: "table_cell+",
     group: "block",
+    attrs: {
+      id: { default: '' },
+    },
     parseDOM: [{
-      tag: "tr"
+      tag: "tr",
+      getAttrs(dom) {
+
+        return {
+          id: dom.getAttribute('data-id') || '',
+        };
+      }
     }],
-    toDOM() {
-      return ["tr", 0];
+    toDOM(node) {
+      return ["tr", {
+        'data-id': node.attrs.id,
+      }, 0];
     }
   },
 
@@ -52,6 +63,7 @@ export const tableSchema: Record<string, NodeSpec> = {
     attrs: {
       colspan: { default: 1 },
       rowspan: { default: 1 },
+      id: { default: '' },
     },
     isolating: true,
     parseDOM: [{
@@ -60,6 +72,7 @@ export const tableSchema: Record<string, NodeSpec> = {
         return {
           colspan: dom.getAttribute("colSpan") || 1,
           rowspan: dom.getAttribute("rowSpan") || 1,
+          id: dom.getAttribute('data-id') || '',
         };
       }
     }],
@@ -71,6 +84,8 @@ export const tableSchema: Record<string, NodeSpec> = {
       if (node.attrs.colSpan > 1) attrs.colspan = node.attrs.colSpan;
       if (node.attrs.rowSpan > 1) attrs.rowspan = node.attrs.rowSpan;
       
+      attrs['data-id'] = node.attrs.id;
+
       return ["td", attrs, 0];
     }
   }

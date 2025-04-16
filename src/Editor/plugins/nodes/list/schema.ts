@@ -23,31 +23,48 @@ export const listSchema: Record<string, NodeSpec> = {
   list_head: {
     content: "inline*",
     group: "block",
-    attrs: {},
+    attrs: {
+      id: { default: '' },
+    },
     parseDOM: [{
       tag: "div",
       attrs: {
         class: "doc-list-head",
       },
+      getAttrs(dom: any) {
+        return {
+          id: dom.getAttribute('data-id'),
+        };
+      }
     }],
-    toDOM() {
+    toDOM(node) {
       return ["div", {
         class: "doc-list-head",
+        'data-id': node.attrs.id,
       }, 0];
     }
   },
   list_body: {
     content: "block*",
     group: "block",
+    attrs: {
+      id: { default: '' },
+    },
     parseDOM: [{
       tag: "div",
       attrs: {
         class: "doc-list-body",
       },
+      getAttrs(dom: any) {
+        return {
+          id: dom.getAttribute('data-id'),
+        };
+      }
     }],
-    toDOM() {
+    toDOM(node) {
       return ["div", {
         class: "doc-list-body",
+        'data-id': node.attrs.id,
       }, 0];
     }
   },

@@ -1,10 +1,9 @@
-import { NodeView } from 'prosemirror-view';
-
 import { blockMouseEnter$, blockMouseLeave$ } from '../../../event';
+import { BaseBlockView } from './baseBlockView';
 
 export class FloatMenuTrigger {
   constructor(
-    public nodeView: NodeView,
+    public nodeView: BaseBlockView,
     public getMouseEnterProps?: () => Record<string, any>,
   ) {
     this.initFloatMenuEvt();

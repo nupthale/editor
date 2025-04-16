@@ -11,10 +11,16 @@ export const highlightSchema: Record<string, NodeSpec> = {
       parseDOM: [{ 
         tag: "div.doc-highlight", 
         priority: 51,  // 提高优先级
+        getAttrs(dom: any) {
+          return {
+            id: dom.getAttribute('data-id'),
+          }
+        },
       }],
-      toDOM(): DOMOutputSpec {
+      toDOM(node): DOMOutputSpec {
         return ["div", {
           class: "doc-highlight",
+          'data-id': node.attrs.id,
         }, 0]
       },
       customTargetNode: (schema, attrs?: Attrs | null, content?: Fragment | Node | readonly Node[] | null, marks?: readonly Mark[]) => {

@@ -17,7 +17,9 @@ export const doc = [
     ]),
     schema.node('body', null, [
         schema.node('textBlock', { id: nanoid(8) }, [
-                schema.node('textBlock_head', {}, [
+                schema.node('textBlock_head', {
+                    id: nanoid(8),
+                }, [
                     schema.text('欢迎使用合同管理系统！', [
                         schema.mark('comment', { id: 'refId1' }),
                     ]),
@@ -30,7 +32,9 @@ export const doc = [
         ),
         schema.node('header', { level: 1, id: nanoid(8) }, [schema.node('emoji', {}, [schema.text('💡')]), schema.text('操作指南')]),
         schema.node('textBlock', { id: nanoid(8) }, [
-            schema.node('textBlock_head', {}, [
+            schema.node('textBlock_head', {
+                id: nanoid(8),
+            }, [
                 schema.text('本手册旨在帮助用户快速了解和使用合同管理系统。系统采用全新的界面设计，提供直观的操作流程和清晰的功能分类。'),
                 schema.node('mention', { id: nanoid(8), type: MentionTypeEnum.USER, name: 'Leona Wang'  }, []),
                 schema.text('可以通过左侧导航栏快速访问各个模块，通过顶部搜索框查找特定合同。系统支持批量操作和快捷键，极大提升工作效率。')
@@ -39,28 +43,36 @@ export const doc = [
 
         schema.node('header', { level: 2, id: nanoid(8) }, [schema.node('emoji', {}, [schema.text('✅')]), schema.text(' 合同申请篇')]),
         schema.node('textBlock', { id: nanoid(8) }, [
-            schema.node('textBlock_head', {}, [
+            schema.node('textBlock_head', {
+                id: nanoid(8),
+            }, [
                 schema.text('合同申请是整个流程的起点。首先，在"新建合同"页面选择合同类型，填写基本信息包括：合同名称、合作方、合同金额等。系统提供智能模板推荐，您可以选择合适的模板快速生成合同文本。填写完成后，系统会自动进行格式检查，确保信息完整准确。最后点击"提交申请"，将合同送至审批流程。')
             ]),
         ]),
 
         schema.node('header', { level: 2, id: nanoid(8) }, [schema.node('emoji', {}, [schema.text('✅')]), schema.text(' 合同审批篇')]),
         schema.node('textBlock', { id: nanoid(8) }, [
-            schema.node('textBlock_head', {}, [
+            schema.node('textBlock_head', {
+                id: nanoid(8),
+            }, [
                 schema.text('合同审批采用多级审核机制。审批人在"待办事项"中可以查看待审批的合同，系统会通过消息提醒及时通知。审批时可以直接在线查看合同内容，支持批注和修改建议。如需调整，可将合同退回申请人修改。审批通过后，系统自动通知下一级审批人，确保流程顺畅进行。')
             ])
         ]),
 
         schema.node('header', { level: 2, id: nanoid(8) }, [schema.node('emoji', {}, [schema.text('✅')]), schema.text(' 合同管理篇')]),
         schema.node('textBlock', { id: nanoid(8) }, [
-            schema.node('textBlock_head', {}, [
+            schema.node('textBlock_head', {
+                id: nanoid(8),
+            }, [
                 schema.text('合同管理模块提供全生命周期管理功能。您可以在"合同列表"中查看所有合同状态，支持多维度筛选和排序。系统自动跟踪合同履行情况，到期前会发送提醒通知。重要节点如付款、交付等都可以设置提醒。同时，提供合同文档的在线预览、下载和归档功能，方便日常管理和查询。')
             ])
         ]),
         schema.node('header', { level: 1, id: nanoid(8) }, [schema.node('emoji', {}, [schema.text('🎬')]), schema.text(' 视频专区'), schema.node('mention', { id: nanoid(8), type: MentionTypeEnum.USER, name: '韩雪'  }), schema.text(' ')]),
         schema.node('header', { level: 2, id: nanoid(8) }, [schema.node('emoji', {}, [schema.text('❓')]), schema.text(' 热门问题')]),
         schema.node('highlight', { id: nanoid(8) }, [schema.node('textBlock', { id: nanoid(8) }, [
-            schema.node('textBlock_head', {}, [
+            schema.node('textBlock_head', {
+                id: nanoid(8),
+            }, [
                 schema.text('为了帮助您更好地使用系统，我们收集整理了用户最常遇到的问题和解决方案。包括合同模板的选择与使用、审批流程的设置与调整、系统权限的申请与变更等。如果您在使用过程中遇到任何问题，都可以先查看这里。我们会定期更新这些内容，确保您获得最新的帮助信息。')
             ]),
         ])]),

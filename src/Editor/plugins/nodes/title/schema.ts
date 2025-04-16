@@ -12,8 +12,13 @@ export const titleSchema: Record<string, NodeSpec> = {
         tag: "h1", 
         attrs: {
           class: "doc-title",
-          "data-placeholder": "请输入标题"
-        } 
+          "data-placeholder": "请输入标题",
+        },
+        getAttrs(dom: any) {
+          return {
+            id: dom.getAttribute('data-id') || '',
+          };
+        }
       }],
       toDOM(node): DOMOutputSpec { 
         return ["h1", { 

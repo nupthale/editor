@@ -1,3 +1,4 @@
+import { nanoid } from 'nanoid';
 import { Node } from 'prosemirror-model';
 import { EditorView, NodeView, ViewMutationRecord } from 'prosemirror-view';
 
@@ -49,7 +50,7 @@ export class BaseBlockView implements NodeView {
     this.dom.classList.add('doc-block');
 
     if (node.attrs.id) {
-      this.id = node.attrs.id || '';
+      this.id = node.attrs.id || nanoid(8);
       this.dom.setAttribute('data-id', this.node.attrs.id);
     }
   }

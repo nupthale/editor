@@ -127,3 +127,19 @@ export const isElementVisible = (element: Element) => {
         rect.right <= (window.innerWidth || document.documentElement.clientWidth)
     );
 }
+
+// 判断两个node的祖先关系, 所有节点都必须有id属性
+export const isAncestor = (node?: Node, ancestor?: Node) => {
+    if (!node || !ancestor) return false;
+    if (node === ancestor) return false;
+
+    let found = false;
+    ancestor.descendants((child) => {
+        if (child.attrs?.id === node.attrs?.id) {  // 使用eq()方法比较
+            found = true;
+            return true;
+        }
+    });
+
+    return found;
+}

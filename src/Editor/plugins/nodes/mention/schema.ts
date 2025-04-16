@@ -22,7 +22,7 @@ export const mentionSchema: Record<string, NodeSpec> = {
           return {
             type: dom.getAttribute('type'),
             name: dom.getAttribute('name'),
-            id: dom.getAttribute('id'),
+            id: dom.getAttribute('data-id'),
           };
         }
       }],
@@ -33,7 +33,7 @@ export const mentionSchema: Record<string, NodeSpec> = {
           class: "doc-mention",
           type: node.attrs.type,
           name: node.attrs.name,
-          id: node.attrs.id,
+          'data-id': node.attrs.id,
         }, `@${name || ''}`];
       },
     },
