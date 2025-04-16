@@ -25,6 +25,9 @@ export const listSchema: Record<string, NodeSpec> = {
     group: "block",
     attrs: {
       id: { default: '' },
+      type: { default: 'bullet' },
+      checked: { default: false },
+      opened: { default: true },
     },
     parseDOM: [{
       tag: "div",
@@ -34,6 +37,9 @@ export const listSchema: Record<string, NodeSpec> = {
       getAttrs(dom: any) {
         return {
           id: dom.getAttribute('data-id'),
+          type: dom.getAttribute('type'),
+          checked: dom.getAttribute('checked') === 'true',
+          opened: dom.getAttribute('opened') === 'true',
         };
       }
     }],
@@ -41,6 +47,9 @@ export const listSchema: Record<string, NodeSpec> = {
       return ["div", {
         class: "doc-list-head",
         'data-id': node.attrs.id,
+        type: node.attrs.type,
+        checked: node.attrs.checked,
+        opened: node.attrs.opened,
       }, 0];
     }
   },
@@ -73,9 +82,6 @@ export const listSchema: Record<string, NodeSpec> = {
     group: "block",
     attrs: {
       id: { default: '' },
-      type: { default: 'bullet' },
-      checked: { default: false },
-      opened: { default: true },
     },
     parseDOM: [{
       tag: "div.doc-list",
@@ -83,9 +89,6 @@ export const listSchema: Record<string, NodeSpec> = {
       getAttrs(dom: any) {
         return {
           id: dom.getAttribute('data-id'),
-          type: dom.getAttribute('type'),
-          checked: dom.getAttribute('checked') === 'true',
-          opened: dom.getAttribute('opened') === 'true',
         };
       }
     }],
@@ -93,9 +96,6 @@ export const listSchema: Record<string, NodeSpec> = {
       return ["div", {
         class: "doc-list",
         'data-id': node.attrs.id,
-        type: node.attrs.type,
-        checked: node.attrs.checked,
-        opened: node.attrs.opened,
       }, 0];
     }
   },

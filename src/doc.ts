@@ -2,10 +2,11 @@ import { nanoid } from 'nanoid';
 
 import { schema } from './Editor/plugins/schema';
 import { MentionTypeEnum } from './Editor/interface';
+import { ListTypeEnum } from './Editor/plugins/nodes/list/interface';
 
 export const LOCAL_MODE = true;
 
-const LIST_TYPE = 'ordered';
+const LIST_TYPE = ListTypeEnum.ORDERED;
 
 export const doc = [
     schema.node('title', { id: nanoid(8) }, [
@@ -79,26 +80,26 @@ export const doc = [
         
         schema.node(
             'list',
-            { id: nanoid(8), type: LIST_TYPE }, 
+            { id: nanoid(8) }, 
             [
-                schema.node('list_head', { id: nanoid(8) }, [
+                schema.node('list_head', { id: nanoid(8), type: LIST_TYPE }, [
                     schema.text('系统登录与权限：介绍系统登录方式、账号管理、权限申请流程。新用户首次使用需完成实名认证，确保操作安全。系统支持单点登录，方便快捷。')
                 ]),
             ]
         ),
         schema.node(
             'list',
-            { id: nanoid(8), type: LIST_TYPE }, 
+            { id: nanoid(8) }, 
             [
-                schema.node('list_head', { id: nanoid(8) }, [
+                schema.node('list_head', { id: nanoid(8), type: LIST_TYPE }, [
                     schema.text('合同模板管理')
                 ]),
                 schema.node('list_body', { id: nanoid(8) }, [
                     schema.node(
                         'list',
-                        { id: nanoid(8), type: LIST_TYPE }, 
+                        { id: nanoid(8) }, 
                         [
-                            schema.node('list_head', { id: nanoid(8) }, [
+                            schema.node('list_head', { id: nanoid(8), type: LIST_TYPE }, [
                                 schema.text('模板库使用：系统内置多种标准合同模板，支持按行业、类型筛选。用户可预览、下载和使用模板，也可基于模板进行个性化修改。')
                             ]),
                         ]
@@ -108,17 +109,17 @@ export const doc = [
         ),
         schema.node(
             'list',
-            { id: nanoid(8), type: LIST_TYPE }, 
+            { id: nanoid(8) }, 
             [
-                schema.node('list_head', { id: nanoid(8) }, [
+                schema.node('list_head', { id: nanoid(8), type: LIST_TYPE }, [
                     schema.text('合同审批流程')
                 ]),
                 schema.node('list_body', { id: nanoid(8) }, [
                     schema.node(
                         'list',
-                        { id: nanoid(8), type: LIST_TYPE }, 
+                        { id: nanoid(8) }, 
                         [
-                            schema.node('list_head', { id: nanoid(8) }, [
+                            schema.node('list_head', { id: nanoid(8), type: LIST_TYPE }, [
                                 schema.text('提交审批：选择审批流程模板，设置审批人员和审批顺序。系统支持条件审批，可根据合同金额自动匹配审批层级。', [
                                     schema.mark('background', { color: '#fed4a4cc' }),
                                     schema.mark('color', { color: '#de7802' }),
@@ -128,9 +129,9 @@ export const doc = [
                     ),
                     schema.node(
                         'list',
-                        { id: nanoid(8), type: LIST_TYPE }, 
+                        { id: nanoid(8) }, 
                         [
-                            schema.node('list_head', { id: nanoid(8) }, [
+                            schema.node('list_head', { id: nanoid(8), type: LIST_TYPE }, [
                                 schema.text('审批操作：审批人收到待办提醒后，可在线查看合同详情，添加审批意见，进行同意或退回操作。支持批量审批，提高效率。')
                             ]),
                         ]
@@ -140,25 +141,57 @@ export const doc = [
         ),
         schema.node(
             'list',
-            { id: nanoid(8), type: LIST_TYPE }, 
+            { id: nanoid(8) }, 
             [
-                schema.node('list_head', { id: nanoid(8), showIndex: true }, [
+                schema.node('list_head', { id: nanoid(8), type: LIST_TYPE }, [
                     schema.text('审批', [])
                 ]),
                 schema.node('list_body', { id: nanoid(8) }, [
                     schema.node(
                         'list',
-                        { id: nanoid(8), type: LIST_TYPE }, 
+                        { id: nanoid(8) }, 
                         [
-                            schema.node('list_head', { id: nanoid(8) }, [
+                            schema.node('list_head', { id: nanoid(8), type: LIST_TYPE }, [
                                 schema.text('审批进度跟踪：系统提供可视化的审批进度展示，清晰显示当前审批环节和处理人。申请人可实时查看审批状态，收到审批结果通知。')
                             ]),
                             schema.node('list_body', { id: nanoid(8) }, [
                                 schema.node(
                                     'list',
-                                    { id: nanoid(8), type: LIST_TYPE }, 
+                                    { id: nanoid(8) }, 
                                     [
-                                        schema.node('list_head', { id: nanoid(8) }, [
+                                        schema.node('list_head', { id: nanoid(8), type: LIST_TYPE }, [
+                                            schema.text('审批记录查询：支持查看历史审批记录，包含审批人、审批时间、审批意见等详细信息。可导出审批日志，方便归档和追溯。')
+                                        ]),
+                                    ]
+                                ),
+                            ])
+                        ]
+                    ),
+                ]),
+            ]
+        ),
+
+        schema.node(
+            'list',
+            { id: nanoid(8), type: ListTypeEnum.TODO }, 
+            [
+                schema.node('list_head', { id: nanoid(8), type: ListTypeEnum.TODO }, [
+                    schema.text('审批', [])
+                ]),
+                schema.node('list_body', { id: nanoid(8) }, [
+                    schema.node(
+                        'list',
+                        { id: nanoid(8) }, 
+                        [
+                            schema.node('list_head', { id: nanoid(8), type: ListTypeEnum.TODO }, [
+                                schema.text('审批进度跟踪：系统提供可视化的审批进度展示，清晰显示当前审批环节和处理人。申请人可实时查看审批状态，收到审批结果通知。')
+                            ]),
+                            schema.node('list_body', { id: nanoid(8) }, [
+                                schema.node(
+                                    'list',
+                                    { id: nanoid(8) }, 
+                                    [
+                                        schema.node('list_head', { id: nanoid(8), type: ListTypeEnum.TODO }, [
                                             schema.text('审批记录查询：支持查看历史审批记录，包含审批人、审批时间、审批意见等详细信息。可导出审批日志，方便归档和追溯。')
                                         ]),
                                     ]

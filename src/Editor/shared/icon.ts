@@ -48,12 +48,11 @@ export const getNodeViewIcon = (nodeView: BaseBlockView | null) => {
         case NodeViewEnum.HIGHLIGHT:
             return InspectionPanel; 
             
-        case NodeViewEnum.LIST:
+        case NodeViewEnum.LIST:    
             return listMap[node.attrs.type] || List;
 
         case NodeViewEnum.LIST_HEAD:
             const parentNode = nodeView.parentNode;
-
             return listMap[parentNode?.attrs.type] || List;    
 
         case NodeViewEnum.TABLE:

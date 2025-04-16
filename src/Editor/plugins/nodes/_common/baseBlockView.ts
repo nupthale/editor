@@ -42,7 +42,7 @@ export class BaseBlockView implements NodeView {
     
     const $pos = this.view.state.doc.resolve(pos);
 
-    return getParentNode($pos, 1);
+    return $pos.node();
   }
 
   constructor(public node: Node, public view: EditorView, public getPos: () => number | undefined, tag: string = 'div') {

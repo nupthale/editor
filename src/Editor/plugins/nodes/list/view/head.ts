@@ -1,5 +1,5 @@
 import { Node } from 'prosemirror-model';
-import { EditorView, NodeView, ViewMutationRecord } from 'prosemirror-view';
+import { EditorView } from 'prosemirror-view';
 
 import { listStore } from '../../../../store/list';
 import { getParentNodeByPos } from '../../../../shared';
@@ -43,6 +43,8 @@ export class ListHeadView extends BaseBlockView {
 
         this.subscribeEvts();
 
+        this.initPseudoEvts();
+
         this.floatMenuTrigger = new FloatMenuTrigger(this);
     }
 
@@ -52,11 +54,10 @@ export class ListHeadView extends BaseBlockView {
       const pos = this.getPos();
 
       if (pos !== undefined) {
-          const parentNode = getParentNodeByPos(this.view, pos + 1);  // 获取父节点（list）
-          const type = parentNode.attrs.type;
-          this.pseudoDOM.innerHTML = this.getPseudo(type);
+          const type = this.node.attrs.type;
+          this.pseudoDOM.innerHTML = this.getPseudo(node, type);
       } else {
-          this.pseudoDOM.innerHTML = this.getPseudo();
+          this.pseudoDOM.innerHTML = this.getPseudo(node);
       }
     }
 
@@ -64,8 +65,10 @@ export class ListHeadView extends BaseBlockView {
         if (node.type !== this.node.type) return false;
         
         if (
-          node.attrs.showIndex !== this.node.attrs.showIndex ||
-          node.attrs.ordered
+          node.attrs.id !== this.node.attrs.id ||
+          node.attrs.type !== this.node.attrs.type ||
+          node.attrs.checked !== this.node.attrs.checked || 
+          node.attrs.opened !== this.node.attrs.opened
         ) {
           this.updatePseudoDOM(node);
         }
@@ -88,7 +91,7 @@ export class ListHeadView extends BaseBlockView {
       return parentNode.attrs.id;
     }
 
-    getPseudo = (type: ListTypeEnum = ListTypeEnum.BULLET) => {
+    getPseudo = (node: Node, type: ListTypeEnum = ListTypeEnum.BULLET) => {
       const dot = '<div class="text-center" style="-webkit-transform: scale(1.375)">•</div>';
 
       if (type === ListTypeEnum.ORDERED) {
@@ -98,6 +101,16 @@ export class ListHeadView extends BaseBlockView {
         const indexStr = getOrderedIndex(map[id]);
         
         return indexStr ? `${indexStr}.` : '?';
+      }
+
+      if (type === ListTypeEnum.TODO) {
+        if (node.attrs.checked) {
+          return `<div class="doc-list-checkbox">
+            <svg width="12" height="12" fill="none"><path d="M9.589 2.903l.808.809a.35.35 0 010 .495L5.18 9.425a.35.35 0 01-.495 0l-2.981-2.98a.35.35 0 010-.496l.808-.808a.35.35 0 01.495 0l1.925 1.925 4.163-4.163a.35.35 0 01.495 0z" fill="currentColor"></path></svg>
+          </div>`;
+        }
+
+        return '<div class="doc-list-checkbox"></div>';
       }
 
       return dot;
@@ -124,8 +137,44 @@ export class ListHeadView extends BaseBlockView {
       this.listeners.push(listener);
     }
 
+    toggleCheck = () => {
+      const pos = this.getPos();
+      if (pos === undefined) return;
+      const tr = this.view.state.tr;
+      
+      tr.setNodeAttribute(pos, 'checked', !this.node.attrs.checked);
+
+      this.view.dispatch(tr);
+    }
+
+    pseudoClickHandler = (e) => {
+      this.preventSelection(e);
+
+      if (this.node?.attrs?.type === ListTypeEnum.TODO) {
+        this.toggleCheck();
+      }
+    }
+    
+    preventSelection = (e) => {
+      e.stopPropagation();
+      e.preventDefault();
+    }
+    
+    initPseudoEvts = () => {
+      this.pseudoDOM.addEventListener('click', this.pseudoClickHandler);
+      // 防止点击checkbox， 造成选中文本
+      this.pseudoDOM.addEventListener('mousedown', this.preventSelection);
+      this.pseudoDOM.addEventListener('mouseup', this.preventSelection);
+      this.pseudoDOM.addEventListener('dblclick', this.preventSelection);
+    }
+
     destroy() {
       this.listeners.forEach((fn) => fn());
       this.floatMenuTrigger.destroy();
+
+      this.pseudoDOM.removeEventListener('click', this.pseudoClickHandler);
+      this.pseudoDOM.removeEventListener('mousedown', this.preventSelection);
+      this.pseudoDOM.removeEventListener('mouseup', this.preventSelection);
+      this.pseudoDOM.removeEventListener('dblclick', this.preventSelection);
     }
 }
