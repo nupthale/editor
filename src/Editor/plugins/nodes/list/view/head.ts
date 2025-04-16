@@ -2,7 +2,7 @@ import { Node } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
 
 import { listStore } from '../../../../store/list';
-import { getParentNodeByPos } from '../../../../shared';
+import { getParentNodeByPos, getRangeByNode } from '../../../../shared';
 import { FloatMenuTrigger } from '../../_common/floatMenuTrigger';
 
 import { getOrderedIndex } from '../util';
@@ -40,6 +40,7 @@ export class ListHeadView extends BaseBlockView {
         this.dom.appendChild(wrapDOM);
 
         this.updatePseudoDOM(node);
+        this.updateAttrs(node);
 
         this.subscribeEvts();
 
@@ -49,16 +50,8 @@ export class ListHeadView extends BaseBlockView {
     }
 
     updatePseudoDOM(node) {
-
-      // 获取父节点（list）的属性
-      const pos = this.getPos();
-
-      if (pos !== undefined) {
-          const type = this.node.attrs.type;
-          this.pseudoDOM.innerHTML = this.getPseudo(node, type);
-      } else {
-          this.pseudoDOM.innerHTML = this.getPseudo(node);
-      }
+      const type = this.node.attrs.type;
+      this.pseudoDOM.innerHTML = this.getPseudo(node, type);
     }
 
     update(node: Node) {
@@ -71,12 +64,20 @@ export class ListHeadView extends BaseBlockView {
           node.attrs.opened !== this.node.attrs.opened
         ) {
           this.updatePseudoDOM(node);
+
+          this.updateAttrs(node);
         }
       
         // 更新节点引用
         this.node = node;
 
         return true;
+    }
+
+    updateAttrs = (node: Node) => {
+      this.dom.setAttribute('data-type', node.attrs.type);
+      this.dom.setAttribute('data-checked', node.attrs.checked);
+      this.dom.setAttribute('data-opened', node.attrs.opened);
     }
 
     selectNode() {
@@ -113,6 +114,16 @@ export class ListHeadView extends BaseBlockView {
         return '<div class="doc-list-checkbox"></div>';
       }
 
+      if (type === ListTypeEnum.TOGGLE) {
+        const arrow = '<svg aria-hidden="true" role="graphics-symbol" viewBox="0 0 16 16" class="arrowCaretDownFillSmall" style="width: 0.8em; height: 0.8em; display: block; fill: inherit; flex-shrink: 0; transition: transform 200ms ease-out; transform: rotateZ(0deg); opacity: 0.5;"><path d="M2.835 3.25a.8.8 0 0 0-.69 1.203l5.164 8.854a.8.8 0 0 0 1.382 0l5.165-8.854a.8.8 0 0 0-.691-1.203z"></path></svg>';
+
+        if (node.attrs.opened) {
+          return `<div class="doc-list-toggle">${arrow}</div>`;
+        }
+
+        return `<div class="doc-list-toggle -rotate-90">${arrow}</div>`;
+      }
+
       return dot;
     }
 
@@ -137,22 +148,35 @@ export class ListHeadView extends BaseBlockView {
       this.listeners.push(listener);
     }
 
-    toggleCheck = () => {
-      const pos = this.getPos();
-      if (pos === undefined) return;
-      const tr = this.view.state.tr;
-      
-      tr.setNodeAttribute(pos, 'checked', !this.node.attrs.checked);
-
-      this.view.dispatch(tr);
-    }
-
     pseudoClickHandler = (e) => {
       this.preventSelection(e);
 
-      if (this.node?.attrs?.type === ListTypeEnum.TODO) {
-        this.toggleCheck();
+      const pos = this.getPos();
+      const tr = this.view.state.tr;
+      const type = this.node.attrs?.type;
+
+      if (!pos) return;
+
+      if (type === ListTypeEnum.TODO) {
+        tr.setNodeAttribute(pos, 'checked', !this.node.attrs.checked);
       }
+
+      if (type === ListTypeEnum.TOGGLE) {
+        const opened = !this.node.attrs.opened
+
+        tr.setNodeAttribute(pos, 'opened', opened);
+
+        // 把对应list-body的class 也toggle一下
+        const listNode = this.parentNode;
+        if (listNode?.childCount === 2) {
+          const listBody = listNode.lastChild;
+          const [from] = getRangeByNode(this.view.state, listBody!);
+
+          tr.setNodeAttribute(from, 'opened', opened);
+        }
+      }
+
+      this.view.dispatch(tr);
     }
     
     preventSelection = (e) => {

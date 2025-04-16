@@ -19,7 +19,7 @@ export type IndexMapType = {
 // 递归处理list节点
 function processListNode(node) {
     // 如果是有序列表节点，保留它
-    if (node.type.name !== 'list' || node.attrs.type !== ListTypeEnum.ORDERED) {
+    if (node.type.name !== 'list' || node.firstChild?.attrs.type !== ListTypeEnum.ORDERED) {
         return null;
     }
 
@@ -39,18 +39,18 @@ function processListNode(node) {
 
 export const getLists = (node) => {
     const lists: ListTreeType[] = [];
-    node.children?.forEach((node) => {
-        if (node.type.name === 'list' && node.attrs.type === ListTypeEnum.ORDERED) {
+    node.children?.forEach((child) => {
+        if (child.type.name === 'list' && child.firstChild?.attrs.type === ListTypeEnum.ORDERED) {
             // 找到第一个有序列表
-           const orderList = processListNode(node);
+           const orderList = processListNode(child);
 
            if (orderList) {
                 lists.push(orderList);
            }
         }
 
-        if (node.type.name === 'textBlock' && node.childCount === 2) {
-            const subLists = getLists(node.lastChild);
+        if (child.type.name === 'textBlock' && child.childCount === 2) {
+            const subLists = getLists(child.lastChild);
 
             if (subLists.length) {
                 lists.push(...subLists);

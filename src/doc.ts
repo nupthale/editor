@@ -203,6 +203,38 @@ export const doc = [
             ]
         ),
 
+        schema.node(
+            'list',
+            { id: nanoid(8), type: ListTypeEnum.TOGGLE }, 
+            [
+                schema.node('list_head', { id: nanoid(8), type: ListTypeEnum.TOGGLE }, [
+                    schema.text('审批', [])
+                ]),
+                schema.node('list_body', { id: nanoid(8) }, [
+                    schema.node(
+                        'list',
+                        { id: nanoid(8) }, 
+                        [
+                            schema.node('list_head', { id: nanoid(8), type: ListTypeEnum.TOGGLE }, [
+                                schema.text('审批进度跟踪：系统提供可视化的审批进度展示，清晰显示当前审批环节和处理人。申请人可实时查看审批状态，收到审批结果通知。')
+                            ]),
+                            schema.node('list_body', { id: nanoid(8) }, [
+                                schema.node(
+                                    'list',
+                                    { id: nanoid(8) }, 
+                                    [
+                                        schema.node('list_head', { id: nanoid(8), type: ListTypeEnum.TOGGLE }, [
+                                            schema.text('审批记录查询：支持查看历史审批记录，包含审批人、审批时间、审批意见等详细信息。可导出审批日志，方便归档和追溯。')
+                                        ]),
+                                    ]
+                                ),
+                            ])
+                        ]
+                    ),
+                ]),
+            ]
+        ),
+
         // table
         // schema.node('table', { id: nanoid(8), colWidth: ['100', '100'] }, [
         //     schema.node('table_row', { id: nanoid(8) }, [

@@ -62,3 +62,26 @@
 .doc-list-checkbox:hover {
     border-color: #1456f0;
 }
+
+.doc-list-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+
+    margin-left: -4px;
+    fill: rgb(50, 48, 44);
+    border-radius: 4px;
+    transition: transform 200ms ease-out;
+
+    cursor: pointer;
+}
+
+.doc-list-toggle:hover {
+    background: rgba(55, 53, 47, 0.06);
+}
+
+.doc-list-toggle:active {
+    background: rgba(55, 53, 47, 0.16);;
+}

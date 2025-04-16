@@ -28,11 +28,11 @@ export const whitespace = (state, dispatch, _view) => {
         schema.nodes.list.create(
             {
                 id: nanoid(8),
-                type: ListTypeEnum.ORDERED,
             },
             schema.nodes.list_head.create(
                 {
                     id: nanoid(8),
+                    type: ListTypeEnum.ORDERED,
                 },
             )
         )

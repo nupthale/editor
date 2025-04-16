@@ -49,11 +49,10 @@ export const getNodeViewIcon = (nodeView: BaseBlockView | null) => {
             return InspectionPanel; 
             
         case NodeViewEnum.LIST:    
-            return listMap[node.attrs.type] || List;
+            return listMap[node.firstChild?.attrs.type] || List;
 
         case NodeViewEnum.LIST_HEAD:
-            const parentNode = nodeView.parentNode;
-            return listMap[parentNode?.attrs.type] || List;    
+            return listMap[node?.attrs.type] || List;    
 
         case NodeViewEnum.TABLE:
             return Table;
