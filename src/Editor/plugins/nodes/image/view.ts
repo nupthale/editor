@@ -35,8 +35,10 @@ export class ImageView extends BaseBlockView {
     this.containerDOM.contentEditable = 'false';
 
     this.imageDOM = document.createElement('div');
+    this.imageDOM.classList.add('w-full');
 
     this.containerDOM.appendChild(this.imageDOM);
+    this.containerDOM.style.width = `${node.attrs.width}px`;
 
     this.leftResizerDOM = document.createElement('div');
     this.leftResizerDOM.classList.add('doc-image-resizer', 'left');
@@ -69,6 +71,14 @@ export class ImageView extends BaseBlockView {
 
     if (!this.containerDOM) return false;
 
+    if (node.attrs.src !== this.node.attrs.src) {
+      this.image.render(node.attrs);
+    }
+
+    if (node.attrs.width !== this.node.attrs.width) {
+      this.containerDOM.style.width = `${node.attrs.width}px`;
+    }
+
     this.updateAttrs(node);
 
     this.node = node; // 更新节点
@@ -80,10 +90,6 @@ export class ImageView extends BaseBlockView {
     this.dom.setAttribute('data-width', node.attrs.width);
     this.dom.setAttribute('data-align', node.attrs.align);
     this.dom.setAttribute('data-src', node.attrs.src);
-
-    if (this.containerDOM) {
-      this.containerDOM.style.width = `${node.attrs.width}px`;
-    }
   }
 
   toggleShowResizer = () => {
@@ -131,11 +137,19 @@ export class ImageView extends BaseBlockView {
     // 计算新的宽度
     const currentWidth = this.node.attrs.width || 100;
     const newWidth = Math.max(100, Math.min(820, currentWidth + deltaX)); // 限制最小50px，最大800px
-    console.info('#newWidth', newWidth);
 
     // 更新节点属性
     const tr = this.view.state.tr;
     tr.setNodeAttribute(pos, 'width', newWidth);
+    this.view.dispatch(tr);
+  }
+
+  updateSrc = (src) => {
+    const pos = this.getPos();
+    if (pos === undefined) return;
+
+    const tr = this.view.state.tr;
+    tr.setNodeAttribute(pos, 'src', src);
     this.view.dispatch(tr);
   }
 
@@ -144,6 +158,8 @@ export class ImageView extends BaseBlockView {
     this.rightResizerDOM.addEventListener('mousedown', this.startResizeRight);
     document.addEventListener('mousemove', this.resize);
     document.addEventListener('mouseup', this.endResize);
+
+    this.image.on('change', this.updateSrc);
   }
 
   destroy() {
@@ -153,6 +169,8 @@ export class ImageView extends BaseBlockView {
     this.rightResizerDOM.removeEventListener('mousedown', this.startResizeRight);
     document.removeEventListener('mousemove', this.resize);
     document.removeEventListener('mouseup', this.endResize);
+
+    this.image.destory();
   }
 }
 
