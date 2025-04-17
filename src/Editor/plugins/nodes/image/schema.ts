@@ -11,7 +11,7 @@ export const imageSchema: Record<string, NodeSpec> = {
       attrs: {
         id: { default: '' },
         src: { default: '' },
-        width: { default: 100 },
+        width: { default: 0},
         align: { default: ImageAlignEnum.LEFT },
       },
       parseDOM: [{ 
