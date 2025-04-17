@@ -25,6 +25,10 @@ export class BaseBlockView implements NodeView {
   }
 
   get isEmpty() {
+    if (this.node.type.spec?.isolating) {
+      return false;
+    }
+
     return this.node.content.size === 0;
   }
 

@@ -9,7 +9,7 @@ import { Popover } from 'ant-design-vue';
 import { BaseBlockView } from '../../plugins/nodes/_common/baseBlockView';
 import LucideIcon from '../LucideIcon/index.vue';
 
-import TextMenu from './TextMenu/index.vue';
+import Menu from './Menu/index.vue';
 import EmptyMenu from './EmptyMenu/index.vue';
 import { blockMouseEnter$, blockMouseLeave$, docScroll$ } from '../../event';
 import { getNodeViewIcon } from '../../shared/icon';
@@ -147,7 +147,7 @@ export default defineComponent({
                 return (<EmptyMenu nodeView={crtNodeViewRef.value as BaseBlockView} />);
             }
 
-            return (<TextMenu nodeView={nodeView} />);
+            return (<Menu nodeView={nodeView} />);
         }
 
         return () => visibleRef.value ? (

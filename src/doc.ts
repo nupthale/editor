@@ -235,6 +235,14 @@ export const doc = [
             ]
         ),
 
+        schema.node('image', {
+            id: nanoid(8),
+            width: 480,
+            height: 320,
+            align: 'left',
+            src: 'https://images.unsplash.com/photo-1543906965-f9520aa2ed8a?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=1200',
+        }),
+
         // table
         // schema.node('table', { id: nanoid(8), colWidth: ['100', '100'] }, [
         //     schema.node('table_row', { id: nanoid(8) }, [

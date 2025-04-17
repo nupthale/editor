@@ -1,0 +1,44 @@
+.doc-component-image {
+    position: relative;
+    user-select: none;
+}
+
+.doc-component-image:hover .doc-component-imageToolbar {
+    opacity: 1;
+}
+
+.doc-component-imageToolbar {
+    opacity: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    bottom: 12px;
+
+    backdrop-filter: blur(28.995px);
+    background: hsla(0,0%,4%,.9);
+    border-radius: 8px;
+    color: #fff;
+    padding: 4px 6px;
+    user-select: none;
+
+    margin-left: 50%;
+    transform: translateX(-50%);
+
+    transition: opacity .3s ease-in-out;
+}
+
+.doc-component-imageToolbarItem {
+    margin: 0 6px;
+    display: flex
+;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 2px;
+    cursor: pointer;
+
+    &:hover {
+        background: rgba(255,255,255,.2);
+    }
+}

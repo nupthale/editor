@@ -8,6 +8,8 @@ import { mentionSchema } from '../nodes/mention/schema';
 import { highlightSchema } from '../nodes/highlight/schema';
 import { listSchema } from '../nodes/list/schema';
 import { tableSchema } from '../nodes/table/schema';
+import { imageSchema } from '../nodes/image/schema';
+
 
 export const nodes: Record<string, NodeSpec> = {
   // 使用基础节点
@@ -66,6 +68,7 @@ export const nodes: Record<string, NodeSpec> = {
   ...highlightSchema,
   ...listSchema,
   ...tableSchema,
+  ...imageSchema,
 
   // 添加更多自定义节点...
 };

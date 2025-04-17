@@ -13,6 +13,7 @@ import { highlight } from './nodes/highlight/plugin';
 
 import { list } from './nodes/list/plugin/index';
 import { table } from './nodes/table/plugin/index';
+import { image } from './nodes/image/plugin';
 
 import { collab } from './collab/index';
 
@@ -32,6 +33,7 @@ export function plugins(schema: Schema): Plugin[] {
     ...highlight(schema),
     ...list(),
     ...table(),
+    ...image(),
 
     // 优先级最低
     ...keymapPlugin(),
