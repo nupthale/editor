@@ -77,7 +77,10 @@ export class ImageView extends BaseBlockView {
 
     if (!this.containerDOM) return false;
 
-    if (node.attrs.src !== this.node.attrs.src) {
+    if (
+      node.attrs.src !== this.node.attrs.src ||
+      node.attrs.loading !== this.node.attrs.loading
+    ) {
       this.image.render(node.attrs);
     }
 
@@ -102,6 +105,7 @@ export class ImageView extends BaseBlockView {
     this.dom.setAttribute('data-width', node.attrs.width);
     this.dom.setAttribute('data-align', node.attrs.align);
     this.dom.setAttribute('data-src', node.attrs.src);
+    this.dom.setAttribute('data-loading', node.attrs.loading);
   }
 
   toggleShowResizer = () => {
@@ -155,13 +159,21 @@ export class ImageView extends BaseBlockView {
     this.view.dispatch(tr);
   }
 
-  updateSrc = ({ src, width }) => {
+  updateSrc = ({ src, width, loading }) => {
     const pos = this.getPos();
     if (pos === undefined) return;
 
     const tr = this.view.state.tr;
-    tr.setNodeAttribute(pos, 'src', src);
-    tr.setNodeAttribute(pos, 'width', this.getWidth(width));
+    if (src) {
+      tr.setNodeAttribute(pos, 'src', src);
+    }
+    
+    if (width) {
+      tr.setNodeAttribute(pos, 'width', this.getWidth(width));
+    }
+    
+    tr.setNodeAttribute(pos, 'loading', loading);
+
     this.view.dispatch(tr);
   }
 

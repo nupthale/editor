@@ -10,6 +10,7 @@ import './index.less';
 
 export type ImageProps = {
     src: string;
+    loading: boolean;
 }
 
 export class Image extends EventEmit {
@@ -54,11 +55,18 @@ export class Image extends EventEmit {
     }
 
     upload = async (e) => {
+        if (this.props?.loading) {
+            message.info('上传中...');
+            return;
+        }
+
         const file = e.target.files[0];
 
         if (!file) return;
 
-        const hide = message.loading('上传中...');
+        this.emit('change', {
+            loading: true,
+        });
 
         const formData = new FormData();
         formData.append('file', file);
@@ -75,8 +83,6 @@ export class Image extends EventEmit {
 
         const data = await response.json();
         
-       
-
         if (data.secure_url) {
              //  提前加载缓存图片
             const img = document.createElement('img');
@@ -86,12 +92,15 @@ export class Image extends EventEmit {
                 this.emit('change', {
                     src: data.secure_url,
                     width: img.width,
+                    loading: false,
                 });
-                
-                hide();
             }
         } else {
             message.error('上传失败');
+
+            this.emit('change', {
+                loading: false,
+            });
         }
     }
 
@@ -104,11 +113,23 @@ export class Image extends EventEmit {
 
         if (!props.src) {
             return html`
-                <div class="doc-component-imageEmpty flex items-center overflow-hidden">
-                    <div class="mr-3">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-image-up-icon lucide-image-up"><path d="M10.3 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10l-3.1-3.1a2 2 0 0 0-2.814.014L6 21"/><path d="m14 19.5 3-3 3 3"/><path d="M17 22v-5.5"/><circle cx="9" cy="9" r="2"/></svg>
+                <div class="doc-component-imageEmpty flex items-center justify-between overflow-hidden">
+                    <div class="flex items-center">
+                        <div class="mr-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-image-up-icon lucide-image-up"><path d="M10.3 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10l-3.1-3.1a2 2 0 0 0-2.814.014L6 21"/><path d="m14 19.5 3-3 3 3"/><path d="M17 22v-5.5"/><circle cx="9" cy="9" r="2"/></svg>
+                        </div>
+                        <div>添加一张图片</div>
                     </div>
-                    <div>添加一张图片</div>
+                    ${
+                        props.loading ? html`
+                            <div class="doc-component-imageLoading flex items-center">
+                                <div class="animate-spin origin-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-loader-pinwheel-icon lucide-loader-pinwheel"><path d="M22 12a1 1 0 0 1-10 0 1 1 0 0 0-10 0"/><path d="M7 20.7a1 1 0 1 1 5-8.7 1 1 0 1 0 5-8.6"/><path d="M7 3.3a1 1 0 1 1 5 8.6 1 1 0 1 0 5 8.6"/><circle cx="12" cy="12" r="10"/></svg>
+                                </div>
+                                <span class="text-xs ml-1">上传中...</span>
+                            </div>
+                        ` : ''
+                    }
                     <input type="file" class="absolute w-[800px] h-[800px] !cursor-pointer" @change=${this.upload} />
                 </div>
             `;

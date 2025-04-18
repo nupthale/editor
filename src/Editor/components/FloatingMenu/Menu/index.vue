@@ -1,6 +1,26 @@
 <script lang="tsx">
 import { defineComponent, PropType, toRef, Ref } from 'vue';
-import { Type, Heading1, Heading2, Heading3, Heading4, Heading5, Heading6, List, ListOrdered, ListTodo, ListCollapse, Trash2, Copy, MessageSquareText } from 'lucide';
+import { 
+    Type, 
+    Heading1, 
+    Heading2, 
+    Heading3, 
+    Heading4,
+    Heading5,
+    Heading6,
+    List,
+    ListOrdered,
+    ListTodo,
+    ListCollapse,
+    Trash2,
+    Copy,
+    MessageSquareText,
+    Image, 
+    Video,
+    Code,
+    InspectionPanel,
+    Globe,
+} from 'lucide';
 import { Tooltip } from 'ant-design-vue';
 import { TextButton } from '@zsfe/zsui';
 
@@ -21,7 +41,7 @@ export default defineComponent({
 
         return () => (
             <div class="w-[230px]">
-                <div class="text-[#2b2f36] !border-none">
+                <div class="text-[#2B3036] !border-none">
                     <div class="grid grid-cols-6 gap-y-3 p-3">
                         <Tooltip title="正文">
                             <TextButton 
@@ -29,8 +49,53 @@ export default defineComponent({
                                 class="flex items-center justify-center !w-[26px] !h-[26px]" 
                                 onClick={() => handleSelectType('textBlock')}
                             >
-                                <LucideIcon icon={Type} width={20} color="#2b2f36"></LucideIcon>
+                                <LucideIcon icon={Type} width={20} color="#2B3036"></LucideIcon>
                                 </TextButton>
+                        </Tooltip>
+
+                        <Tooltip title="无序列表">
+                            <TextButton 
+                                size="small" 
+                                class="flex items-center justify-center !w-[26px] !h-[26px]" 
+                                onClick={() => handleSelectType('header', { level: 6 })}>
+                                <LucideIcon icon={List} width={24} color="#2B3036"></LucideIcon>
+                            </TextButton>
+                        </Tooltip>
+
+                        <Tooltip title="有序列表">
+                            <TextButton 
+                                size="small" 
+                                class="flex items-center justify-center !w-[26px] !h-[26px]" 
+                                onClick={() => handleSelectType('header', { level: 6 })}>
+                                <LucideIcon icon={ListOrdered} width={24} color="#2B3036"></LucideIcon>
+                            </TextButton>
+                        </Tooltip>
+
+                        <Tooltip title="任务列表">
+                            <TextButton 
+                                size="small" 
+                                class="flex items-center justify-center !w-[26px] !h-[26px]" 
+                                onClick={() => handleSelectType('header', { level: 6 })}>
+                                <LucideIcon icon={ListTodo} width={22} color="#2B3036"></LucideIcon>
+                            </TextButton>
+                        </Tooltip>
+
+                        <Tooltip title="折叠列表">
+                            <TextButton 
+                                size="small" 
+                                class="flex items-center justify-center !w-[26px] !h-[26px]" 
+                                onClick={() => handleSelectType('header', { level: 6 })}>
+                                <LucideIcon icon={ListCollapse} width={22} color="#2B3036"></LucideIcon>
+                            </TextButton>
+                        </Tooltip>
+
+                        <Tooltip title="代码块">
+                            <TextButton 
+                                size="small" 
+                                class="flex items-center justify-center !w-[26px] !h-[26px]" 
+                                onClick={() => handleSelectType('code', { level: 6 })}>
+                                <LucideIcon icon={Code} width={20} color="#2B3036"></LucideIcon>
+                            </TextButton>
                         </Tooltip>
 
                         <Tooltip title="一级标题">
@@ -39,7 +104,7 @@ export default defineComponent({
                                 class="flex items-center justify-center !w-[26px] !h-[26px]" 
                                 onClick={() => handleSelectType('header', { level: 1 })}
                             >
-                                <LucideIcon icon={Heading1} width={24} color="#2b2f36"></LucideIcon>
+                                <LucideIcon icon={Heading1} width={24} color="#2B3036"></LucideIcon>
                             </TextButton>
                         </Tooltip>
 
@@ -49,7 +114,7 @@ export default defineComponent({
                                 class="flex items-center justify-center !w-[26px] !h-[26px]" 
                                 onClick={() => handleSelectType('header', { level: 2 })}
                             >
-                                <LucideIcon icon={Heading2} width={24} color="#2b2f36"></LucideIcon>
+                                <LucideIcon icon={Heading2} width={24} color="#2B3036"></LucideIcon>
                             </TextButton>
                         </Tooltip>
 
@@ -59,7 +124,7 @@ export default defineComponent({
                                 class="flex items-center justify-center !w-[26px] !h-[26px]" 
                                 onClick={() => handleSelectType('header', { level: 3 })}
                             >
-                                <LucideIcon icon={Heading3} width={24} color="#2b2f36"></LucideIcon>
+                                <LucideIcon icon={Heading3} width={24} color="#2B3036"></LucideIcon>
                             </TextButton>
                         </Tooltip>
 
@@ -68,7 +133,7 @@ export default defineComponent({
                                 size="small" 
                                 class="flex items-center justify-center !w-[26px] !h-[26px]" 
                                 onClick={() => handleSelectType('header', { level: 4 })}>
-                                <LucideIcon icon={Heading4} width={24} color="#2b2f36"></LucideIcon>
+                                <LucideIcon icon={Heading4} width={24} color="#2B3036"></LucideIcon>
                             </TextButton>
                         </Tooltip>
 
@@ -77,7 +142,7 @@ export default defineComponent({
                                 size="small" 
                                 class="flex items-center justify-center !w-[26px] !h-[26px]" 
                                 onClick={() => handleSelectType('header', { level: 5 })}>
-                                <LucideIcon icon={Heading5} width={24} color="#2b2f36"></LucideIcon>
+                                <LucideIcon icon={Heading5} width={24} color="#2B3036"></LucideIcon>
                             </TextButton>
                         </Tooltip>
 
@@ -86,49 +151,53 @@ export default defineComponent({
                                 size="small" 
                                 class="flex items-center justify-center !w-[26px] !h-[26px]" 
                                 onClick={() => handleSelectType('header', { level: 6 })}>
-                                <LucideIcon icon={Heading6} width={24} color="#2b2f36"></LucideIcon>
-                            </TextButton>
-                        </Tooltip>
-
-                        <Tooltip title="有序列表">
-                            <TextButton 
-                                size="small" 
-                                class="flex items-center justify-center !w-[26px] !h-[26px]" 
-                                onClick={() => handleSelectType('header', { level: 6 })}>
-                                <LucideIcon icon={ListOrdered} width={24} color="#2b2f36"></LucideIcon>
-                            </TextButton>
-                        </Tooltip>
-
-                        <Tooltip title="无序列表">
-                            <TextButton 
-                                size="small" 
-                                class="flex items-center justify-center !w-[26px] !h-[26px]" 
-                                onClick={() => handleSelectType('header', { level: 6 })}>
-                                <LucideIcon icon={List} width={24} color="#2b2f36"></LucideIcon>
-                            </TextButton>
-                        </Tooltip>
-
-                        <Tooltip title="任务列表">
-                            <TextButton 
-                                size="small" 
-                                class="flex items-center justify-center !w-[26px] !h-[26px]" 
-                                onClick={() => handleSelectType('header', { level: 6 })}>
-                                <LucideIcon icon={ListTodo} width={22} color="#2b2f36"></LucideIcon>
-                            </TextButton>
-                        </Tooltip>
-
-                        <Tooltip title="折叠列表">
-                            <TextButton 
-                                size="small" 
-                                class="flex items-center justify-center !w-[26px] !h-[26px]" 
-                                onClick={() => handleSelectType('header', { level: 6 })}>
-                                <LucideIcon icon={ListCollapse} width={22} color="#2b2f36"></LucideIcon>
+                                <LucideIcon icon={Heading6} width={24} color="#2B3036"></LucideIcon>
                             </TextButton>
                         </Tooltip>
                     </div>
                     <div class="doc-floatMenu-divier"></div>
+                    <div class="doc-floatMenu-title">常用</div>
                     <div class="m-2">
-                        <div key="6" class="doc-floatingMenu-menuItem !w-full !p-1 !h-auto !min-h-auto !leading-none !rounded-[4px]">
+                        <div 
+                            class="doc-floatingMenu-menuItem !w-full !p-1 !h-auto !min-h-auto !leading-none !rounded-[4px]"
+                            onClick={() => handleSelectType('image', {})}
+                        >
+                            <div class="flex items-center">
+                                <span class="mr-4 inline-flex items-center justify-center w-[24px] h-[24px]">
+                                    <LucideIcon icon={Image} width={20} color="#FF7237"></LucideIcon>
+                                </span>
+                                图片
+                            </div>
+                        </div>
+                        <div class="doc-floatingMenu-menuItem !w-full !p-1 !h-auto !min-h-auto !leading-none !rounded-[4px]">
+                            <div class="flex items-center">
+                                <span class="mr-4 inline-flex items-center justify-center w-[24px] h-[24px]">
+                                    <LucideIcon icon={Video} width={20} color="#25CB71"></LucideIcon>
+                                </span>
+                                视频
+                            </div>
+                        </div>
+                        <div class="doc-floatingMenu-menuItem !w-full !p-1 !h-auto !min-h-auto !leading-none !rounded-[4px]">
+                            <div class="flex items-center">
+                                <span class="mr-4 inline-flex items-center justify-center w-[24px] h-[24px]">
+                                    <LucideIcon icon={InspectionPanel} width={20} color="#00B6FF"></LucideIcon>
+                                </span>
+                                高亮块
+                            </div>
+                        </div>
+                        <div class="doc-floatingMenu-menuItem !w-full !p-1 !h-auto !min-h-auto !leading-none !rounded-[4px]">
+                            <div class="flex items-center">
+                                <span class="mr-4 inline-flex items-center justify-center w-[24px] h-[24px]">
+                                    <LucideIcon icon={Globe} width={20} color="#874FFF"></LucideIcon>
+                                </span>
+                                内嵌网页
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="doc-floatMenu-divier"></div>
+                    <div class="m-2">
+                        <div class="doc-floatingMenu-menuItem !w-full !p-1 !h-auto !min-h-auto !leading-none !rounded-[4px]">
                             <div class="flex items-center">
                                 <span class="mr-4 inline-flex items-center justify-center w-[24px] h-[24px]">
                                     <LucideIcon icon={MessageSquareText} width={20}></LucideIcon>
@@ -136,7 +205,7 @@ export default defineComponent({
                                 评论
                             </div>
                         </div>
-                        <div key="6" class="doc-floatingMenu-menuItem !w-full !p-1 !h-auto !min-h-auto !leading-none !rounded-[4px]">
+                        <div class="doc-floatingMenu-menuItem !w-full !p-1 !h-auto !min-h-auto !leading-none !rounded-[4px]">
                             <div class="flex items-center">
                                 <span class="mr-4 inline-flex items-center justify-center w-[24px] h-[24px]">
                                     <LucideIcon icon={Copy} width={20}></LucideIcon>
@@ -144,7 +213,7 @@ export default defineComponent({
                                 复制
                             </div>
                         </div>
-                        <div key="6" class="doc-floatingMenu-menuItem !w-full !p-1 !h-auto !min-h-auto !leading-none !rounded-[4px]">
+                        <div class="doc-floatingMenu-menuItem !w-full !p-1 !h-auto !min-h-auto !leading-none !rounded-[4px]">
                             <div class="flex items-center">
                                 <span class="mr-4 inline-flex items-center justify-center w-[24px] h-[24px]">
                                     <LucideIcon icon={Trash2} width={20}></LucideIcon>
@@ -175,6 +244,10 @@ export default defineComponent({
 
 .doc-floatingMenu-menuItem:hover {
     background: rgba(0, 0, 0, 0.06);
-    
+}
+
+.doc-floatMenu-title {
+    margin: 12px 14px 6px;
+    font-size: 12px;
 }
 </style>

@@ -45,6 +45,33 @@ const updateHeadBodyNodeType = (schema, tr: Transaction, srcNodeView: BaseBlockV
     }
 };
 
+const defaultUpdater = (schema, tr: Transaction, srcNodeView: BaseBlockView, targetType: string, attrs?: Attrs | null) => {
+    const targetTypeSchema = schema.nodes[targetType];
+    const { customTargetNode, customStartOffset = 0 } = targetTypeSchema.spec;
+
+    const { from, to } = srcNodeView.range;
+
+    const targetNode = customTargetNode ? 
+        customTargetNode(schema, attrs, srcNodeView.node.content, srcNodeView.node.marks) : 
+        targetTypeSchema.create(attrs, srcNodeView.node.content, srcNodeView.node.marks);
+        
+    // 确保目标节点有效
+    if (!targetNode) {
+        console.error('Failed to create target node');
+        return;
+    }
+
+    tr.replaceRangeWith(
+        from, 
+        to, 
+        targetNode,
+    );
+
+    tr.setSelection(
+        TextSelection.create(tr.doc, from + customStartOffset),
+    );
+}
+
 export const useUpdateBlockNodeType = (
     crtNodeViewRef: Ref<BaseBlockView | null>,
 ) => {
@@ -56,40 +83,24 @@ export const useUpdateBlockNodeType = (
         if (!view || !state || !srcNodeView) return;
         
         const schema = state.schema;
-        const targetTypeSchema = schema.nodes[targetType];
-        const { customTargetNode, customStartOffset = 0 } = targetTypeSchema.spec;
 
         const tr = state.tr;
-        const { from, to } = srcNodeView.range;
         const newAttrs = {
             ...srcNodeView.node.attrs, 
             ...attrs, 
         }
 
         try {
-            if (['list_head', 'textBlock_head'].includes(srcNodeView.node.type.name)) {
+            if ('textBlock_head' === srcNodeView.node.type.name) {
+                if (!srcNodeView.isEmpty) {
+                    updateHeadBodyNodeType(schema, tr, srcNodeView, newAttrs);
+                } else {
+                    defaultUpdater(schema, tr, srcNodeView, targetType, newAttrs);
+                }
+            } else if (['list_head'].includes(srcNodeView.node.type.name)) {
                 updateHeadBodyNodeType(schema, tr, srcNodeView, newAttrs);
             } else {
-                const targetNode = customTargetNode ? 
-                    customTargetNode(schema, newAttrs, srcNodeView.node.content, srcNodeView.node.marks) : 
-                    targetTypeSchema.create(newAttrs, srcNodeView.node.content, srcNodeView.node.marks);
-    
-                   
-                // 确保目标节点有效
-                if (!targetNode) {
-                    console.error('Failed to create target node');
-                    return;
-                }
-    
-                tr.replaceRangeWith(
-                    from, 
-                    to, 
-                    targetNode,
-                );
-    
-                tr.setSelection(
-                    TextSelection.create(tr.doc, from + customStartOffset),
-                );
+                defaultUpdater(schema, tr, srcNodeView, targetType, newAttrs);
             }
     
             view.dispatch(tr);
