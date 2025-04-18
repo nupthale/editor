@@ -117,7 +117,14 @@ export class Video extends EventEmit {
                     </div>
                 </div>
 
-                <video src="${props.src}" width="100%" height="100%" />
+                <video 
+                    src="${props.src}" 
+                    width="100%" 
+                    height="100%" 
+                    controls
+                    controlsList="nodownload" 
+                    preload="metadata"
+                />
             </div>
         `;
     }
