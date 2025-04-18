@@ -31,6 +31,7 @@ export default defineComponent({
             if (nodeView?.isEmpty) {
                 return Plus;
             }
+
             return getNodeViewIcon(nodeView);
         });
 

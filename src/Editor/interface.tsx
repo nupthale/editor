@@ -45,4 +45,5 @@ export enum NodeViewEnum {
   TITLE = 'title',
   IMAGE = 'image',
   VIDEO = 'video',
+  CODER = 'coder',
 }

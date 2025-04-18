@@ -15,6 +15,7 @@ import {
     InspectionPanel,
     Image,
     Video,
+    Code,
 } from 'lucide';
 
 import { ListTypeEnum } from '../plugins/nodes/list/interface';
@@ -43,6 +44,7 @@ export const getNodeViewIcon = (nodeView: BaseBlockView | null) => {
 
     if (!node) return Ban;
 
+
     switch (node.type.name) {
         case NodeViewEnum.HEADER:
             return headingMap[node.attrs.level] || Heading1;
@@ -67,6 +69,9 @@ export const getNodeViewIcon = (nodeView: BaseBlockView | null) => {
             return Image;
         case NodeViewEnum.VIDEO:
             return Video;
+
+        case NodeViewEnum.CODER:
+            return Code;
 
         default:
             return Ban;    
