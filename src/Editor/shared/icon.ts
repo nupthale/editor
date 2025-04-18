@@ -13,6 +13,8 @@ import {
     Table,
     Ban,
     InspectionPanel,
+    Image,
+    Video,
 } from 'lucide';
 
 import { ListTypeEnum } from '../plugins/nodes/list/interface';
@@ -60,6 +62,11 @@ export const getNodeViewIcon = (nodeView: BaseBlockView | null) => {
         case NodeViewEnum.TEXT_BLOCK:
         case NodeViewEnum.TEXT_BLOCK_HEAD:    
             return Type;
+
+        case NodeViewEnum.IMAGE:
+            return Image;
+        case NodeViewEnum.VIDEO:
+            return Video;
 
         default:
             return Ban;    

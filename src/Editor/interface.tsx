@@ -43,4 +43,6 @@ export enum NodeViewEnum {
   TEXT_BLOCK_HEAD = 'textBlock_head',
   TEXT_BLOCK_BODY = 'textBlock_body',
   TITLE = 'title',
+  IMAGE = 'image',
+  VIDEO = 'video',
 }

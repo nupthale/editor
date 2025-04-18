@@ -157,7 +157,7 @@ export default defineComponent({
                         default: () => (
                             <div class={['actionDrag', 'flex', 'items-center', 'justify-between']} ref={sourceRef} onMouseenter={handleMounseenter} onTransitionend={handleTransitionEnd}>
                                 <span class="inline-flex items-center justify-center w-[24px] h-[24px]">
-                                    <LucideIcon icon={nodeIconRef.value} width={14} color="#336df4"></LucideIcon>
+                                    <LucideIcon icon={nodeIconRef.value} width={14} color="#336FFF"></LucideIcon>
                                 </span>
                                 <LucideIcon icon={GripVertical} width={14} color="#8f959e"></LucideIcon>
                             </div>
