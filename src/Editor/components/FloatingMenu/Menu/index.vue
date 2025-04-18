@@ -169,7 +169,10 @@ export default defineComponent({
                                 图片
                             </div>
                         </div>
-                        <div class="doc-floatingMenu-menuItem !w-full !p-1 !h-auto !min-h-auto !leading-none !rounded-[4px]">
+                        <div 
+                            class="doc-floatingMenu-menuItem !w-full !p-1 !h-auto !min-h-auto !leading-none !rounded-[4px]"
+                            onClick={() => handleSelectType('video', {})}
+                        >
                             <div class="flex items-center">
                                 <span class="mr-4 inline-flex items-center justify-center w-[24px] h-[24px]">
                                     <LucideIcon icon={Video} width={20} color="#25CB71"></LucideIcon>

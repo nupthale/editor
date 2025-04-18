@@ -239,6 +239,10 @@ export const doc = [
             id: nanoid(8),
         }),
 
+        schema.node('video', {
+            id: nanoid(8),
+        }),
+
         // table
         // schema.node('table', { id: nanoid(8), colWidth: ['100', '100'] }, [
         //     schema.node('table_row', { id: nanoid(8) }, [

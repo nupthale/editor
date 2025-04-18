@@ -9,6 +9,7 @@ import { highlightSchema } from '../nodes/highlight/schema';
 import { listSchema } from '../nodes/list/schema';
 import { tableSchema } from '../nodes/table/schema';
 import { imageSchema } from '../nodes/image/schema';
+import { videoSchema } from '../nodes/video/schema';
 
 
 export const nodes: Record<string, NodeSpec> = {
@@ -69,6 +70,7 @@ export const nodes: Record<string, NodeSpec> = {
   ...listSchema,
   ...tableSchema,
   ...imageSchema,
+  ...videoSchema,
 
   // 添加更多自定义节点...
 };

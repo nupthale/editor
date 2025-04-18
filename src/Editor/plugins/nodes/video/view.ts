@@ -4,18 +4,18 @@ import { EditorView } from 'prosemirror-view';
 import { BaseBlockView } from '../_common/baseBlockView';
 import { FloatMenuTrigger } from '../_common/floatMenuTrigger'
 
-import { Image } from './components/Image/index';
+import { Video } from './components/Video/index';
 
 import './index.less';
 
 const MAX_WIDTH = 820;
 const MIN_WIDTH = 100;
 
-export class ImageView extends BaseBlockView {
+export class VideoView extends BaseBlockView {
   floatMenuTrigger: FloatMenuTrigger;
 
-  image: Image;
-  imageDOM: HTMLElement;
+  video: Video;
+  videoDOM: HTMLElement;
   containerDOM: HTMLElement;
   leftResizerDOM: HTMLElement;
   rightResizerDOM: HTMLElement;
@@ -27,30 +27,30 @@ export class ImageView extends BaseBlockView {
     super(node, view, getPos);
 
     // 创建容器元素
-    this.dom.classList.add('doc-image');
+    this.dom.classList.add('doc-video');
     this.dom.contentEditable = 'false';
     
     this.contentDOM = null;
 
     this.containerDOM = document.createElement('div');
-    this.containerDOM.classList.add('doc-image-container');
+    this.containerDOM.classList.add('doc-video-container');
     this.containerDOM.contentEditable = 'false';
 
-    this.imageDOM = document.createElement('div');
-    this.imageDOM.classList.add('w-full');
+    this.videoDOM = document.createElement('div');
+    this.videoDOM.classList.add('w-full');
 
-    this.containerDOM.appendChild(this.imageDOM);
+    this.containerDOM.appendChild(this.videoDOM);
     this.containerDOM.style.width = `${node.attrs.width ? node.attrs.width + 'px' : '100%' }`;
     if (node.attrs.src) {
       this.containerDOM.classList.add('hasSrc');
     }
 
     this.leftResizerDOM = document.createElement('div');
-    this.leftResizerDOM.classList.add('doc-image-resizer', 'left');
+    this.leftResizerDOM.classList.add('doc-video-resizer', 'left');
     this.containerDOM.appendChild(this.leftResizerDOM);
 
     this.rightResizerDOM = document.createElement('div');
-    this.rightResizerDOM.classList.add('doc-image-resizer', 'right');
+    this.rightResizerDOM.classList.add('doc-video-resizer', 'right');
     this.containerDOM.appendChild(this.rightResizerDOM);
 
     // 组装DOM结构
@@ -58,8 +58,8 @@ export class ImageView extends BaseBlockView {
 
     this.floatMenuTrigger = new FloatMenuTrigger(this);
 
-    this.image = new Image(this.imageDOM);
-    this.image.render(node.attrs);
+    this.video = new Video(this.videoDOM);
+    this.video.render(node.attrs);
 
     this.initEvt();
 
@@ -80,7 +80,7 @@ export class ImageView extends BaseBlockView {
       node.attrs.src !== this.node.attrs.src ||
       node.attrs.loading !== this.node.attrs.loading
     ) {
-      this.image.render(node.attrs);
+      this.video.render(node.attrs);
     }
 
     if (node.attrs.width !== this.node.attrs.width) {
@@ -170,7 +170,7 @@ export class ImageView extends BaseBlockView {
     if (width) {
       tr.setNodeAttribute(pos, 'width', this.getWidth(width));
     }
-    
+
     tr.setNodeAttribute(pos, 'loading', loading);
 
     this.view.dispatch(tr);
@@ -189,7 +189,7 @@ export class ImageView extends BaseBlockView {
     document.addEventListener('mousemove', this.resize);
     document.addEventListener('mouseup', this.endResize);
 
-    this.image.on('change', this.updateSrc);
+    this.video.on('change', this.updateSrc);
   }
 
   destroy() {
@@ -200,7 +200,7 @@ export class ImageView extends BaseBlockView {
     document.removeEventListener('mousemove', this.resize);
     document.removeEventListener('mouseup', this.endResize);
 
-    this.image.destory();
+    this.video.destory();
   }
 }
 
