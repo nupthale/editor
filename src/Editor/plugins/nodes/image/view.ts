@@ -30,7 +30,6 @@ export class ImageView extends BaseBlockView {
     this.dom.classList.add('doc-image');
     this.dom.contentEditable = 'false';
     
-    // 对于完全由Vue管理的组件，设置contentDOM为null
     this.contentDOM = null;
 
     this.containerDOM = document.createElement('div');
