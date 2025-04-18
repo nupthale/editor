@@ -5,7 +5,6 @@ import { VideoAlignEnum } from './interface';
 export const videoSchema: Record<string, NodeSpec> = {
     video: {
       group: 'block',
-      atom: true,
       selectable: false,
       isolating: true,
       attrs: {

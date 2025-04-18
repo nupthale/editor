@@ -5,7 +5,6 @@ import { ImageAlignEnum } from './interface';
 export const imageSchema: Record<string, NodeSpec> = {
     image: {
       group: 'block',
-      atom: true,
       selectable: false,
       isolating: true,
       attrs: {

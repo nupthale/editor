@@ -15,6 +15,7 @@ import { list } from './nodes/list/plugin/index';
 import { table } from './nodes/table/plugin/index';
 import { image } from './nodes/image/plugin';
 import { video } from './nodes/video/plugin';
+import { coder } from './nodes/coder/plugin';
 
 import { collab } from './collab/index';
 
@@ -36,6 +37,7 @@ export function plugins(schema: Schema): Plugin[] {
     ...table(),
     ...image(),
     ...video(),
+    ...coder(),
 
     // 优先级最低
     ...keymapPlugin(),

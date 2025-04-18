@@ -243,6 +243,13 @@ export const doc = [
             id: nanoid(8),
         }),
 
+        schema.node('coder', {
+            id: nanoid(8),
+            language: 'javascript',
+        }, [
+            schema.text('const hello = "world";'),
+        ]),
+
         // table
         // schema.node('table', { id: nanoid(8), colWidth: ['100', '100'] }, [
         //     schema.node('table_row', { id: nanoid(8) }, [
