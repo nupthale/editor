@@ -12,7 +12,6 @@ export const imageSchema: Record<string, NodeSpec> = {
         src: { default: '' },
         width: { default: 0},
         align: { default: ImageAlignEnum.LEFT },
-        loading: { default: false },
       },
       parseDOM: [{ 
         tag: "div.doc-image", 
@@ -22,7 +21,6 @@ export const imageSchema: Record<string, NodeSpec> = {
             width: dom.getAttribute('data-width'),
             align: dom.getAttribute('data-align'),
             src: dom.getAttribute('data-src'),
-            loading: dom.getAttribute('data-loading'),
           }
         },
       }],
@@ -34,7 +32,6 @@ export const imageSchema: Record<string, NodeSpec> = {
           'data-height': node.attrs.height,
           'data-align': node.attrs.align,
           'data-src': node.attrs.src,
-          'data-loading': node.attrs.loading,
         }, 0]
       },
     },

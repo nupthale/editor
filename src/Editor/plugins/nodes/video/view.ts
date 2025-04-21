@@ -77,8 +77,7 @@ export class VideoView extends BaseBlockView {
     if (!this.containerDOM) return false;
 
     if (
-      node.attrs.src !== this.node.attrs.src ||
-      node.attrs.loading !== this.node.attrs.loading
+      node.attrs.src !== this.node.attrs.src
     ) {
       this.video.render(node.attrs);
     }
@@ -104,7 +103,6 @@ export class VideoView extends BaseBlockView {
     this.dom.setAttribute('data-width', node.attrs.width);
     this.dom.setAttribute('data-align', node.attrs.align);
     this.dom.setAttribute('data-src', node.attrs.src);
-    this.dom.setAttribute('data-loading', node.attrs.loading);
   }
 
   toggleShowResizer = () => {
@@ -158,7 +156,7 @@ export class VideoView extends BaseBlockView {
     this.view.dispatch(tr);
   }
 
-  updateSrc = ({ src, width, loading }) => {
+  updateSrc = ({ src, width }) => {
     const pos = this.getPos();
     if (pos === undefined) return;
 
@@ -170,8 +168,6 @@ export class VideoView extends BaseBlockView {
     if (width) {
       tr.setNodeAttribute(pos, 'width', this.getWidth(width));
     }
-
-    tr.setNodeAttribute(pos, 'loading', loading);
 
     this.view.dispatch(tr);
   }
