@@ -72,7 +72,7 @@ export class CoderView extends BaseBlockView {
     const tr = this.view.state.tr;
     
     const textNode = this.node.type.schema.text(code);
-    debugger;
+
     // 替换整个内容
     tr.replaceWith(
       pos + 1,  // 内容开始位置

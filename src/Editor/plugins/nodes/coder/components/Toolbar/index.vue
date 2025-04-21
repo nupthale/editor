@@ -2,7 +2,7 @@
 import { defineComponent } from 'vue';
 import { Dropdown, Menu } from 'ant-design-vue';
 import { TextButton } from '@zsfe/zsui';
-import { ChevronDown } from 'lucide';
+import { ChevronDown, Code } from 'lucide';
 
 import LucideIcon from '@/Editor/components/LucideIcon/index.vue';
 
@@ -19,7 +19,8 @@ export default defineComponent({
     setup(props, { emit }) {
         return () => (
             <div class="doc-codeToolbarComponent flex items-center justify-betweewn">
-                <div>
+                <div class="flex items-center">
+                    <LucideIcon icon={Code} width={18} color="#646a73" class="mr-2" />
                     <Dropdown trigger="click">
                         {{
                             overlay: () => (
@@ -48,9 +49,9 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
+<style scoped lang="less">
 .doc-codeToolbarComponent {
-    padding: 6px 22px;
+    padding: 6px 22px 6px 10px;
     color: #646a73;
     font-size: 14px;
 

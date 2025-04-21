@@ -85,11 +85,29 @@ export class Coder extends EventEmit {
         }), this.toolbarDOM);
     }
 
+    handleKeydown = (e) => {
+        // 检查是否是 Mod+A
+        if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'a') {
+            // 阻止默认行为
+            e.preventDefault();
+
+            // 全选代码内容
+            const range = document.createRange();
+            range.selectNodeContents(this.editorDOM);
+            const selection = window.getSelection();
+            selection?.removeAllRanges();
+            selection?.addRange(range);
+        }
+    }
+
     initEvt() {
         this.editor?.onUpdate((code) => {
             this.code = code;
             this.emit('changeCode', code);
         });
+
+        // 监听键盘事件
+        this.editorDOM.addEventListener('keydown', this.handleKeydown);
     }
 
     destory = () => {
@@ -101,6 +119,8 @@ export class Coder extends EventEmit {
 
         // 清理 vue 组件
         render(null, this.toolbarDOM);
+
+        this.editorDOM.removeEventListener('keydown', this.handleKeydown);
 
         this.mountNode = null;
         this.editor = null;

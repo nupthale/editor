@@ -15,7 +15,7 @@ import { list } from './nodes/list/plugin/index';
 import { table } from './nodes/table/plugin/index';
 import { image } from './nodes/image/plugin';
 import { video } from './nodes/video/plugin';
-import { coder } from './nodes/coder/plugin';
+import { coder } from './nodes/coder/plugin/index';
 
 import { collab } from './collab/index';
 
