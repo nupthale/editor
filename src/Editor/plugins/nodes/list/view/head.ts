@@ -193,6 +193,8 @@ export class ListHeadView extends BaseBlockView {
     }
 
     destroy() {
+      super.destroy();
+    
       this.listeners.forEach((fn) => fn());
       this.floatMenuTrigger.destroy();
 

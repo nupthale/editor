@@ -1,5 +1,5 @@
 import { Node } from 'prosemirror-model';
-import { EditorView } from 'prosemirror-view';
+import { EditorView, ViewMutationRecord } from 'prosemirror-view';
 
 import { BaseBlockView } from '../_common/baseBlockView';
 import { FloatMenuTrigger } from '../_common/floatMenuTrigger'
@@ -28,9 +28,8 @@ export class VideoView extends BaseBlockView {
 
     // 创建容器元素
     this.dom.classList.add('doc-video');
-    this.dom.contentEditable = 'false';
-    
-    this.contentDOM = null;
+
+    this.contentDOM = document.createElement('div');
 
     this.containerDOM = document.createElement('div');
     this.containerDOM.classList.add('doc-video-container');
@@ -54,7 +53,8 @@ export class VideoView extends BaseBlockView {
     this.containerDOM.appendChild(this.rightResizerDOM);
 
     // 组装DOM结构
-    this.dom.appendChild(this.containerDOM);
+    this.contentDOM.appendChild(this.containerDOM);
+    this.dom.appendChild(this.contentDOM);
 
     this.floatMenuTrigger = new FloatMenuTrigger(this);
 
@@ -189,6 +189,8 @@ export class VideoView extends BaseBlockView {
   }
 
   destroy() {
+    super.destroy();
+
     this.floatMenuTrigger.destroy();
 
     this.leftResizerDOM.removeEventListener('mousedown', this.startResizeLeft);

@@ -107,6 +107,8 @@ export class CoderView extends BaseBlockView {
   }
 
   destroy() {
+    super.destroy();
+
     this.floatMenuTrigger.destroy();
 
     this.coder.destory();

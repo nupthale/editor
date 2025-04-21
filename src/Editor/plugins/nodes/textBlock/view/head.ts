@@ -24,6 +24,8 @@ export class TextBlockHeadView extends BaseBlockView {
     }
 
     destroy = () => {
+      super.destroy();
+
       this.floatMenuTrigger.destroy();
     }
 }

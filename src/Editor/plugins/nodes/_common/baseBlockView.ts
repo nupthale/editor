@@ -1,9 +1,10 @@
 import { nanoid } from 'nanoid';
 import { Node } from 'prosemirror-model';
+import { tap, Subscription } from 'rxjs';
 import { EditorView, NodeView, ViewMutationRecord } from 'prosemirror-view';
 
 import './index.less';
-import { getParentNode } from '../../../shared';
+import { selectBlock$ } from '../../../event';
 
 export interface Convertible {
   convertTo(targetType: string, attrs?: Record<string, any>): any;
@@ -14,6 +15,8 @@ export class BaseBlockView implements NodeView {
   contentDOM: HTMLElement | null = null;
 
   id: string = '';
+
+  subscribers: Subscription[] = [];
 
   get range() {
     const from = this.getPos() || 0;
@@ -57,6 +60,8 @@ export class BaseBlockView implements NodeView {
       this.id = node.attrs.id || nanoid(8);
       this.dom.setAttribute('data-id', this.node.attrs.id);
     }
+
+    this.subscribe();
   }
 
   update(node: Node) {
@@ -69,6 +74,11 @@ export class BaseBlockView implements NodeView {
   ignoreMutation(record: ViewMutationRecord): boolean {
     const noneEditables = this.dom.querySelectorAll('[contentEditable=false]');
 
+    // 忽略类名变化
+    if (record.type === 'attributes' && record.attributeName === 'class') {
+        return true;
+    }
+
     if (noneEditables?.length) {
       for (let i = 0; i < noneEditables.length; i++) {
         if (noneEditables[i].contains(record.target) || record.target === noneEditables[i]) {
@@ -76,8 +86,26 @@ export class BaseBlockView implements NodeView {
         }
       }
     }
-    
+
     return false;
+  }
+
+  subscribe = () => {
+    const selectBlockSubscriber = selectBlock$.pipe(
+      tap(({ id }) => {
+        this.dom.classList.remove('selected');
+
+        if (this.id === id) {
+          this.dom.classList.add('selected');
+        }
+      })
+    ).subscribe();
+
+    this.subscribers.push(selectBlockSubscriber);
+  }
+
+  destroy() {
+    this.subscribers.forEach(subscriber => subscriber.unsubscribe());
   }
 }
 

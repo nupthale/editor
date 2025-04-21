@@ -40,6 +40,8 @@ export class TableView extends BaseBlockView implements Convertible {
   }
 
   destroy() {
+    super.destroy();
+
     this.floatMenuTrigger.destroy();
   }
 

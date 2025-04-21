@@ -240,8 +240,16 @@ export const doc = [
         }),
 
         schema.node('video', {
-            id: nanoid(8),
+            id: 'video-123',
         }),
+
+        schema.node('textBlock', { id: nanoid(8) }, [
+            schema.node('textBlock_head', {
+                id: nanoid(8),
+            }, [
+                schema.text('合同审批采用多级审核机制。审批人在"待办事项"中可以查看待审批的合同，系统会通过消息提醒及时通知。审批时可以直接在线查看合同内容，支持批注和修改建议。如需调整，可将合同退回申请人修改。审批通过后，系统自动通知下一级审批人，确保流程顺畅进行。')
+            ])
+        ]),
 
         schema.node('coder', {
             id: nanoid(8),

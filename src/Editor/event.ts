@@ -33,3 +33,8 @@ export const hidePopover$ = new Subject<{
 export const docChanged$ = new Subject<void>();
 
 export const focusAtEnd$ = new Subject<{ id: string }>();
+
+// 选中某个块
+export const selectBlock$ = new Subject<{
+  id: string,
+}>();

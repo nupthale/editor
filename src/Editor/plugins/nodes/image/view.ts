@@ -28,9 +28,8 @@ export class ImageView extends BaseBlockView {
 
     // 创建容器元素
     this.dom.classList.add('doc-image');
-    this.dom.contentEditable = 'false';
     
-    this.contentDOM = null;
+    this.contentDOM = document.createElement('div');
 
     this.containerDOM = document.createElement('div');
     this.containerDOM.classList.add('doc-image-container');
@@ -54,7 +53,8 @@ export class ImageView extends BaseBlockView {
     this.containerDOM.appendChild(this.rightResizerDOM);
 
     // 组装DOM结构
-    this.dom.appendChild(this.containerDOM);
+    this.contentDOM.appendChild(this.containerDOM);
+    this.dom.appendChild(this.contentDOM);
 
     this.floatMenuTrigger = new FloatMenuTrigger(this);
 
@@ -189,6 +189,8 @@ export class ImageView extends BaseBlockView {
   }
 
   destroy() {
+    super.destroy();
+
     this.floatMenuTrigger.destroy();
 
     this.leftResizerDOM.removeEventListener('mousedown', this.startResizeLeft);

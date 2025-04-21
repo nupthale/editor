@@ -65,6 +65,8 @@ export class HeaderView extends BaseBlockView implements Convertible {
   }
 
   destroy() {
+    super.destroy();
+
     this.floatMenuTrigger.destroy();
   }
 

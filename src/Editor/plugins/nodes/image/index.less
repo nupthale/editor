@@ -1,10 +1,21 @@
 .doc-image {
     margin: 16px 0;
+
+    border: 1px solid transparent;
+    border-radius: 8px;
+    overflow: hidden;
 }
 
 .doc-image:first-of-type {
     margin-top: 0;
 }
+
+.doc-image.selected .doc-component-imageEmpty,
+.doc-image.selected .doc-component-image
+{
+    border-color: #1456f0;
+}
+
 
 .doc-image-container {
     display: inline-flex;
