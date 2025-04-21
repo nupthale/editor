@@ -16,6 +16,7 @@ import { table } from './nodes/table/plugin/index';
 import { image } from './nodes/image/plugin';
 import { video } from './nodes/video/plugin';
 import { coder } from './nodes/coder/plugin/index';
+import { columns } from './nodes/columns/plugin/index';
 
 import { collab } from './collab/index';
 
@@ -39,6 +40,7 @@ export function plugins(schema: Schema): Plugin[] {
     ...image(),
     ...video(),
     ...coder(),
+    ...columns(),
 
     // 优先级最低
     ...baseKeymapPlugin(),

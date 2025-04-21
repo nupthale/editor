@@ -1,0 +1,33 @@
+.doc-columns {
+}
+
+.doc-columns.focused .doc-column:before {
+    opacity: 1;
+}
+
+.doc-columns-content {
+    display: flex;
+    align-items: start;
+    gap: 12px;
+}
+
+.doc-column {
+    position: relative;
+    flex: 1;
+}
+
+.doc-column:before {
+    opacity: 0;
+
+    content: '';
+    position: absolute;
+    top: -4px;
+    bottom: -4px;
+    left: -4px;
+    right: -4px;
+    border-radius: 8px;
+    z-index: -1;
+
+    background: #f5f6f7;
+    transition: opacity .2s ease-in-out;
+}

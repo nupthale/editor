@@ -11,7 +11,7 @@ import { tableSchema } from '../nodes/table/schema';
 import { imageSchema } from '../nodes/image/schema';
 import { videoSchema } from '../nodes/video/schema';
 import { coderSchema } from '../nodes/coder/schema';
-
+import { columnsSchema } from '../nodes/columns/schema';
 
 export const nodes: Record<string, NodeSpec> = {
   // 使用基础节点
@@ -73,6 +73,7 @@ export const nodes: Record<string, NodeSpec> = {
   ...imageSchema,
   ...videoSchema,
   ...coderSchema,
+  ...columnsSchema,
 
   // 添加更多自定义节点...
 };

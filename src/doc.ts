@@ -240,7 +240,7 @@ export const doc = [
         }),
 
         schema.node('video', {
-            id: 'video-123',
+            id: nanoid(8),
         }),
 
         schema.node('textBlock', { id: nanoid(8) }, [
@@ -256,6 +256,29 @@ export const doc = [
             language: 'javascript',
         }, [
             schema.text('const hello = "world";'),
+        ]),
+
+        schema.node('columns', {
+            id: nanoid(8),
+        }, [
+            schema.node('column', { id: nanoid(8) }, [
+                schema.node('textBlock', { id: nanoid(8) }, [
+                    schema.node('textBlock_head', {
+                        id: nanoid(8),
+                    }, [
+                        schema.text('1')
+                    ]),
+                ])
+            ]),
+            schema.node('column', { id: nanoid(8) }, [
+                schema.node('textBlock', { id: nanoid(8) }, [
+                    schema.node('textBlock_head', {
+                        id: nanoid(8),
+                    }, [
+                        schema.text('2')
+                    ]),
+                ])
+            ]),
         ]),
 
         // table

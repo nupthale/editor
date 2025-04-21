@@ -90,7 +90,7 @@ export class BaseBlockView implements NodeView {
     return false;
   }
 
-  subscribe = () => {
+  subscribe() {
     const selectBlockSubscriber = selectBlock$.pipe(
       tap(({ id }) => {
         this.dom.classList.remove('selected');

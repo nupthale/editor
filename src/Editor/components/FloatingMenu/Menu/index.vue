@@ -20,6 +20,9 @@ import {
     Code,
     InspectionPanel,
     Globe,
+    Columns2,
+    Columns3,
+    Columns4,
 } from 'lucide';
 import { Tooltip } from 'ant-design-vue';
 import { TextButton } from '@zsfe/zsui';
@@ -194,6 +197,41 @@ export default defineComponent({
                                     <LucideIcon icon={Globe} width={20} color="#874FFF"></LucideIcon>
                                 </span>
                                 内嵌网页
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="doc-floatMenu-divier"></div>
+                    <div class="doc-floatMenu-title">分栏布局</div>
+                    <div class="m-2">
+                        <div 
+                            class="doc-floatingMenu-menuItem !w-full !p-1 !h-auto !min-h-auto !leading-none !rounded-[4px]"
+                            onClick={() => handleSelectType('image', {})}
+                        >
+                            <div class="flex items-center">
+                                <span class="mr-4 inline-flex items-center justify-center w-[24px] h-[24px]">
+                                    <LucideIcon icon={Columns2} width={20}></LucideIcon>
+                                </span>
+                                2栏布局
+                            </div>
+                        </div>
+                        <div 
+                            class="doc-floatingMenu-menuItem !w-full !p-1 !h-auto !min-h-auto !leading-none !rounded-[4px]"
+                            onClick={() => handleSelectType('video', {})}
+                        >
+                            <div class="flex items-center">
+                                <span class="mr-4 inline-flex items-center justify-center w-[24px] h-[24px]">
+                                    <LucideIcon icon={Columns3} width={20}></LucideIcon>
+                                </span>
+                                3栏布局
+                            </div>
+                        </div>
+                        <div class="doc-floatingMenu-menuItem !w-full !p-1 !h-auto !min-h-auto !leading-none !rounded-[4px]">
+                            <div class="flex items-center">
+                                <span class="mr-4 inline-flex items-center justify-center w-[24px] h-[24px]">
+                                    <LucideIcon icon={Columns4} width={20}></LucideIcon>
+                                </span>
+                                4栏布局
                             </div>
                         </div>
                     </div>

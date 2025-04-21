@@ -143,3 +143,21 @@ export const isAncestor = (node?: Node, ancestor?: Node) => {
 
     return found;
 }
+
+export const getNearestAncestor = ($from: ResolvedPos, ancestorName: string) => {
+
+    let found: Node | null = null;
+    let depth = $from.depth;
+                
+    // 从当前节点向上遍历所有祖先节点
+    while (depth > 0) {
+        const node = $from.node(depth);
+        if (node.type.name === ancestorName) {
+            found = node;
+            break;
+        }
+        depth--;
+    }
+
+    return found;
+}
