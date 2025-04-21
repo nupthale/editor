@@ -23,6 +23,7 @@ import {
     Columns2,
     Columns3,
     Columns4,
+    SquarePlus,
 } from 'lucide';
 import { Tooltip } from 'ant-design-vue';
 import { TextButton } from '@zsfe/zsui';
@@ -43,7 +44,7 @@ export default defineComponent({
         );
 
         return () => (
-            <div class="w-[230px]">
+            <div class="w-[230px] doc-floatMenusContainer">
                 <div class="text-[#2B3036] !border-none">
                     <div class="grid grid-cols-6 gap-y-3 p-3">
                         <Tooltip title="正文">
@@ -263,6 +264,18 @@ export default defineComponent({
                             </div>
                         </div>
                     </div>
+
+                    <div class="doc-floatMenu-divier"></div>
+                    <div class="m-2">
+                        <div class="doc-floatingMenu-menuItem !w-full !p-1 !h-auto !min-h-auto !leading-none !rounded-[4px]">
+                            <div class="flex items-center">
+                                <span class="mr-4 inline-flex items-center justify-center w-[24px] h-[24px]">
+                                    <LucideIcon icon={SquarePlus} width={20}></LucideIcon>
+                                </span>
+                                在下方添加
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         );
@@ -290,5 +303,10 @@ export default defineComponent({
 .doc-floatMenu-title {
     margin: 12px 14px 6px;
     font-size: 12px;
+}
+
+.doc-floatMenusContainer {
+    max-height: 620px;
+    overflow-y: overlay;
 }
 </style>
