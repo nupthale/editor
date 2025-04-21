@@ -1,6 +1,6 @@
 import { Schema } from 'prosemirror-model';
 import { Plugin } from 'prosemirror-state';
-import { keymapPlugin } from './core/keymap';
+import { coreKeymapPlugin, baseKeymapPlugin } from './core/keymap';
 import { history } from './core/history';
 import { copyPastePlugin } from './core/copyPaste';
 import { bubbleMenuPlugin } from './core/bubbleMenu';
@@ -24,6 +24,7 @@ import { collab } from './collab/index';
 // 集中注册所有插件
 export function plugins(schema: Schema): Plugin[] {
   return [
+    ...coreKeymapPlugin(), // 优先级最高，必须在最前面
     ...history(),
     ...copyPastePlugin(),
     ...bubbleMenuPlugin(),
@@ -40,7 +41,7 @@ export function plugins(schema: Schema): Plugin[] {
     ...coder(),
 
     // 优先级最低
-    ...keymapPlugin(),
+    ...baseKeymapPlugin(),
 
     ...collab,
   ];

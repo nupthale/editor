@@ -37,7 +37,7 @@ export class CoderView extends BaseBlockView {
 
     this.floatMenuTrigger = new FloatMenuTrigger(this);
 
-    this.coder = new Coder(this.coderDOM);
+    this.coder = new Coder(this.coderDOM, node.attrs.id);
     this.coder.render(node.textContent || '', node.attrs.language);
 
     this.initEvt();

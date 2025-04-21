@@ -1,4 +1,5 @@
 import { h, render } from 'vue';
+import { Subscription, filter, tap } from 'rxjs';
 
 import {CodeJar} from 'codejar';
 import { withLineNumbers } from "codejar-linenumbers";
@@ -14,14 +15,10 @@ import 'prismjs/themes/prism.css';  // 主题样式
 
 import Toolbar from '../Toolbar/index.vue';
 import { EventEmit } from '../../../../../shared/event';
+import { focusAtEnd$ } from '../../../../../event';
 
 import 'codejar-linenumbers/es/codejar-linenumbers.css';
 import './index.less';
-
-export type CoderProps = {
-    code: string;
-    language: string;
-}
 
 export class Coder extends EventEmit {
     private editor: CodeJar  | null = null;
@@ -31,7 +28,9 @@ export class Coder extends EventEmit {
     private code: string = '';
     private language: string = '';
 
-    constructor(private mountNode: HTMLElement | null) {
+    private subscribers: Subscription[] = [];
+
+    constructor(private mountNode: HTMLElement | null, private id: string) {
         super();
 
         this.toolbarDOM = document.createElement('div');
@@ -108,6 +107,20 @@ export class Coder extends EventEmit {
 
         // 监听键盘事件
         this.editorDOM.addEventListener('keydown', this.handleKeydown);
+
+        const focusAtEndSubscriber = focusAtEnd$.pipe(
+            filter(({ id }) => Boolean(id && id === this?.id)),
+            tap(() => {
+                // 将光标移到编辑器末尾
+                const range = document.createRange();
+                range.selectNodeContents(this.editorDOM);
+                range.collapse(false); // false 表示collapse到末尾
+                const selection = window.getSelection();
+                selection?.removeAllRanges();
+                selection?.addRange(range);
+            }),
+        ).subscribe();
+        this.subscribers.push(focusAtEndSubscriber);
     }
 
     destory = () => {
@@ -121,6 +134,8 @@ export class Coder extends EventEmit {
         render(null, this.toolbarDOM);
 
         this.editorDOM.removeEventListener('keydown', this.handleKeydown);
+
+        this.subscribers.forEach((subscriber) => subscriber.unsubscribe());
 
         this.mountNode = null;
         this.editor = null;

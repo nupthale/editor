@@ -31,3 +31,5 @@ export const hidePopover$ = new Subject<{
 
 // 文档内容变化
 export const docChanged$ = new Subject<void>();
+
+export const focusAtEnd$ = new Subject<{ id: string }>();
