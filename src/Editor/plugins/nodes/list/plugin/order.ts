@@ -75,14 +75,6 @@ const appendIndex = (lists: ListTreeType[], indexes: number[], indexMap: IndexMa
     });
 }
 
-export const processBodyNodes = (body: Node) => {
-    if (body?.childCount !== 2) return;
-
-    const indexMap: IndexMapType = {};
-    const lists = getLists(body.lastChild);
-    appendIndex(lists, [], indexMap);
-}
-
 
 /**
  * doc是prosemirror的文档对象，根据文档的内容
